@@ -19,6 +19,12 @@ $(document).ready(function() {
     };
     xhr.send();
 
+    //Credit to http://stackoverflow.com/questions/8525899/how-to-check-if-a-javascript-number-is-a-real-valid-number
+    //Checks if a number is valid
+    function isNumber(n) {
+        return typeof n == 'number' && !isNaN(n) && isFinite(n);
+    }
+
     function start() {
         //Iterate over courses on page
         for (var i = 0; i < courses.length; i++) {
@@ -30,16 +36,20 @@ $(document).ready(function() {
             //Get rows, iterate over each one
             var rows = $(table[0]).find("> tbody > tr").each(function() {
                 if ($(this).hasClass("headers")) {
+                    //create new column 
                     $(this).find('.instructor').after('<th>Prof. Rating</th>');
                     //jQuery's version of continue
                     return true;
                 }
+                //find Type column
                 var type = $(this).find("td.type");
                 if (type.length != 0) {
                     type = type[0].textContent;
                 } else {
                     return true;
                 }
+
+                //Get registration numbers
                 var registration_numbers = $(this).find("td.registered")[0].textContent.split(" of ");
                 var current_enrolled = parseInt(registration_numbers[0]);
                 var total_available = parseInt(registration_numbers[1]);
@@ -74,7 +84,7 @@ $(document).ready(function() {
             });
 
             var title = $(courses[i]).find("> .course-id > h3 > a");
-            if (total_spots != 0) {
+            if (total_spots != 0 && isNumber(total_spots)) {
                 title.append(" - " + available_spots + " remaining spots");
             }
         }

@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "USC Remaining Spots",
+  "name": "USC Schedule Helper",
   "description": "Shows the number of total spots left in all lecture sections on the main page as well as professor ratings and links to their page!",
-  "version": "1.1",
+  "version": "1.2",
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "USC Remaining Spots"
