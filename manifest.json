@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "USC Remaining Spots",
-  "description": "Shows the number of total spots left in all lecture sections on the main page",
-  "version": "1.0",
+  "description": "Shows the number of total spots left in all lecture sections on the main page as well as professor ratings and links to their page!",
+  "version": "1.1",
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "USC Remaining Spots"
