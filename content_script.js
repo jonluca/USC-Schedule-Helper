@@ -29,7 +29,7 @@ $(document).ready(function() {
             var total_available = parseInt(registration_numbers[1]);
 
             //If it's not a lab or quiz
-            if (type == "Lecture") {
+            if (type == "Lecture" || type == "Lecture-Lab") {
                 total_spots += total_available;
                 available_spots += (total_available - current_enrolled);
             }
