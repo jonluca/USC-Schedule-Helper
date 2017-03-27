@@ -30,7 +30,7 @@ $(document).ready(function() {
             //Get rows, iterate over each one
             var rows = $(table[0]).find("> tbody > tr").each(function() {
                 if ($(this).hasClass("headers")) {
-                    $(this).find('th').eq(6).after('<th>Prof. Rating</th>');
+                    $(this).find('.instructor').after('<th>Prof. Rating</th>');
                     //jQuery's version of continue
                     return true;
                 }
@@ -51,14 +51,26 @@ $(document).ready(function() {
                 }
 
                 var professor = $(this).find("td.instructor")[0];
-                var professor_name = professor.textContent;
-                if (professor_name in professor_ratings) {
-                    var url = url_template + professor_ratings[professor_name].id;
-                    $(this).find('td').eq(6).after('<td><a href=' + url + ">" + professor_ratings[professor_name].rating + '</a></td>');
-                } else {
-                    $(this).find('td').eq(6).after('<td> </td>');
+                var professor_name = professor.textContent.split(",");
+                for (var i = 0; i < professor_name.length; i++) {
+                    split_prof = professor_name[i];
+                    var actual_name = split_prof.split(" ");
+                    actual_name = actual_name[0] + " " + actual_name[actual_name.length - 1];
+                    if (actual_name in professor_ratings) {
+                        var url = url_template + professor_ratings[actual_name].id;
+                        if ($(this).find('.rating').length == 0) {
+                            $(this).find('td.instructor').after('<td class="rating"><a href=' + url + ">" + professor_ratings[actual_name].rating + '</a></td>');
+                        } else {
+                            $(this).find('.rating').append(', <a href=' + url + ">" + professor_ratings[actual_name].rating + '</a>');
+                        }
+                    } else {
+                        if ($(this).find('.rating').length == 0) {
+                            $(this).find('td.instructor').after('<td class="rating"> </td>');
+                        } else {
+                            $(this).find('.rating').append(' ');
+                        }
+                    }
                 }
-
             });
 
             var title = $(courses[i]).find("> .course-id > h3 > a");
