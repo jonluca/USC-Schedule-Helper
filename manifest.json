@@ -12,12 +12,12 @@
     "scripts": ["js/jquery-2.1.1.min.js", "js/background.js"]
   },
   "permissions": [
-    "*://classes.usc.edu/term-20173/classes/*"
+    "*://classes.usc.edu/*/classes/*"
   ],
   "content_scripts": [
     {
       "matches": [
-        "*://classes.usc.edu/term-20173/classes/*"
+        "*://classes.usc.edu/*/classes/*"
       ],
       "js": ["js/jquery-2.1.1.min.js", "content_script.js"]
     }
