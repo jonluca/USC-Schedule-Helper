@@ -69,7 +69,7 @@ $(document).ready(function() {
                     if (actual_name in professor_ratings) {
                         var url = url_template + professor_ratings[actual_name].id;
                         if ($(this).find('.rating').length == 0) {
-                            $(this).find('td.instructor').after('<td class="rating"><a href=' + url + ">" + professor_ratings[actual_name].rating + '</a></td>');
+                            $(this).find('td.instructor').after('<td class="rating"><a href=' + url + " target=\"_blank\">" + professor_ratings[actual_name].rating + '</a></td>');
                         } else {
                             $(this).find('.rating').append(', <a href=' + url + ">" + professor_ratings[actual_name].rating + '</a>');
                         }
