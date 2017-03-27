@@ -31,6 +31,7 @@
 
   "homepage_url": "https://github.com/jonluca/USCSpotsRemaining",
   "web_accessible_resources": [
-    "js/jquery-2.1.1.min.js"
+    "js/jquery-2.1.1.min.js",
+    "data/only_ratings.json"
   ]
 }
