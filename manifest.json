@@ -3,7 +3,7 @@
 
   "name": "USC Schedule Helper",
   "description": "Shows the number of total spots left in all lecture sections on the main page as well as professor ratings and links to their page!",
-  "version": "1.3",
+  "version": "1.4",
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "USC Remaining Spots"
@@ -29,7 +29,7 @@
     "128": "images/icon128.png"
   },
 
-  "homepage_url": "https://github.com/jonluca/USCSpotsRemaining",
+  "homepage_url": "https://jonlu.ca",
   "web_accessible_resources": [
     "js/jquery-2.1.1.min.js",
     "data/only_ratings.json"
