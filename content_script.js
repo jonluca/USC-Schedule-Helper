@@ -1,12 +1,14 @@
 
 $(document).ready(function() {
 
+    //This loads the JSON of all the professors, rating, and unique ID. Only way I've found to get it, unfortunately
     var xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
     xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             var currentURL = window.location.href;
+            //If we are on webreg or if we're on classes.usc.edu 
             if (currentURL.includes("webreg")) {
                 parseWebReg(professor_ratings);
             } else {
@@ -19,7 +21,9 @@ $(document).ready(function() {
 
 });
 
+//Url template for each professor
 var url_template = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
+//Contains a span HTML element, which is just included to insert a blank column cell in each row, to preserve spacing
 var empty_span = '<span class=\"instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span></span>';
 
 
@@ -41,55 +45,68 @@ function parseWebReg(professor_ratings) {
     });
 
 
+    //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
     var total_spots = 0;
     var available_spots = 0;
 
+    //This is for sections (such as BIO) which have classes that are labs only. Its the running total of ALL "# of #", but only displayed if only_lab is true
     var hidden_total_spots = 0;
     var hidden_available_spots = 0;
 
+    //Gets main div
     var course_titles = $(".course-title-indent");
-
+    //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
     var course_individual_class = $(".crs-accordion-content-area").each(function() {
-        var current_id = $(this).attr('id');
-
+        //reinit to 0 
         total_spots = 0;
         available_spots = 0;
 
         hidden_total_spots = 0;
         hidden_available_spots = 0;
 
-        //Insert Prof Rating column
+        //Insert Prof Rating column at top of each class view
         var header = $(this).find(".section_head_alt1");
         var days = $(header).find(".instr_alt1, .instr_alt0")[0];
         $(days).after("<span class=\"instr_alt1 col-md-1 col-lg-1\"><b>Prof. Rating</b></span>");
 
-        //insert prof rating
+        /*Initialize only_lab to true - will get set to false if type of class is ever anything but Lab
+        We are usually only intereseted in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
+        to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
+        */
         var only_lab = true;
-        //Ever row
+        //Iterate over every section in row. To get alternating colors, USC uses alt0 and alt1, so we must search for both
         var sections = $(this).find(".section_alt1, .section_alt0").each(function() {
 
+            //rename Add to myCourseBin button so that it fits/looks nice
             var add_to_cb = $(this).find(".addtomycb");
             if (add_to_cb.length != 0) {
                 add_to_cb = add_to_cb[0];
                 $(add_to_cb).attr('value', 'Add');
             }
+
+            //Find registration numbers for this row, formatted like "# of #". Hidden content also prepends it with Registered: so that must be cut out
             var registration_numbers_element = $(this).find(".regSeats_alt1, regSeats_alt0");
             var registration_numbers;
+
+            //If class has reg details
             if (registration_numbers_element.length != 0) {
+                //Cut out hidden text before it
                 registration_numbers = registration_numbers_element[0].textContent.replace("Registered: ", "");
 
+                //create array using "of" as delimiter
                 registration_numbers = registration_numbers.split("of");
-                //first number in # of #
+                //Gets each of ("# of #")
                 var current_enrolled = parseInt(registration_numbers[0].trim());
                 var total_available = parseInt(registration_numbers[1].trim());
 
-                //See if we want to count these elements
+                //Checks class type - we are only interested in Lecture and Lecture-Lab
                 var class_type_element = $(this).find('.type_alt1, .type_alt0');
                 var class_type;
                 if (class_type_element.length != 0) {
                     class_type = class_type_element[0].textContent;
                     //If it's not a lab or quiz
                     if (class_type == "Type: Lecture" || class_type == "Type: Lecture-Lab") {
+                        //It's not a lab, so only_lab is false
                         only_lab = false;
                         total_spots += total_available;
                         available_spots += (total_available - current_enrolled);
@@ -97,12 +114,13 @@ function parseWebReg(professor_ratings) {
                         hidden_total_spots += total_available;
                         hidden_available_spots += (total_available - current_enrolled);
                     } else {
+                        //If not Lab or Lecture/lecture-lab then false
                         only_lab = false;
                     }
                 }
             }
 
-            //check if instructor element exists, find it
+            //Retrievie Instructor cell from row
             var instructor_name_element = $(this).find(".instr_alt1, .instr_alt0");
             if (instructor_name_element.length != 0) {
                 //get all professor names in a hacky way
@@ -127,29 +145,41 @@ function parseWebReg(professor_ratings) {
                     if (actual_name in professor_ratings) {
                         var url = url_template + professor_ratings[actual_name].id;
 
+                        //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
+                        //if there already is one then we know it's another professor
                         if ($(this).find('.rating').length == 0) {
                             $(this).addClass("blank_rating");
                             //long string but needs to be exactly formatted
                             var location_of_insert = $(this).find('.instr_alt1')[0];
-                            $(location_of_insert).after('<span class=\"hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span><a class=\"rating\" href=' + url + " target=\"_blank\">" + professor_ratings[actual_name].rating + '</a></span>');
+                            //actual contents of rating
+                            var rating_anchor = '<a class=\"rating\" href=' + url + " target=\"_blank\">" + professor_ratings[actual_name].rating + '</a>';
+                            //long string just to include new 
+                            $(location_of_insert).after('<span class=\"hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span>' + rating_anchor + '</span>');
+                            /* Very specific edge case - if you have two profoessors and you could not find the first, it'll insert an empty cell. However, if you can 
+                            find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
                             if ($(this).find(".empty_rating").length != 0) {
+
                                 $(this).find(".empty_rating")[0].remove();
                             }
                         } else {
                             $(this).find('.rating').append(', <a href=' + url + ">" + professor_ratings[actual_name].rating + '</a>');
                         }
                     } else {
+                        //blank rating is if you can not find the professor in the json - we still need something in that cell
+                        //Looking back it might be better if I add the cell in before hand no matter what, and then only change it's inner html if it's a valid professor...
+                        //TODO refactor for next semester I suppose
                         if (!$(this).hasClass("blank_rating")) {
                             $(this).addClass("blank_rating");
                             var location_of_insert = $(this).find('.instr_alt1, .instr_alt0')[0];
                             $(location_of_insert).after(empty_span);
                         }
                     }
-                //do nothing otherwise
                 }
 
 
             } else {
+                //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but better safe than sorry here. 
+                //If in the future they change it this'll prevent it from looking misaligned
                 if (!$(this).hasClass("blank_rating")) {
                     $(this).addClass("blank_rating");
                     var location_of_insert = $(this).find('.instr_alt1, .instr_alt0')[0];
@@ -158,12 +188,14 @@ function parseWebReg(professor_ratings) {
                 return true;
             }
         });
+        //If total spots is a number and it's not 0, insert
         if (total_spots != 0 && isNumber(total_spots)) {
             var name_element = $(this).prev();
             var name = $(name_element).find('.course-title-indent');
             name.append("<span class=\"crsTitl spots_remaining\">" + " - " + available_spots + " remaining spots" + "</span>");
         }
 
+        //if there were only labs in this class, show it
         if (only_lab && hidden_total_spots != 0 && isNumber(hidden_total_spots)) {
             var name_element = $(this).prev();
             var name = $(name_element).find('.course-title-indent');
@@ -221,19 +253,27 @@ function parseCoursePage(professor_ratings) {
             }
 
             var professor = $(this).find("td.instructor")[0];
+            //Professor names are separated by commas, so this handles the case that multiple profs teach a section
             var professor_name = professor.textContent.split(",");
             for (var i = 0; i < professor_name.length; i++) {
                 split_prof = professor_name[i];
+                //Names are formatted "First Last" so no reordering is necessary
+                //However, some names are "First Middle Middle2 Last", and we only want "First Last" as that is the format of our json
                 var actual_name = split_prof.split(" ");
                 actual_name = actual_name[0] + " " + actual_name[actual_name.length - 1];
+
+                //If its in JSON
                 if (actual_name in professor_ratings) {
+                    //generate RMP URL
                     var url = url_template + professor_ratings[actual_name].id;
+                    //If we've never inserted before, insert. otherwsie insert with a comma before it for good formatting
                     if ($(this).find('.rating').length == 0) {
                         $(this).find('td.instructor').after('<td class="rating"><a href=' + url + " target=\"_blank\">" + professor_ratings[actual_name].rating + '</a></td>');
                     } else {
                         $(this).find('.rating').append(', <a href=' + url + ">" + professor_ratings[actual_name].rating + '</a>');
                     }
                 } else {
+                    //If not in JSON, we need an empty space to make table format correctly
                     if ($(this).find('.rating').length == 0) {
                         $(this).find('td.instructor').after('<td class="rating"> </td>');
                     } else {
