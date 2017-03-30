@@ -74,6 +74,10 @@ function parseWebReg(professor_ratings) {
         to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
         */
         var only_lab = true;
+        //Checks whether all lecture sections are closed
+        var all_closed = false;
+
+        var current_closed = false;
         //Iterate over every section in row. To get alternating colors, USC uses alt0 and alt1, so we must search for both
         var sections = $(this).find(".section_alt1, .section_alt0").each(function() {
 
@@ -85,7 +89,7 @@ function parseWebReg(professor_ratings) {
             }
 
             //Find registration numbers for this row, formatted like "# of #". Hidden content also prepends it with Registered: so that must be cut out
-            var registration_numbers_element = $(this).find(".regSeats_alt1, regSeats_alt0");
+            var registration_numbers_element = $(this).find(".regSeats_alt1, .regSeats_alt0");
             var registration_numbers;
 
             //If class has reg details
@@ -95,27 +99,41 @@ function parseWebReg(professor_ratings) {
 
                 //create array using "of" as delimiter
                 registration_numbers = registration_numbers.split("of");
-                //Gets each of ("# of #")
-                var current_enrolled = parseInt(registration_numbers[0].trim());
-                var total_available = parseInt(registration_numbers[1].trim());
+                if (registration_numbers.length != 2) {
+                    current_closed = true;
+                    if (registration_numbers[0] != null && registration_numbers[0].trim() == "Closed") {
+                        all_closed = true;
+                    }
+                    if (!$(this).hasClass("blank_rating")) {
+                        $(this).addClass("blank_rating");
+                        var location_of_insert = $(this).find('.instr_alt1, .instr_alt0')[0];
+                        $(location_of_insert).after(empty_span);
+                    }
+                }
+                if (!current_closed) {
+                    //Gets each of ("# of #")
+                    var current_enrolled = parseInt(registration_numbers[0].trim());
+                    var total_available = parseInt(registration_numbers[1].trim());
 
-                //Checks class type - we are only interested in Lecture and Lecture-Lab
-                var class_type_element = $(this).find('.type_alt1, .type_alt0');
-                var class_type;
-                if (class_type_element.length != 0) {
-                    class_type = class_type_element[0].textContent;
-                    //If it's not a lab or quiz
-                    if (class_type == "Type: Lecture" || class_type == "Type: Lecture-Lab") {
-                        //It's not a lab, so only_lab is false
-                        only_lab = false;
-                        total_spots += total_available;
-                        available_spots += (total_available - current_enrolled);
-                    } else if (class_type == "Type: Lab") {
-                        hidden_total_spots += total_available;
-                        hidden_available_spots += (total_available - current_enrolled);
-                    } else {
-                        //If not Lab or Lecture/lecture-lab then false
-                        only_lab = false;
+                    //Checks class type - we are only interested in Lecture and Lecture-Lab
+                    var class_type_element = $(this).find('.type_alt1, .type_alt0');
+                    var class_type;
+                    if (class_type_element.length != 0) {
+                        class_type = class_type_element[0].textContent;
+                        //If it's not a lab or quiz
+                        if (class_type == "Type: Lecture" || class_type == "Type: Lecture-Lab" || class_type == "Type: Lecture-Discussion") {
+                            //It's not a lab, so only_lab is false
+                            only_lab = false;
+                            total_spots += total_available;
+                            available_spots += (total_available - current_enrolled);
+                            all_closed = false;
+                        } else if (class_type == "Type: Lab") {
+                            hidden_total_spots += total_available;
+                            hidden_available_spots += (total_available - current_enrolled);
+                        } else {
+                            //If not Lab or Lecture/lecture-lab then false
+                            only_lab = false;
+                        }
                     }
                 }
             }
@@ -193,6 +211,20 @@ function parseWebReg(professor_ratings) {
             var name_element = $(this).prev();
             var name = $(name_element).find('.course-title-indent');
             name.append("<span class=\"crsTitl spots_remaining\">" + " - " + available_spots + " remaining spots" + "</span>");
+            //Let's make the background red if no spots remaining
+            if (available_spots == 0) {
+                $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
+            }
+        }
+
+        //If total spots is a number and it's not 0, insert
+        if (all_closed) {
+            var name_element = $(this).prev();
+            var name = $(name_element).find('.course-title-indent');
+            name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration" + "</span>");
+            //Let's make the background red if no spots remaining
+            $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
+
         }
 
         //if there were only labs in this class, show it
@@ -200,6 +232,10 @@ function parseWebReg(professor_ratings) {
             var name_element = $(this).prev();
             var name = $(name_element).find('.course-title-indent');
             name.append("<span class=\"crsTitl spots_remaining\">" + " - " + hidden_available_spots + " remaining lab spots" + "</span>");
+
+            if (hidden_available_spots == 0) {
+                $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
+            }
         }
 
     });
