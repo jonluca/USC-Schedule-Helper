@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "USC Schedule Helper",
-  "description": "Shows the number of total spots left in all lecture sections on the main page as well as professor ratings and links to their page!",
-  "version": "1.6",
+  "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
+  "version": "2.2",
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "USC Remaining Spots"
@@ -12,7 +12,7 @@
     "scripts": ["js/jquery-2.1.1.min.js", "js/background.js"]
   },
   "permissions": [
-    "*://classes.usc.edu/*/classes/*", "*://webreg.usc.edu/*"
+    "*://classes.usc.edu/*/classes/*", "*://webreg.usc.edu/*", "http://jonluca.me/*", "https://jonluca.me/*"
   ],
   "content_scripts": [
     {
