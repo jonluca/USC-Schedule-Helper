@@ -28,6 +28,10 @@ var available_spots = 0;
 var hidden_total_spots = 0;
 var hidden_available_spots = 0;
 
+//Thsi is for when a class is closed - it'll let you know how many spots are open based on discussion
+var discussion_total_spots = 0;
+var discussion_available_spots = 0;
+
 /*Initialize only_lab to true - will get set to false if type of class is ever anything but Lab
         We are usually only intereseted in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
         to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
@@ -36,6 +40,7 @@ var only_lab = true;
 //Checks whether all lecture sections are closed
 var all_closed = false;
 var has_lecture = false;
+var has_discussion = false;
 
 var current_closed = false;
 
@@ -114,10 +119,10 @@ function parseRegistrationNumbers(row) {
                 var location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
                 $(location_of_insert).after(empty_span);
             }
-        }
-        if (!current_closed) {
+        } else {
             addRegistrationNumbers(row, registration_numbers[0].trim(), registration_numbers[1].trim());
         }
+
     }
 }
 
@@ -163,6 +168,12 @@ function parseClassType(row, class_type) {
     } else if (class_type == "Type: Lab") {
         hidden_total_spots += total_available;
         hidden_available_spots += (total_available - current_enrolled);
+    } else if (class_type == "Type: Discussion") {
+        console.log("got here");
+        only_lab = false;
+        has_discussion = true;
+        discussion_total_spots += total_available;
+        discussion_available_spots += (total_available - current_enrolled);
     } else {
         //If not Lab or Lecture/lecture-lab then false
         only_lab = false;
@@ -266,11 +277,16 @@ function reinitializeVariablesPerClass() {
     hidden_total_spots = 0;
     hidden_available_spots = 0;
 
+    discussion_total_spots = 0;
+    discussion_available_spots = 0;
+
     only_lab = true;
     //Checks whether all lecture sections are closed
     all_closed = false;
     //If it has ANY lecture sections
     has_lecture = false;
+
+    has_discussion = false;
 
     //Is the current class closed for registration?
     current_closed = false;
@@ -289,7 +305,13 @@ function insertTotalSpots(element) {
 function insertClosedRegistration(element) {
     var name_element = $(element).prev();
     var name = $(name_element).find('.course-title-indent');
-    name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration" + "</span>");
+    if (has_discussion) {
+        name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration ( " + discussion_available_spots + " spots remaing)</span>");
+
+    } else {
+        name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration</span>");
+
+    }
     //Let's make the background red if no spots remaining
     $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
 }
@@ -312,7 +334,7 @@ function insertClassNumbers(element) {
         insertTotalSpots(element);
     }
 
-    //If total spots is a number and it's not 0, insert
+    //If it's closed
     if (all_closed && !has_lecture) {
         insertClosedRegistration(element);
     }
