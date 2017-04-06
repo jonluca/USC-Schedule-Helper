@@ -428,7 +428,7 @@ function insertTotalSpots(element) {
     name.append("<span class=\"crsTitl spots_remaining\">" + " - " + available_spots + " remaining spots" + "</span>");
     //Let's make the background red if no spots remaining
     if (available_spots == 0) {
-        $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
+        $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
     }
 }
 
@@ -443,7 +443,7 @@ function insertClosedRegistration(element) {
 
     }
     //Let's make the background red if no spots remaining
-    $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
+    $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
 }
 
 function insertOnlyLabNumbers(element) {
@@ -453,7 +453,7 @@ function insertOnlyLabNumbers(element) {
     name.append("<span class=\"crsTitl spots_remaining\">" + " - " + hidden_available_spots + " remaining lab spots" + "</span>");
 
     if (hidden_available_spots == 0) {
-        $(name).css("background-color", "rgba(240, 65, 36, 0.75)");
+        $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
     }
 }
 
@@ -620,8 +620,7 @@ function parseCoursePage(professor_ratings) {
             title.append(" - " + available_spots + " remaining spots");
             if (available_spots == 0) {
                 var background = $(courses[i]).find("> .course-id");
-                $(background).css("background-color", "rgba(240, 65, 36, 0.75)");
-
+                $(background).css("background-color", "rgba(240, 65, 36, 0.45)");
             }
         }
     }
