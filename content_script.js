@@ -1,16 +1,17 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     //This loads the JSON of all the professors, rating, and unique ID. Only way I've found to get it, unfortunately
     var xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (this.readyState == 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             var currentURL = window.location.href;
             //If we are on webreg or if we're on classes.usc.edu 
             if (currentURL.includes("webreg")) {
+                getCurrentSchedule();
                 parseWebReg(professor_ratings);
-            //addPostRequests();
+                //addPostRequests();
             } else {
                 parseCoursePage(professor_ratings);
             }
@@ -20,6 +21,8 @@ $(document).ready(function() {
 
 
 });
+
+
 //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
 var total_spots = 0;
 var available_spots = 0;
@@ -33,9 +36,9 @@ var discussion_total_spots = 0;
 var discussion_available_spots = 0;
 
 /*Initialize only_lab to true - will get set to false if type of class is ever anything but Lab
-        We are usually only intereseted in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
-        to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
-        */
+ We are usually only intereseted in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
+ to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
+ */
 var only_lab = true;
 //Checks whether all lecture sections are closed
 var all_closed = false;
@@ -50,6 +53,130 @@ var url_template = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
 var empty_span = '<span class=\"instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span \
 class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span></span>';
 
+var current_schedule = [];
+
+function getCurrentSchedule() {
+    $.ajax({
+        method: 'GET',
+        url: "https://webreg.usc.edu/myCourseBin",
+        type: 'text',
+        success: function (data, textStatus, jqXHR) {
+            parseCurrentSchedule(data);
+        }
+    });
+}
+
+function parseCurrentSchedule(html) {
+    var parsedHTML = $(html);
+    var sections = $(parsedHTML).find("[id^=section_]");
+    for (var i = 0; i < sections.length; i++) {
+        $(sections[i]).find("[class=schUnschRmv]").each(function () {
+            if ($(this).css('display') == 'block') {
+                parseValidSectionSchedule($(this).parents("[class^=section_crsbin]")[0]);
+            }
+        });
+    }
+}
+
+function parseValidSectionSchedule(section) {
+    var hours = $(section).find("[class^=hours]")[0].innerText;
+    hours = hours.replace("Time: ", '');
+
+    var days = $(section).find("[class^=days]")[0].innerText;
+    days = days.replace("Days: ", '');
+    days = splitDays(days);
+
+    hours = hours.split("-");
+    var time = {"day": days, "time": hours};
+    current_schedule.push(time);
+    //Gets main div
+    var course_titles = $(".course-title-indent");
+    //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
+    var course_individual_class = $(".crs-accordion-content-area").each(function () {
+        var sections = $(this).find(".section_alt1, .section_alt0");
+        sections.each(function () {
+            var section = this;
+            var section_hours = $(this).find("[class^=hours]")[0].innerText;
+            section_hours = section_hours.replace("Time: ", '');
+
+            var section_days = $(section).find("[class^=days]")[0].innerText;
+            section_days = section_days.replace("Days: ", '');
+            section_days = splitDays(section_days);
+
+            section_hours = section_hours.split("-");
+            var should_break = false;
+            //Three nested for loops... Wow
+            for (var i = 0; i < current_schedule.length; i++) {
+                if (should_break) {
+                    break;
+                }
+                var current_class = current_schedule[i];
+                for (var j = 0; j < current_class.day.length; j++) {
+                    if (should_break) {
+                        break;
+                    }
+                    for (var k = 0; k < section_days.length; k++) {
+                        //Class already registered/scheduled
+                        var range = moment.range(moment(current_class.time[0], "hh:mma").day(current_class.day[j]),
+                            moment(current_class.time[1], "hh:mma").day(current_class.day[j]));
+
+                        var range2 = moment.range(moment(section_hours[0], "hh:mma").day(section_days[k]),
+                            moment(section_hours[1], "hh:mma").day(section_days[k]));
+
+                        if (range.overlaps(range2)) {
+                            should_break = true;
+                            $(this).css('background-color', 'rgba(255, 134, 47, 0.37)');
+                            var add_to_cb = $(section).find(".addtomycb");
+                            if (add_to_cb.length != 0) {
+                                add_to_cb = add_to_cb[0];
+                                $(add_to_cb).attr('value', 'Conflict - Overlap');
+                                $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
+                                $(add_to_cb).addClass("warning");
+                            }
+                        }
+                    }
+                }
+            }
+
+        })
+    })
+
+    $(".warning").hover(
+        function () {
+            $(this).attr('value', 'Add Anyway');
+
+        }, function () {
+            $(this).attr('value', 'Warning - Overlaps');
+        }
+    );
+}
+
+function splitDays(days) {
+    //Split Thursday first because otherwise it'll get split on Tuesday
+    var split_days = days.replace("Th", "D");
+    split_days = split_days.split('');
+    for (var i = 0; i < split_days.length; i++) {
+        switch (split_days[i]) {
+            case "M":
+                split_days[i] = "Monday";
+                break;
+            case "T":
+                split_days[i] = "Tuesday";
+                break;
+            case "W":
+                split_days[i] = "Wednesday";
+                break;
+            case "D":
+                split_days[i] = "Thursday";
+                break;
+            case "F":
+                split_days[i] = "Friday";
+                break;
+        }
+
+    }
+    return split_days;
+}
 function insertExportButton() {
     var navbar = $("ul.nav");
     $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20173\">Export To Calendar</a></li>");
@@ -58,12 +185,12 @@ function insertExportButton() {
 }
 
 function addPostRequests() {
-    var notify_me = $(".notify").each(function() {
+    var notify_me = $(".notify").each(function () {
         $(this).unbind();
         $(this).attr('type', 'button');
         var form = $(this).parents('form');
 
-        $(this).click(function() {
+        $(this).click(function () {
             var email = prompt("Please enter your email", "ttrojan@usc.edu");
             var courseid = $(this).attr("id");
             var department = $(form).find("#department")[0];
@@ -78,7 +205,7 @@ function addPostRequests() {
                         courseid: courseid,
                         department: department
                     },
-                    success: function(data, textStatus, jqXHR) {
+                    success: function (data, textStatus, jqXHR) {
                         alert("Success! Check your email to confirm.");
                         console.log(data);
                     }
@@ -169,7 +296,6 @@ function parseClassType(row, class_type) {
         hidden_total_spots += total_available;
         hidden_available_spots += (total_available - current_enrolled);
     } else if (class_type == "Type: Discussion") {
-        console.log("got here");
         only_lab = false;
         has_discussion = true;
         discussion_total_spots += total_available;
@@ -205,7 +331,7 @@ function insertProfessorRating(row, professor_info) {
         $(location_of_insert).after('<span class=\"hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span class=\"hidden-lg hidden-md \
                                 visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span>' + rating_anchor + '</span>');
         /* Very specific edge case - if you have two profoessors and you could not find the first, it'll insert an empty cell. However, if you can 
-        find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
+         find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
         if ($(row).find(".empty_rating").length != 0) {
             $(row).find(".empty_rating")[0].remove();
         }
@@ -215,7 +341,7 @@ function insertProfessorRating(row, professor_info) {
 }
 
 function parseRows(rows) {
-    $(rows).each(function() {
+    $(rows).each(function () {
 
         //rename Add to myCourseBin button so that it fits/looks nice
         changeAddToCourseBinButton(this);
@@ -346,7 +472,7 @@ function insertClassNumbers(element) {
 }
 
 function parseClass(classes) {
-    $(classes).each(function() {
+    $(classes).each(function () {
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
 
@@ -427,7 +553,7 @@ function parseCoursePage(professor_ratings) {
         var table = $(courses[i]).find("> .course-details > table.sections");
 
         //Get rows, iterate over each one
-        var rows = $(table[0]).find("> tbody > tr").each(function() {
+        var rows = $(table[0]).find("> tbody > tr").each(function () {
             if ($(this).hasClass("headers")) {
                 //create new column 
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
