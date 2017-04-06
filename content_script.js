@@ -69,7 +69,8 @@ function parseCurrentSchedule(html) {
     var sections = $(parsedHTML).find("[id^=section_]");
     for (var i = 0; i < sections.length; i++) {
         $(sections[i]).find("[class=schUnschRmv]").each(function () {
-            if ($(this).css('display') == 'block') {
+            var text = $(this).find(".actionbar > a")[0].innerText;
+            if ($(this).css('display') == 'block' && text == "Unschedule") {
                 parseValidSectionSchedule($(this).parents("[class^=section_crsbin]")[0]);
             }
         });
@@ -107,6 +108,7 @@ function parseValidSectionSchedule(section) {
             section_hours = section_hours.split("-");
             var should_break = false;
             //Three nested for loops... Wow
+            //Kinda horrifying... but it works
             for (var i = 0; i < current_schedule.length; i++) {
                 if (should_break) {
                     break;
