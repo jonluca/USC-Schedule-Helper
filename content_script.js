@@ -12,7 +12,7 @@ $(document).ready(function() {
                 if (!currentURL.includes("/myCourseBin")) {
                     getCurrentSchedule();
                     parseWebReg(professor_ratings);
-                //addPostRequests();
+                    //addPostRequests();
                 }
             } else {
                 parseCoursePage(professor_ratings);
@@ -31,12 +31,12 @@ var available_spots = 0;
 var hidden_total_spots = 0;
 var hidden_available_spots = 0;
 
-//Thsi is for when a class is closed - it'll let you know how many spots are open based on discussion
+//This is for when a class is closed - it'll let you know how many spots are open based on discussion
 var discussion_total_spots = 0;
 var discussion_available_spots = 0;
 
 /*Initialize only_lab to true - will get set to false if type of class is ever anything but Lab
- We are usually only intereseted in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
+ We are usually only interested in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
  to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
  */
 var only_lab = true;
@@ -79,6 +79,17 @@ function parseCurrentSchedule(html) {
     }
 }
 
+function addConflictOverlay(row) {
+    $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
+    var add_to_cb = $(row).find(".addtomycb");
+    if (add_to_cb.length !== 0) {
+        add_to_cb = add_to_cb[0];
+        $(add_to_cb).attr('value', 'Conflict - Overlap');
+        $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
+        $(add_to_cb).addClass("warning");
+    }
+}
+
 function parseValidSectionSchedule(section) {
     var hours = $(section).find("[class^=hours]")[0].innerText;
     hours = hours.replace("Time: ", '');
@@ -104,16 +115,17 @@ function parseValidSectionSchedule(section) {
     var course_individual_class = $(".crs-accordion-content-area").each(function() {
         var sections = $(this).find(".section_alt1, .section_alt0");
         sections.each(function() {
-            var section = this;
+            //Get hours for current section
             var section_hours = $(this).find("[class^=hours]")[0].innerText;
             section_hours = section_hours.replace("Time: ", '');
+            section_hours = section_hours.split("-");
 
-            var section_days = $(section).find("[class^=days]")[0].innerText;
+            //Get days for class for current section
+            var section_days = $(this).find("[class^=days]")[0].innerText;
             section_days = section_days.replace("Days: ", '');
             section_days = splitDays(section_days);
 
-            section_hours = section_hours.split("-");
-
+            //Get section name to compare if you already have that class
             var section_name = $(this).find("[class^=id]")[0].innerText;
             section_name = section_name.replace("Section: ", '');
 
@@ -121,49 +133,44 @@ function parseValidSectionSchedule(section) {
             //Three nested for loops... Wow
             //Kinda horrifying... but it works
             for (var i = 0; i < current_schedule.length; i++) {
-                if (should_break) {
+                var current_class = current_schedule[i];
+                if (should_break || section_name == current_class.section) {
                     break;
                 }
-                var current_class = current_schedule[i];
-                for (var j = 0; j < current_class.day.length; j++) {
-                    if (should_break) {
-                        break;
-                    }
-                    for (var k = 0; k < section_days.length; k++) {
-                        //Class already registered/scheduled
-                        var range = moment.range(moment(current_class.time[0], "hh:mma").day(current_class.day[j]),
-                            moment(current_class.time[1], "hh:mma").day(current_class.day[j]));
-
-                        var range2 = moment.range(moment(section_hours[0], "hh:mma").day(section_days[k]),
-                            moment(section_hours[1], "hh:mma").day(section_days[k]));
-
-                        if (range.overlaps(range2) && section_name != current_class.section) {
-                            console.log(section_name);
-                            console.log(current_class.section);
-                            should_break = true;
-                            $(this).css('background-color', 'rgba(255, 134, 47, 0.37)');
-                            var add_to_cb = $(section).find(".addtomycb");
-                            if (add_to_cb.length != 0) {
-                                add_to_cb = add_to_cb[0];
-                                $(add_to_cb).attr('value', 'Conflict - Overlap');
-                                $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
-                                $(add_to_cb).addClass("warning");
-                            }
-                        }
-                    }
-                }
+                checkCurrentClassOverlap(current_class, section_days, section_hours, section_name, should_break);
             }
 
         });
     });
 
     $(".warning").hover(function() {
-        $(this).attr('value', 'Add Anyway');
+            $(this).attr('value', 'Add Anyway');
 
-    }, function() {
-        $(this).attr('value', 'Warning - Overlaps');
-    }
+        }, function() {
+            $(this).attr('value', 'Warning - Overlaps');
+        }
     );
+}
+
+function checkCurrentClassOverlap(current_class, section_days, section_hours, section_name, should_break) {
+    for (var j = 0; j < current_class.day.length; j++) {
+        if (should_break) {
+            break;
+        }
+        for (var k = 0; k < section_days.length; k++) {
+            //Class already registered/scheduled
+            var range = moment.range(moment(current_class.time[0], "hh:mma").day(current_class.day[j]),
+                moment(current_class.time[1], "hh:mma").day(current_class.day[j]));
+
+            var range2 = moment.range(moment(section_hours[0], "hh:mma").day(section_days[k]),
+                moment(section_hours[1], "hh:mma").day(section_days[k]));
+
+            if (range.overlaps(range2) && section_name != current_class.section) {
+                should_break = true;
+                addConflictOverlay(this);
+            }
+        }
+    }
 }
 
 function splitDays(days) {
@@ -232,7 +239,7 @@ function addPostRequests() {
 
 function changeAddToCourseBinButton(row) {
     var add_to_cb = $(row).find(".addtomycb");
-    if (add_to_cb.length != 0) {
+    if (add_to_cb.length !== 0) {
         add_to_cb = add_to_cb[0];
         $(add_to_cb).attr('value', 'Add');
     }
@@ -537,7 +544,6 @@ function parseWebReg(professor_ratings) {
     //Because we insert a new column, we need to change the CSS around to make it look right
     changeCSSColumnWidth();
 
-
     //Gets main div
     var course_titles = $(".course-title-indent");
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
@@ -570,7 +576,7 @@ function parseCoursePage(professor_ratings) {
         //Get rows, iterate over each one
         var rows = $(table[0]).find("> tbody > tr").each(function() {
             if ($(this).hasClass("headers")) {
-                //create new column 
+                //create new column
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
                 //jQuery's version of continue
                 return true;
