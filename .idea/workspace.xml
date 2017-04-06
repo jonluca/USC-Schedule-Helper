@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="916d87dc-4777-4bf4-82b1-136c3d877220" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content_script.js" afterPath="$PROJECT_DIR$/content_script.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/manifest.json" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,12 +21,12 @@
       <file leaf-file-name="content_script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/content_script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="609" column="50" lean-forward="false" selection-start-line="609" selection-start-column="50" selection-end-line="609" selection-end-column="50" />
+            <state relative-caret-position="720">
+              <caret line="170" column="0" lean-forward="true" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
               <folding>
-                <marker date="1491497269000" expanded="true" signature="2290:2403" ph="..." />
-                <marker date="1491497269000" expanded="true" signature="2296:2396" ph="..." />
-                <marker date="1491497269000" expanded="true" signature="13771:13937" ph="..." />
+                <marker date="1491497671000" expanded="true" signature="2287:2400" ph="..." />
+                <marker date="1491497671000" expanded="true" signature="2293:2393" ph="..." />
+                <marker date="1491497671000" expanded="true" signature="13717:13883" ph="..." />
               </folding>
             </state>
           </provider>
@@ -554,12 +553,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1491445300220</updated>
-      <workItem from="1491445304909" duration="14371000" />
+      <workItem from="1491445304909" duration="14740000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14371000" />
+    <option name="totallyTimeSpent" value="14740000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
@@ -649,12 +648,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/content_script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="609" column="50" lean-forward="false" selection-start-line="609" selection-start-column="50" selection-end-line="609" selection-end-column="50" />
+        <state relative-caret-position="720">
+          <caret line="170" column="0" lean-forward="true" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
           <folding>
-            <marker date="1491497269000" expanded="true" signature="2290:2403" ph="..." />
-            <marker date="1491497269000" expanded="true" signature="2296:2396" ph="..." />
-            <marker date="1491497269000" expanded="true" signature="13771:13937" ph="..." />
+            <marker date="1491497671000" expanded="true" signature="2287:2400" ph="..." />
+            <marker date="1491497671000" expanded="true" signature="2293:2393" ph="..." />
+            <marker date="1491497671000" expanded="true" signature="13717:13883" ph="..." />
           </folding>
         </state>
       </provider>
