@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="916d87dc-4777-4bf4-82b1-136c3d877220" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content_script.js" afterPath="$PROJECT_DIR$/content_script.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/manifest.json" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,12 +22,12 @@
       <file leaf-file-name="content_script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/content_script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="170" column="0" lean-forward="true" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+            <state relative-caret-position="870">
+              <caret line="141" column="79" lean-forward="false" selection-start-line="141" selection-start-column="79" selection-end-line="141" selection-end-column="79" />
               <folding>
-                <marker date="1491497671000" expanded="true" signature="2287:2400" ph="..." />
-                <marker date="1491497671000" expanded="true" signature="2293:2393" ph="..." />
-                <marker date="1491497671000" expanded="true" signature="13717:13883" ph="..." />
+                <marker date="1491506703000" expanded="true" signature="2287:2400" ph="..." />
+                <marker date="1491506703000" expanded="true" signature="2293:2393" ph="..." />
+                <marker date="1491506703000" expanded="true" signature="14437:14603" ph="..." />
               </folding>
             </state>
           </provider>
@@ -57,8 +58,8 @@
       <file leaf-file-name="manifest.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/manifest.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+            <state relative-caret-position="75">
+              <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -553,12 +554,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1491445300220</updated>
-      <workItem from="1491445304909" duration="14740000" />
+      <workItem from="1491445304909" duration="15401000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14740000" />
+    <option name="totallyTimeSpent" value="15401000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
@@ -620,14 +621,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/manifest.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/background.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -646,14 +639,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/manifest.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/content_script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="170" column="0" lean-forward="true" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+        <state relative-caret-position="870">
+          <caret line="141" column="79" lean-forward="false" selection-start-line="141" selection-start-column="79" selection-end-line="141" selection-end-column="79" />
           <folding>
-            <marker date="1491497671000" expanded="true" signature="2287:2400" ph="..." />
-            <marker date="1491497671000" expanded="true" signature="2293:2393" ph="..." />
-            <marker date="1491497671000" expanded="true" signature="13717:13883" ph="..." />
+            <marker date="1491506703000" expanded="true" signature="2287:2400" ph="..." />
+            <marker date="1491506703000" expanded="true" signature="2293:2393" ph="..." />
+            <marker date="1491506703000" expanded="true" signature="14437:14603" ph="..." />
           </folding>
         </state>
       </provider>

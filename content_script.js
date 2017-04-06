@@ -130,8 +130,17 @@ function parseValidSectionSchedule(section) {
             section_name = section_name.replace("Section: ", '');
 
             var should_break = false;
-            //Three nested for loops... Wow
-            //Kinda horrifying... but it works
+            /*Three nested for loops... Wow
+            Kinda horrifying... but it works
+            The saved schedule for classes currently in your course bin is current_schedule
+            It iterates over current_schedule, then it iterates over every day in current schedule
+            current schedule { day: ["M", "T", "Th"], time: ["08:00pm","11:00pm"], section: "33333"}
+            Then it iterates over the current section (the specific class type per class, like discussion, lecture, etc)
+            jQuery row object... I parsed section_days above, which would be like ["M", "T"]
+
+            I need to filter it to only iterate over the intersection of the current_schedule day and the current class
+            day. Other than that, though, I can't see a more efficient solution
+            */
             for (var i = 0; i < current_schedule.length; i++) {
                 var current_class = current_schedule[i];
                 if (should_break || section_name == current_class.section) {
