@@ -1,17 +1,19 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     //This loads the JSON of all the professors, rating, and unique ID. Only way I've found to get it, unfortunately
     var xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             var currentURL = window.location.href;
             //If we are on webreg or if we're on classes.usc.edu
             if (currentURL.includes("webreg")) {
-                getCurrentSchedule();
-                parseWebReg(professor_ratings);
+                if (!currentURL.includes("/myCourseBin")) {
+                    getCurrentSchedule();
+                    parseWebReg(professor_ratings);
                 //addPostRequests();
+                }
             } else {
                 parseCoursePage(professor_ratings);
             }
@@ -58,7 +60,7 @@ function getCurrentSchedule() {
         method: 'GET',
         url: "https://webreg.usc.edu/myCourseBin",
         type: 'text',
-        success: function (data, textStatus, jqXHR) {
+        success: function(data, textStatus, jqXHR) {
             parseCurrentSchedule(data);
         }
     });
@@ -68,7 +70,7 @@ function parseCurrentSchedule(html) {
     var parsedHTML = $(html);
     var sections = $(parsedHTML).find("[id^=section_]");
     for (var i = 0; i < sections.length; i++) {
-        $(sections[i]).find("[class=schUnschRmv]").each(function () {
+        $(sections[i]).find("[class=schUnschRmv]").each(function() {
             var text = $(this).find(".actionbar > a")[0].innerText;
             if ($(this).css('display') == 'block' && text == "Unschedule") {
                 parseValidSectionSchedule($(this).parents("[class^=section_crsbin]")[0]);
@@ -86,17 +88,22 @@ function parseValidSectionSchedule(section) {
     days = splitDays(days);
 
     hours = hours.split("-");
+
+    var section = $(section).find("[class^=id_alt]")[1].innerText;
+    section = section.replace("Section: ", '');
+
     var time = {
         "day": days,
-        "time": hours
+        "time": hours,
+        "section": section
     };
     current_schedule.push(time);
     //Gets main div
     var course_titles = $(".course-title-indent");
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-    var course_individual_class = $(".crs-accordion-content-area").each(function () {
+    var course_individual_class = $(".crs-accordion-content-area").each(function() {
         var sections = $(this).find(".section_alt1, .section_alt0");
-        sections.each(function () {
+        sections.each(function() {
             var section = this;
             var section_hours = $(this).find("[class^=hours]")[0].innerText;
             section_hours = section_hours.replace("Time: ", '');
@@ -106,6 +113,10 @@ function parseValidSectionSchedule(section) {
             section_days = splitDays(section_days);
 
             section_hours = section_hours.split("-");
+
+            var section_name = $(this).find("[class^=id]")[0].innerText;
+            section_name = section_name.replace("Section: ", '');
+
             var should_break = false;
             //Three nested for loops... Wow
             //Kinda horrifying... but it works
@@ -126,7 +137,9 @@ function parseValidSectionSchedule(section) {
                         var range2 = moment.range(moment(section_hours[0], "hh:mma").day(section_days[k]),
                             moment(section_hours[1], "hh:mma").day(section_days[k]));
 
-                        if (range.overlaps(range2)) {
+                        if (range.overlaps(range2) && section_name != current_class.section) {
+                            console.log(section_name);
+                            console.log(current_class.section);
                             should_break = true;
                             $(this).css('background-color', 'rgba(255, 134, 47, 0.37)');
                             var add_to_cb = $(section).find(".addtomycb");
@@ -141,17 +154,15 @@ function parseValidSectionSchedule(section) {
                 }
             }
 
-        })
-    })
+        });
+    });
 
-    $(".warning").hover(
-        function () {
-            $(this).attr('value', 'Add Anyway');
+    $(".warning").hover(function() {
+        $(this).attr('value', 'Add Anyway');
 
-        },
-        function () {
-            $(this).attr('value', 'Warning - Overlaps');
-        }
+    }, function() {
+        $(this).attr('value', 'Warning - Overlaps');
+    }
     );
 }
 
@@ -190,12 +201,12 @@ function insertExportButton() {
 }
 
 function addPostRequests() {
-    var notify_me = $(".notify").each(function () {
+    var notify_me = $(".notify").each(function() {
         $(this).unbind();
         $(this).attr('type', 'button');
         var form = $(this).parents('form');
 
-        $(this).click(function () {
+        $(this).click(function() {
             var email = prompt("Please enter your email", "ttrojan@usc.edu");
             var courseid = $(this).attr("id");
             var department = $(form).find("#department")[0];
@@ -210,7 +221,7 @@ function addPostRequests() {
                         courseid: courseid,
                         department: department
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         alert("Success! Check your email to confirm.");
                     }
                 });
@@ -345,7 +356,7 @@ function insertProfessorRating(row, professor_info) {
 }
 
 function parseRows(rows) {
-    $(rows).each(function () {
+    $(rows).each(function() {
 
         //rename Add to myCourseBin button so that it fits/looks nice
         changeAddToCourseBinButton(this);
@@ -476,7 +487,7 @@ function insertClassNumbers(element) {
 }
 
 function parseClass(classes) {
-    $(classes).each(function () {
+    $(classes).each(function() {
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
 
@@ -557,7 +568,7 @@ function parseCoursePage(professor_ratings) {
         var table = $(courses[i]).find("> .course-details > table.sections");
 
         //Get rows, iterate over each one
-        var rows = $(table[0]).find("> tbody > tr").each(function () {
+        var rows = $(table[0]).find("> tbody > tr").each(function() {
             if ($(this).hasClass("headers")) {
                 //create new column 
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
