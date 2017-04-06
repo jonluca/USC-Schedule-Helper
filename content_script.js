@@ -7,7 +7,7 @@ $(document).ready(function () {
         if (this.readyState == 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             var currentURL = window.location.href;
-            //If we are on webreg or if we're on classes.usc.edu 
+            //If we are on webreg or if we're on classes.usc.edu
             if (currentURL.includes("webreg")) {
                 getCurrentSchedule();
                 parseWebReg(professor_ratings);
@@ -18,8 +18,6 @@ $(document).ready(function () {
         }
     };
     xhr.send();
-
-
 });
 
 
@@ -87,7 +85,10 @@ function parseValidSectionSchedule(section) {
     days = splitDays(days);
 
     hours = hours.split("-");
-    var time = {"day": days, "time": hours};
+    var time = {
+        "day": days,
+        "time": hours
+    };
     current_schedule.push(time);
     //Gets main div
     var course_titles = $(".course-title-indent");
@@ -145,7 +146,8 @@ function parseValidSectionSchedule(section) {
         function () {
             $(this).attr('value', 'Add Anyway');
 
-        }, function () {
+        },
+        function () {
             $(this).attr('value', 'Warning - Overlaps');
         }
     );
@@ -177,6 +179,7 @@ function splitDays(days) {
     }
     return split_days;
 }
+
 function insertExportButton() {
     var navbar = $("ul.nav");
     $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20173\">Export To Calendar</a></li>");
@@ -207,7 +210,6 @@ function addPostRequests() {
                     },
                     success: function (data, textStatus, jqXHR) {
                         alert("Success! Check your email to confirm.");
-                        console.log(data);
                     }
                 });
             }
@@ -327,10 +329,10 @@ function insertProfessorRating(row, professor_info) {
         var location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
         //actual contents of rating
         var rating_anchor = '<a class=\"rating\" href=' + url + " target=\"_blank\">" + professor_info.rating + '</a>';
-        //long string just to include new 
+        //long string just to include new
         $(location_of_insert).after('<span class=\"hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span class=\"hidden-lg hidden-md \
                                 visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span>' + rating_anchor + '</span>');
-        /* Very specific edge case - if you have two profoessors and you could not find the first, it'll insert an empty cell. However, if you can 
+        /* Very specific edge case - if you have two profoessors and you could not find the first, it'll insert an empty cell. However, if you can
          find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
         if ($(row).find(".empty_rating").length != 0) {
             $(row).find(".empty_rating")[0].remove();
@@ -362,7 +364,7 @@ function parseRows(rows) {
                 parseProfessor(instructor_name[i], this);
             }
         } else {
-            //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but better safe than sorry here. 
+            //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but better safe than sorry here.
             //If in the future they change it this'll prevent it from looking misaligned
             insertBlankRatingCell(this);
             //jQuery way of saying continue;
@@ -395,7 +397,7 @@ function insertProfRatingHeader(header) {
 }
 
 function reinitializeVariablesPerClass() {
-    //reinit to 0 
+    //reinit to 0
     total_spots = 0;
     available_spots = 0;
 
