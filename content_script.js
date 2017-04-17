@@ -16,7 +16,6 @@ $(document).ready(function() {
                 if (!currentURL.includes("/myCourseBin")) {
                     getCurrentSchedule();
                     parseWebReg(professor_ratings);
-                    addPostRequests();
                 }
             } else {
                 parseCoursePage(professor_ratings);
@@ -184,7 +183,11 @@ function parseValidSectionSchedule(section) {
     });
 
     $(".warning").hover(function() {
-        $(this).attr('value', 'Add Anyway');
+        if ($(this).hasClass("notify")) {
+            $(this).attr('value', 'Notify Me');
+        } else {
+            $(this).attr('value', 'Add Anyway');
+        }
 
     }, function() {
         $(this).attr('value', 'Warning - Overlaps');
@@ -229,32 +232,44 @@ function insertExportButton() {
 
 function addPostRequests() {
     var notify_me = $(".notify").each(function() {
-        $(this).unbind();
-        $(this).attr('type', 'button');
-        $(this).attr('value', 'Notify Me');
         var form = $(this).parents('form');
+        if (form.length > 0) {
+            $(this).attr('value', 'Notify Me');
+            $(this).unbind();
+            $(this).attr('type', 'button');
+            $(this).unbind('mouseenter mouseleave');
+            var id = $(form[0]).find("#sectionid");
+            var courseid = id.val();
+            $(this).click(function() {
+                var email = prompt("Please enter your email", "ttrojan@usc.edu");
+                var department = $(form).find("#department")[0];
+                department = $(department).attr("value");
+                if (email != null && email != "ttrojan@usc.edu") {
+                    $.ajax({
+                        method: 'POST',
+                        url: "https://jonluca.me/soc_api/notify",
+                        type: 'json',
+                        data: {
+                            email: email,
+                            courseid: courseid,
+                            department: department
+                        },
+                        error: function(err) {
+                            alert("Error! Either unable to communicate with jonluca.me due to app permissions or server down!");
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            if (textStatus == "success") {
+                                alert("Success! Check your email to confirm. Please note this service is not guaranteed to work!");
+                            } else {
+                                alert("An unknown error occured! Please contact jdecaro@usc.edu with the class you are trying to register for.");
+                            }
+                        }
+                    });
+                }
+            });
+        }
 
-        $(this).click(function() {
-            var email = prompt("Please enter your email", "ttrojan@usc.edu");
-            var courseid = $(this).attr("id");
-            var department = $(form).find("#department")[0];
-            department = $(department).attr("value");
-            if (email != null && email != "ttrojan@usc.edu") {
-                $.ajax({
-                    method: 'POST',
-                    url: "https://jonluca.me/soc_api/notify",
-                    type: 'json',
-                    data: {
-                        email: email,
-                        courseid: courseid,
-                        department: department
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        alert("Success! Check your email to confirm. Please note this service is not guaranteed to work!");
-                    }
-                });
-            }
-        });
+
     });
 }
 
@@ -572,6 +587,8 @@ function parseWebReg(professor_ratings) {
 
     //Parses each class found previously
     parseClass(course_individual_class);
+    addPostRequests();
+
 }
 
 //Credit to http://stackoverflow.com/questions/8525899/how-to-check-if-a-javascript-number-is-a-real-valid-number
