@@ -1,18 +1,22 @@
 $(document).ready(function() {
-
+    //Pages URL
+    var currentURL = window.location.href;
+    if (currentURL.includes("webreg")) {
+        //Insert "Export to Calendar" button in nav bar
+        insertExportButton();
+    }
     //This loads the JSON of all the professors, rating, and unique ID. Only way I've found to get it, unfortunately
     var xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
     xhr.onreadystatechange = function() {
         if (this.readyState == 4) {
             professor_ratings = JSON.parse(xhr.responseText);
-            var currentURL = window.location.href;
             //If we are on webreg or if we're on classes.usc.edu
             if (currentURL.includes("webreg")) {
                 if (!currentURL.includes("/myCourseBin")) {
                     getCurrentSchedule();
                     parseWebReg(professor_ratings);
-                //addPostRequests();
+                    addPostRequests();
                 }
             } else {
                 parseCoursePage(professor_ratings);
@@ -53,9 +57,11 @@ var url_template = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
 var empty_span = '<span class=\"instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span \
 class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span></span>';
 
+//An array that will contain the schedule that they are currently registered in
 var current_schedule = [];
 
 function getCurrentSchedule() {
+    //Pu;ls schedule from myCourseBin
     $.ajax({
         method: 'GET',
         url: "https://webreg.usc.edu/myCourseBin",
@@ -66,6 +72,7 @@ function getCurrentSchedule() {
     });
 }
 
+//Iterates over every section in myCourseBin
 function parseCurrentSchedule(html) {
     var parsedHTML = $(html);
     var sections = $(parsedHTML).find("[id^=section_]");
@@ -79,7 +86,8 @@ function parseCurrentSchedule(html) {
     }
 }
 
-function addConflictOverlay(row){
+//If the section it is currently parsing conflicts with a class in current_schedule
+function addConflictOverlay(row) {
     $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
     var add_to_cb = $(row).find(".addtomycb");
     if (add_to_cb.length != 0) {
@@ -90,6 +98,7 @@ function addConflictOverlay(row){
     }
 }
 
+//If the section from myCourseBin is valid, add it to current_schedule
 function parseValidSectionSchedule(section) {
     var hours = $(section).find("[class^=hours]")[0].innerText;
     hours = hours.replace("Time: ", '');
@@ -139,7 +148,12 @@ function parseValidSectionSchedule(section) {
             jQuery row object... I parsed section_days above, which would be like ["M", "T"]
 
             I need to filter it to only iterate over the intersection of the current_schedule day and the current class
-            day. Other than that, though, I can't see a more efficient solution
+            day. Other than that, though, I can't see a more efficient solution. 
+
+            This will ideally not loop that many times, though - at most 5*5*(4)ish, if they're registered for 4 classes, 
+            and all 4 classes having MTWTHF classes. This is not likely though - on average, it'll loop 4*2*3.
+
+            Performance trace tells us we only spend ~0.5 seconds on this function, so optimization is not currently needed
             */
             for (var i = 0; i < current_schedule.length; i++) {
                 var current_class = current_schedule[i];
@@ -217,6 +231,7 @@ function addPostRequests() {
     var notify_me = $(".notify").each(function() {
         $(this).unbind();
         $(this).attr('type', 'button');
+        $(this).attr('value', 'Notify Me');
         var form = $(this).parents('form');
 
         $(this).click(function() {
@@ -235,7 +250,7 @@ function addPostRequests() {
                         department: department
                     },
                     success: function(data, textStatus, jqXHR) {
-                        alert("Success! Check your email to confirm.");
+                        alert("Success! Check your email to confirm. Please note this service is not guaranteed to work!");
                     }
                 });
             }
@@ -268,7 +283,7 @@ function parseRegistrationNumbers(row) {
             if (registration_numbers[0] != null && registration_numbers[0].trim() == "Closed" && !has_lecture) {
                 all_closed = true;
             }
-            //addNotifyMe(row);
+            addNotifyMe(row);
             if (!$(row).hasClass("blank_rating")) {
                 $(row).addClass("blank_rating");
                 var location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
@@ -318,7 +333,7 @@ function parseClassType(row, class_type) {
         all_closed = false;
         //change button to notify m
         if (available_spots == 0) {
-            //addNotifyMe(row);
+            addNotifyMe(row);
         }
     } else if (class_type == "Type: Lab") {
         hidden_total_spots += total_available;
@@ -546,7 +561,6 @@ function changeCSSColumnWidth() {
 
 function parseWebReg(professor_ratings) {
 
-    insertExportButton();
     //Because we insert a new column, we need to change the CSS around to make it look right
     changeCSSColumnWidth();
 
