@@ -3,13 +3,13 @@
 
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
-  "version": "3.2",
+  "version": "4.4",
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "USC Remaining Spots"
   },
   "background": {
-    "scripts": ["js/jquery-2.1.1.min.js", "js/background.js", "js/date.js"]
+    "scripts": ["js/jquery-2.1.1.min.js", "js/background.js", "js/date.js", "data/sweetalert.min.js"]
   },
   "permissions": [
     "*://classes.usc.edu/*/classes/*", "*://webreg.usc.edu/*", "http://jonluca.me/*", "https://jonluca.me/*"
@@ -19,7 +19,7 @@
       "matches": [
         "*://classes.usc.edu/*/classes/*", "*://webreg.usc.edu/*"
       ],
-      "js": ["js/jquery-2.1.1.min.js", "js/date.js", "content_script.js"]
+      "js": ["js/jquery-2.1.1.min.js", "js/date.js", "content_script.js", "data/sweetalert.min.js"]
     }
   ],
   "icons": {
@@ -32,6 +32,7 @@
   "web_accessible_resources": [
     "js/jquery-2.1.1.min.js",
     "data/only_ratings.json",
+    "data/*",
     "js/date.js"
   ]
 }

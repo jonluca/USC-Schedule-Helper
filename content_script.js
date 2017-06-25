@@ -12,12 +12,13 @@ $(document).ready(function() {
         if (this.readyState == 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             //If we are on webreg or if we're on classes.usc.edu
-            if (currentURL.includes("webreg")) {
-                if (!currentURL.includes("/myCourseBin")) {
-                    getCurrentSchedule();
-                    parseWebReg(professor_ratings);
-                }
+            if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
+                $('head').append('<link rel="stylesheet" href="' + chrome.runtime.getURL("data/sweetalert.css") + '" type="text/css" />');
+                getCurrentSchedule();
+                parseWebReg(professor_ratings);
             } else {
+                //This is for courses.usc.edu, not web registration. Original version of the extension only worked 
+                //here, then I realized it's useless and would be better suited for webreg
                 parseCoursePage(professor_ratings);
             }
         }
@@ -78,6 +79,7 @@ function parseCurrentSchedule(html) {
     for (var i = 0; i < sections.length; i++) {
         $(sections[i]).find("[class=schUnschRmv]").each(function() {
             var text = $(this).find(".actionbar > a")[0].innerText;
+            //If they currently have it scheduled on their calendar
             if ($(this).css('display') == 'block' && text == "Unschedule") {
                 parseValidSectionSchedule($(this).parents("[class^=section_crsbin]")[0]);
             }
@@ -183,16 +185,10 @@ function parseValidSectionSchedule(section) {
     });
 
     $(".warning").hover(function() {
-        if ($(this).hasClass("notify")) {
-            $(this).attr('value', 'Notify Me');
-        } else {
-            $(this).attr('value', 'Add Anyway');
-        }
-
+        $(this).attr('value', 'Add Anyway');
     }, function() {
         $(this).attr('value', 'Warning - Overlaps');
-    }
-    );
+    });
 }
 
 
@@ -232,47 +228,112 @@ function insertExportButton() {
 
 function addPostRequests() {
     var notify_me = $(".notify").each(function() {
-        var form = $(this).parents('form');
-        if (form.length > 0) {
-            $(this).attr('value', 'Notify Me');
-            $(this).unbind();
-            $(this).attr('type', 'button');
-            $(this).unbind('mouseenter mouseleave');
-            var id = $(form[0]).find("#sectionid");
-            var courseid = id.val();
-            $(this).click(function() {
-                var email = prompt("Please enter your email", "ttrojan@usc.edu");
+        var form = $(this)[0].form;
+        $(this).attr('value', 'Notify Me');
+        $(this).unbind();
+        $(this).attr('type', 'button');
+        $(this).unbind('mouseenter mouseleave');
+        var id = $(form).find("#sectionid");
+        var courseid = id.val();
+        $(this).click(function() {
+
+            swal({
+                title: 'Notify Me!',
+                html: '<label> Email: </label> <input id="email" class="swal2-input">' +
+                    '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
+                preConfirm: function() {
+                    return new Promise(function(resolve) {
+                        resolve([
+                            $('#email').val(),
+                            $('#phone').val()
+                        ]
+                        );
+                    });
+                },
+                onOpen: function() {
+                    $('#email').focus();
+                },
+                showCancelButton: true
+            }).then(function(result) {
+                var email = result[0];
+                var phone = result[1];
                 var department = $(form).find("#department")[0];
                 department = $(department).attr("value");
-                if (email != null && email != "ttrojan@usc.edu") {
-                    $.ajax({
-                        method: 'POST',
-                        url: "https://jonluca.me/soc_api/notify",
-                        type: 'json',
-                        data: {
-                            email: email,
-                            courseid: courseid,
-                            department: department
-                        },
-                        error: function(err) {
-                            alert("Error! Either unable to communicate with jonluca.me due to app permissions or server down!");
-                        },
-                        success: function(data, textStatus, jqXHR) {
-                            if (textStatus == "success") {
-                                alert("Success! Check your email to confirm. Please note this service is not guaranteed to work!");
-                            } else {
-                                alert("An unknown error occured! Please contact jdecaro@usc.edu with the class you are trying to register for.");
-                            }
-                        }
-                    });
+                //If they got to this page by clicking on a specific course on myCourseBin, department won't be included in the form, not sure why
+                //We do a hacky way by getting it from courseid
+                if (department == "") {
+                    var course = $(form).find("#courseid")[0];
+                    course = $(course).attr("value");
+                    course = course.split("-");
+                    department = course[0];
                 }
-            });
-        }
+                if (phone == undefined) {
+                    phone = "";
+                }
+                if (department == "") {
+                    errorModal("Department in post request was null. Please contact jdecaro@usc.edu with this error!");
+                } else if (email != null && email != "ttrojan@usc.edu" && department != "") {
+                    sendPostRequest(email, courseid, department, phone);
+                }
 
+            }).catch(swal.noop);
+        });
 
     });
 }
 
+function sendPostRequest(email, courseid, department, phone) {
+    $.ajax({
+        method: 'POST',
+        url: "https://jonluca.me/soc_api/notify",
+        type: 'json',
+        data: {
+            email: email,
+            courseid: courseid,
+            department: department,
+            phone: phone
+        },
+        error: function(err) {
+            console.log(err);
+            if (err.status == 501) {
+                errorModal("Error saving data! Please contact jdecaro@usc.edu with the class you are trying to register for.");
+            } else if (err.status == 400) {
+                errorModal("Invalid email!");
+            } else {
+                errorModal("An unknown error occured! Please contact jdecaro@usc.edu with the class you are trying to register for.");
+            }
+        },
+        success: function(data, textStatus, jqXHR) {
+            if (textStatus == "success" && jqXHR.status == 200) {
+                swal(
+                    'Success!',
+                    "Sent verification email - please verify your email to begin receiving notifications! <br> \
+                    <strong> It's probably in your spam folder!</strong> <br> \
+                    Please note this service is not guaranteed to work, and is still in alpha phase. <br> \
+                    If you have any questions, please contact jdecaro@usc.edu",
+                    'success'
+                );
+            }
+
+            if (textStatus == "success" && jqXHR.status == 201) {
+                swal(
+                    'Success!',
+                    "Please note this service is not guaranteed to work, and is still in alpha phase. <br> \
+                    If you have any questions, please contact jdecaro@usc.edu",
+                    'success'
+                );
+            }
+        }
+    });
+}
+
+function errorModal(message) {
+    swal(
+        'Error!',
+        message,
+        'error'
+    );
+}
 function changeAddToCourseBinButton(row) {
     var add_to_cb = $(row).find(".addtomycb");
     if (add_to_cb.length != 0) {
@@ -315,10 +376,15 @@ function addNotifyMe(row) {
     var button_to_change = $(row).find(".addtomycb");
     if (button_to_change.length != 0) {
         button_to_change = button_to_change[0];
+        $(button_to_change).after('<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12 notify" type="button">');
+    }
+    var alreadyInCourseBin = $(row).find(".alrdyinmycb");
+    if (alreadyInCourseBin.length != 0) {
+        $(alreadyInCourseBin).replaceWith('<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12" type="button">');
+        var button_to_change = $(row).find(".addtomycb");
+        button_to_change = button_to_change[0];
         $(button_to_change).attr('value', 'Notify Me');
         $(button_to_change).removeAttr('type');
-        var actual_id = $("#sectionid").attr("value");
-        $(button_to_change).attr('id', actual_id);
         $(button_to_change).addClass("notify");
     }
 }
@@ -535,7 +601,7 @@ function parseClass(classes) {
         reinitializeVariablesPerClass();
 
         //Insert Prof Rating column at top of each class view
-        var header = $(this).find(".section_head_alt1");
+        var header = $(this).find(".section_head_alt1, .section_alt0");
         insertProfRatingHeader(header);
 
         //Iterate over every section in row. To get alternating colors, USC uses alt0 and alt1, so we must search for both
@@ -578,7 +644,6 @@ function parseWebReg(professor_ratings) {
 
     //Because we insert a new column, we need to change the CSS around to make it look right
     changeCSSColumnWidth();
-
 
     //Gets main div
     var course_titles = $(".course-title-indent");
