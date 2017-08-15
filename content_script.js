@@ -17,8 +17,10 @@ $(document).ready(function() {
                 getCurrentSchedule();
                 parseWebReg(professor_ratings);
             } else {
-                //This is for courses.usc.edu, not web registration. Original version of the extension only worked 
-                //here, then I realized it's useless and would be better suited for webreg
+                /*
+                This is for courses.usc.edu, not web registration. Original version of the extension only worked 
+                here, then I realized it's useless and would be better suited for webreg
+                */
                 parseCoursePage(professor_ratings);
             }
         }
@@ -26,6 +28,28 @@ $(document).ready(function() {
     xhr.send();
 });
 
+//Version check for USC Schedule Helper
+var version = chrome.runtime.getManifest().version;
+$.ajax({
+    method: 'GET',
+    url: "https://jonlu.ca/soc_api/version",
+    type: 'text',
+    success: function(data, textStatus, jqXHR) {
+        chrome.storage.sync.get('outdated_version', function(items) {
+            //If there is a new version AND they haven't been notified before
+            if (data > version && items['outdated_version'] != version) {
+                //Tell them to update their extension
+                errorModal("USC Schedule Helper is outdated! Please update now. If chrome does not update automatically, you may follow <a href=\"http://lifehacker.com/5805239/how-to-manually-update-your-chrome-extensions\">this guide</a>");
+                //Save outdated version locally so you don't show the same error constantly
+                chrome.storage.sync.set({
+                    'outdated_version': version
+                }, function() {
+                    console.log("Saved out of date warning for " + version);
+                });
+            }
+        });
+    }
+});
 
 //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
 var total_spots = 0;
@@ -236,7 +260,6 @@ function addPostRequests() {
         var id = $(form).find("#sectionid");
         var courseid = id.val();
         $(this).click(function() {
-
             swal({
                 title: 'Notify Me!',
                 html: '<label> Email: </label> <input id="email" class="swal2-input">' +
@@ -270,7 +293,7 @@ function addPostRequests() {
                 if (phone == undefined) {
                     phone = "";
                 }
-                if (department == "") {
+                if (department == "" || department == undefined) {
                     errorModal("Department in post request was null. Please contact jdecaro@usc.edu with this error!");
                 } else if (email != null && email != "ttrojan@usc.edu" && department != "") {
                     sendPostRequest(email, courseid, department, phone);
@@ -518,6 +541,7 @@ function insertProfRatingHeader(header) {
     $(days).after("<span class=\"instr_alt1 col-md-1 col-lg-1\"><b>Prof. Rating</b></span>");
 }
 
+// Resets global variables to 0. Ideally I'd refactor this to not have any globs, but the project started small and just grew
 function reinitializeVariablesPerClass() {
     //reinit to 0
     total_spots = 0;
@@ -545,7 +569,13 @@ function reinitializeVariablesPerClass() {
 function insertTotalSpots(element) {
     var name_element = $(element).prev();
     var name = $(name_element).find('.course-title-indent');
-    name.append("<span class=\"crsTitl spots_remaining\">" + " - " + available_spots + " remaining spots" + "</span>");
+    var spotsRemainingString = "<span class=\"crsTitl spots_remaining\">" + " - " + available_spots;
+    if (available_spots == 1) {
+        spotsRemainingString += " remaining spot" + "</span>";
+    } else {
+        spotsRemainingString += " remaining spots" + "</span>";
+    }
+    name.append(spotsRemainingString);
     //Let's make the background red if no spots remaining
     if (available_spots == 0) {
         $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
@@ -737,11 +767,17 @@ function parseCoursePage(professor_ratings) {
         //insert remaining spots in main
         var title = $(courses[i]).find("> .course-id > h3 > a");
         if (total_spots != 0 && isNumber(total_spots)) {
-            title.append(" - " + available_spots + " remaining spots");
+            var availableString = " - " + available_spots + " remaining spot";
+            if (available_spots > 1) {
+                availableString += "s";
+            }
             if (available_spots == 0) {
+                availableString += "s";
                 var background = $(courses[i]).find("> .course-id");
                 $(background).css("background-color", "rgba(240, 65, 36, 0.45)");
             }
+            title.append(availableString);
+
         }
     }
 }
