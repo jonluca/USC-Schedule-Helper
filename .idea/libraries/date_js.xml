@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="date.js" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/js/date.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/js/date.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
+  <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="PHP Runtime" type="php">
+      <library name="PHP Runtime">
         <CLASSES>
           <root url="jar://$APPLICATION_PLUGINS_DIR$/php/lib/php.jar!/stubs/standard" />
         </CLASSES>
-        <JAVADOC />
         <SOURCES>
           <root url="jar://$APPLICATION_PLUGINS_DIR$/php/lib/php.jar!/stubs/standard" />
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="chrome-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="js-base64-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="jquery-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="js" level="project" />
+    <orderEntry type="library" name="date.js" level="project" />
+    <orderEntry type="library" name="moment-range-DefinitelyTyped" level="application" />
   </component>
 </module>
