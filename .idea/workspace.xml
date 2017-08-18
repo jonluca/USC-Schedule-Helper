@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="916d87dc-4777-4bf4-82b1-136c3d877220" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/jonlucadecaro.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/date_js.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/js.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/js/updateChecker.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LICENSE" afterPath="$PROJECT_DIR$/LICENSE" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/USCSpotsRemaining.iml" afterPath="$PROJECT_DIR$/USCSpotsRemaining.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content_script.js" afterPath="$PROJECT_DIR$/content_script.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/manifest.json" afterPath="$PROJECT_DIR$/manifest.json" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,8 +23,8 @@
       <file leaf-file-name="content_script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/content_script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+            <state relative-caret-position="625">
+              <caret line="132" column="0" lean-forward="true" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
               <folding>
                 <marker date="1503080694191" expanded="true" signature="3967:4080" ph="..." />
                 <marker date="1503080694191" expanded="true" signature="3973:4073" ph="..." />
@@ -1543,12 +1532,20 @@
       <option name="presentableId" value="Default" />
       <updated>1491445300220</updated>
       <workItem from="1491445304909" duration="15916000" />
-      <workItem from="1503078254560" duration="2375000" />
+      <workItem from="1503078254560" duration="2499000" />
     </task>
+    <task id="LOCAL-00001" summary="WebStorm files, ES6 syntax">
+      <created>1503080875271</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1503080875271</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18291000" />
+    <option name="totallyTimeSpent" value="18415000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
@@ -1590,6 +1587,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="WebStorm files, ES6 syntax" />
+    <option name="LAST_COMMIT_MESSAGE" value="WebStorm files, ES6 syntax" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3598,8 +3599,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/content_script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="127" column="0" lean-forward="true" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+        <state relative-caret-position="625">
+          <caret line="132" column="0" lean-forward="true" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
           <folding>
             <marker date="1503080694191" expanded="true" signature="3967:4080" ph="..." />
             <marker date="1503080694191" expanded="true" signature="3973:4073" ph="..." />
