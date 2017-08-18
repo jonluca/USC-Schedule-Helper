@@ -1,6 +1,6 @@
 let professor_ratings = {};
 
-$(function () {
+$(() => {
     //Pages URL
     const currentURL = window.location.href;
     if (currentURL.includes("webreg")) {
@@ -16,12 +16,12 @@ $(function () {
             professor_ratings = JSON.parse(xhr.responseText);
             //If we are on webreg or if we're on classes.usc.edu
             if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
-                $('body').append('<link rel="stylesheet" href="' + chrome.runtime.getURL("data/sweetalert.css") + '" type="text/css" />');
+                $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/sweetalert.css")}" type="text/css" />`);
                 getCurrentSchedule();
                 parseWebReg();
             } else {
                 /*
-                This is for courses.usc.edu, not web registration. Original version of the extension only worked 
+                This is for courses.usc.edu, not web registration. Original version of the extension only worked
                 here, then I realized it's useless and would be better suited for webreg
                 */
                 parseCoursePage(professor_ratings);
@@ -37,8 +37,8 @@ $.ajax({
     method: 'GET',
     url: "https://jonlu.ca/soc_api/version",
     type: 'text',
-    success: function (data, textStatus, jqXHR) {
-        chrome.storage.sync.get('outdated_version', function (items) {
+    success(data, textStatus, jqXHR) {
+        chrome.storage.sync.get('outdated_version', items => {
             //If there is a new version AND they haven't been notified before
             if (data > version && items['outdated_version'] !== version) {
                 //Tell them to update their extension
@@ -46,8 +46,8 @@ $.ajax({
                 //Save outdated version locally so you don't show the same error constantly
                 chrome.storage.sync.set({
                     'outdated_version': version
-                }, function () {
-                    console.log("Saved out of date warning for " + version);
+                }, () => {
+                    console.log(`Saved out of date warning for ${version}`);
                 });
             }
         });
@@ -88,12 +88,12 @@ class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Pro
 const current_schedule = [];
 
 function getCurrentSchedule() {
-    //Pu;ls schedule from myCourseBin
+    //Pulls schedule from myCourseBin
     $.ajax({
         method: 'GET',
         url: "https://webreg.usc.edu/myCourseBin",
         type: 'text',
-        success: function (data, textStatus, jqXHR) {
+        success(data, textStatus, jqXHR) {
             parseCurrentSchedule(data);
         }
     });
@@ -165,6 +165,7 @@ function parseValidSectionSchedule(sectionDomElement) {
             section_name = section_name.replace("Section: ", '');
 
             let should_break = false;
+
             /*Three nested for loops... Wow
             Kinda horrifying... but it works
             The saved schedule for classes currently in your course bin is current_schedule
@@ -181,8 +182,7 @@ function parseValidSectionSchedule(sectionDomElement) {
 
             Performance trace tells us we only spend ~0.5 seconds on this function, so optimization is not currently needed
             */
-            for (let i = 0; i < current_schedule.length; i++) {
-                const current_class = current_schedule[i];
+            for (const current_class of current_schedule) {
                 if (should_break || section_name === current_class.section) {
                     break;
                 }
@@ -205,7 +205,6 @@ function parseValidSectionSchedule(sectionDomElement) {
                     }
                 }
             }
-
         });
     });
 
@@ -260,13 +259,13 @@ function addPostRequests() {
         $(this).unbind('mouseenter mouseleave');
         const id = $(form).find("#sectionid");
         const courseid = id.val();
-        $(this).click(function () {
+        $(this).click(() => {
             swal({
                 title: 'Notify Me!',
                 html: '<label> Email: </label> <input id="email" class="swal2-input">' +
                 '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
-                preConfirm: function () {
-                    return new Promise(function (resolve) {
+                preConfirm() {
+                    return new Promise(resolve => {
                         resolve([
                                 $('#email').val(),
                                 $('#phone').val()
@@ -274,11 +273,11 @@ function addPostRequests() {
                         );
                     });
                 },
-                onOpen: function () {
+                onOpen() {
                     $('#email').focus();
                 },
                 showCancelButton: true
-            }).then(function (result) {
+            }).then(result => {
                 const email = result[0];
                 let phone = result[1];
                 let department = $(form).find("#department")[0];
@@ -295,7 +294,7 @@ function addPostRequests() {
                     phone = "";
                 }
                 if (department === "" || department === undefined) {
-                    errorModal("Department in post request was null. Please contact jdecaro@usc.edu with a screenshot of this error!\nCourse: " + courseid);
+                    errorModal(`Department in post request was null. Please contact jdecaro@usc.edu with a screenshot of this error!\nCourse: ${courseid}`);
                 } else if (email !== null && email !== "ttrojan@usc.edu" && department !== "") {
                     sendPostRequest(email, courseid, department, phone);
                 }
@@ -312,12 +311,12 @@ function sendPostRequest(email, courseid, department, phone) {
         url: "https://jonluca.me/soc_api/notify",
         type: 'json',
         data: {
-            email: email,
-            courseid: courseid,
-            department: department,
-            phone: phone
+            email,
+            courseid,
+            department,
+            phone
         },
-        error: function (err) {
+        error(err) {
             console.log(err);
             if (err.status === 501) {
                 errorModal("Error saving data! Please contact jdecaro@usc.edu with the class you are trying to register for.");
@@ -327,7 +326,7 @@ function sendPostRequest(email, courseid, department, phone) {
                 errorModal("An unknown error occurred! Please contact jdecaro@usc.edu with the class you are trying to register for.");
             }
         },
-        success: function (data, textStatus, jqXHR) {
+        success(data, textStatus, jqXHR) {
             if (textStatus === "success" && jqXHR.status === 200) {
                 swal(
                     'Success!',
@@ -485,17 +484,17 @@ function insertProfessorRating(row, professor_info) {
         //long string but needs to be exactly formatted
         const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
         //actual contents of rating
-        const rating_anchor = '<a class=\"rating\" href=' + url + " target=\"_blank\">" + professor_info.rating + '</a>';
+        const rating_anchor = `<a class="rating" href=${url} target="_blank">${professor_info.rating}</a>`;
         //long string just to include new
-        $(location_of_insert).after('<span class=\"hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span class=\"hidden-lg hidden-md \
-                                visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span>' + rating_anchor + '</span>');
+        $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md \
+                                visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
         /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
          find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
         if ($(row).find(".empty_rating").length !== 0) {
             $(row).find(".empty_rating")[0].remove();
         }
     } else {
-        $(row).find('.rating').after(', <a href=' + url + ">" + professor_info.rating + '</a>');
+        $(row).find('.rating').after(`, <a href=${url}>${professor_info.rating}</a>`);
     }
 }
 
@@ -536,7 +535,7 @@ function parseProfessor(instructor, row) {
     }
     let actual_name = instructor.split(", ");
     //generate actual name
-    actual_name = actual_name[1] + " " + actual_name[0];
+    actual_name = `${actual_name[1]} ${actual_name[0]}`;
 
     //If instructor name in json
     if (actual_name in professor_ratings) {
@@ -579,7 +578,7 @@ function reinitializeVariablesPerClass() {
 function insertTotalSpots(element) {
     const name_element = $(element).prev();
     const name = $(name_element).find('.course-title-indent');
-    let spotsRemainingString = "<span class=\"crsTitl spots_remaining\">" + " - " + available_spots;
+    let spotsRemainingString = `<span class="crsTitl spots_remaining"> - ${available_spots}`;
     if (available_spots === 1) {
         spotsRemainingString += " remaining spot" + "</span>";
     } else {
@@ -596,7 +595,7 @@ function insertClosedRegistration(element) {
     const name_element = $(element).prev();
     const name = $(name_element).find('.course-title-indent');
     if (has_discussion) {
-        name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration ( " + discussion_available_spots + " spots remaining)</span>");
+        name.append(`<span class="crsTitl spots_remaining"> - closed registration ( ${discussion_available_spots} spots remaining)</span>`);
 
     } else {
         name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration</span>");
@@ -610,7 +609,7 @@ function insertOnlyLabNumbers(element) {
     const name_element = $(element).prev();
 
     const name = $(name_element).find('.course-title-indent');
-    name.append("<span class=\"crsTitl spots_remaining\">" + " - " + hidden_available_spots + " remaining lab spots" + "</span>");
+    name.append(`<span class="crsTitl spots_remaining"> - ${hidden_available_spots} remaining lab spots</span>`);
 
     if (hidden_available_spots === 0) {
         $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
@@ -749,7 +748,7 @@ function parseCoursePage(professor_ratings) {
                 //Names are formatted "First Last" so no reordering is necessary
                 //However, some names are "First Middle Middle2 Last", and we only want "First Last" as that is the format of our json
                 let actual_name = split_prof.split(" ");
-                actual_name = actual_name[0] + " " + actual_name[actual_name.length - 1];
+                actual_name = `${actual_name[0]} ${actual_name[actual_name.length - 1]}`;
 
                 //If its in JSON
                 if (actual_name in professor_ratings) {
@@ -757,9 +756,9 @@ function parseCoursePage(professor_ratings) {
                     const url = url_template + professor_ratings[actual_name].id;
                     //If we've never inserted before, insert. Otherwise insert with a comma before it for good formatting
                     if ($(this).find('.rating').length === 0) {
-                        $(this).find('td.instructor').after('<td class="rating"><a href=' + url + " target=\"_blank\">" + professor_ratings[actual_name].rating + '</a></td>');
+                        $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">${professor_ratings[actual_name].rating}</a></td>`);
                     } else {
-                        $(this).find('.rating').append(', <a href=' + url + ">" + professor_ratings[actual_name].rating + '</a>');
+                        $(this).find('.rating').append(`, <a href=${url}>${professor_ratings[actual_name].rating}</a>`);
                     }
                 } else {
                     //If not in JSON, we need an empty space to make table format correctly
@@ -775,7 +774,7 @@ function parseCoursePage(professor_ratings) {
         //insert remaining spots in main
         const title = $(courses[i]).find("> .course-id > h3 > a");
         if (total_spots !== 0 && isNumber(total_spots)) {
-            let availableString = " - " + available_spots + " remaining spot";
+            let availableString = ` - ${available_spots} remaining spot`;
             if (available_spots > 1) {
                 availableString += "s";
             }
