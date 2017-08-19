@@ -11,11 +11,12 @@ $(() => {
     //Typically loads in ~40ms, so not a huge issue, I just wish there was a more efficient way of doing it
     const xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             //If we are on webreg or if we're on classes.usc.edu
             if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
+                //Appending to body makes the stylesheet async
                 $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/sweetalert.css")}" type="text/css" />`);
                 getCurrentSchedule();
                 parseWebReg();
@@ -104,7 +105,7 @@ function parseCurrentSchedule(html) {
     const parsedHTML = $(html);
     const sections = $(parsedHTML).find("[id^=section_]");
     for (let i = 0; i < sections.length; i++) {
-        $(sections[i]).find("[class=schUnschRmv]").each(function () {
+        $(sections[i]).find("[class=schUnschRmv]").each(function() {
             const text = $(this).find(".actionbar > a")[0].innerText;
             //If they currently have it scheduled on their calendar
             if ($(this).css('display') === 'block' && text === "Unschedule") {
@@ -147,9 +148,9 @@ function parseValidSectionSchedule(sectionDomElement) {
     };
     current_schedule.push(time);
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-    $(".crs-accordion-content-area").each(function () {
+    $(".crs-accordion-content-area").each(function() {
         const sections = $(this).find(".section_alt1, .section_alt0");
-        sections.each(function () {
+        sections.each(function() {
             //Get hours for current section
             let section_hours = $(this).find("[class^=hours]")[0].innerText;
             section_hours = section_hours.replace("Time: ", '');
@@ -208,9 +209,9 @@ function parseValidSectionSchedule(sectionDomElement) {
         });
     });
 
-    $(".warning").hover(function () {
+    $(".warning").hover(function() {
         $(this).attr('value', 'Add Anyway');
-    }, function () {
+    }, function() {
         $(this).attr('value', 'Warning - Overlaps');
     });
 }
@@ -251,7 +252,7 @@ function insertExportButton() {
 }
 
 function addPostRequests() {
-    $(".notify").each(function () {
+    $(".notify").each(function() {
         const form = $(this)[0].form;
         $(this).attr('value', 'Notify Me');
         $(this).unbind();
@@ -263,13 +264,13 @@ function addPostRequests() {
             swal({
                 title: 'Notify Me!',
                 html: '<label> Email: </label> <input id="email" class="swal2-input">' +
-                '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
+                    '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
                 preConfirm() {
                     return new Promise(resolve => {
                         resolve([
-                                $('#email').val(),
-                                $('#phone').val()
-                            ]
+                            $('#email').val(),
+                            $('#phone').val()
+                        ]
                         );
                     });
                 },
@@ -278,7 +279,10 @@ function addPostRequests() {
                 },
                 showCancelButton: true
             }).then(result => {
-                const email = result[0];
+                let email = result[0];
+                if (email) {
+                    email = email.trim();
+                }
                 let phone = result[1];
                 let department = $(form).find("#department")[0];
                 department = $(department).attr("value");
@@ -294,15 +298,25 @@ function addPostRequests() {
                     phone = "";
                 }
                 if (department === "" || department === undefined) {
-                    errorModal(`Department in post request was null. Please contact jdecaro@usc.edu with a screenshot of this error!\nCourse: ${courseid}`);
-                } else if (email !== null && email !== "ttrojan@usc.edu" && department !== "") {
+                    errorModal(`Department in post request was null. Please contact jdecaro@usc.edu with a screenshot of this error!
+Course: ${courseid}`);
+                    return;
+                }
+                if (email !== null && email !== "ttrojan@usc.edu" && validateEmail(email) && department !== "") {
                     sendPostRequest(email, courseid, department, phone);
+                } else {
+                    errorModal(`Error with email or department!`);
                 }
 
             }).catch(swal.noop);
         });
 
     });
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }
 
 function sendPostRequest(email, courseid, department, phone) {
@@ -479,27 +493,26 @@ function insertProfessorRating(row, professor_info) {
     const url = url_template + professor_info.id;
     //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
     //if there already is one then we know it's another professor
-    if ($(row).find('.rating').length === 0) {
+    if ($(row).find('.rating').length !== 0) {
+        $(row).find('.rating').after(`, <a href=${url}>${professor_info.rating}</a>`);
+    } else {
         $(row).addClass("blank_rating");
         //long string but needs to be exactly formatted
         const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
         //actual contents of rating
         const rating_anchor = `<a class="rating" href=${url} target="_blank">${professor_info.rating}</a>`;
         //long string just to include new
-        $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md \
-                                visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
+        $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md                                 visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
         /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
-         find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
+             find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
         if ($(row).find(".empty_rating").length !== 0) {
             $(row).find(".empty_rating")[0].remove();
         }
-    } else {
-        $(row).find('.rating').after(`, <a href=${url}>${professor_info.rating}</a>`);
     }
 }
 
 function parseRows(rows) {
-    $(rows).each(function () {
+    $(rows).each(function() {
         //rename Add to myCourseBin button so that it fits/looks nice
         changeAddToCourseBinButton(this);
 
@@ -507,23 +520,23 @@ function parseRows(rows) {
 
         //Retrieve Instructor cell from row
         const instructor_name_element = $(this).find(".instr_alt1, .instr_alt0");
-        if (instructor_name_element.length !== 0) {
-            //get all professor names in a hacky way
-            const instructor_names = instructor_name_element[0].innerHTML.split("span>");
-            //split on line breaks
-            const instructor_name = instructor_names[1].split("<br>");
-            //if there are multiple instructors
-            for (let i = 0; i < instructor_name.length; i++) {
-                //single instructor name, comma delimited
-                parseProfessor(instructor_name[i], this);
-            }
-        } else {
+        if (instructor_name_element.length === 0) {
             //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but better safe than sorry here.
             //If in the future they change it this'll prevent it from looking misaligned
             insertBlankRatingCell(this);
             //jQuery way of saying continue;
             return true;
         }
+        //get all professor names in a hacky way
+        const instructor_names = instructor_name_element[0].innerHTML.split("span>");
+        //split on line breaks
+        const instructor_name = instructor_names[1].split("<br>");
+        //if there are multiple instructors
+        for (const name of instructor_name) {
+            //single instructor name, comma delimited
+            parseProfessor(name, this);
+        }
+
     });
 }
 
@@ -635,7 +648,7 @@ function insertClassNumbers(element) {
 }
 
 function parseClass(classes) {
-    $(classes).each(function () {
+    $(classes).each(function() {
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
 
@@ -714,7 +727,7 @@ function parseCoursePage(professor_ratings) {
         const table = $(courses[i]).find("> .course-details > table.sections");
 
         //Get rows, iterate over each one
-        $(table[0]).find("> tbody > tr").each(function () {
+        $(table[0]).find("> tbody > tr").each(function() {
             if ($(this).hasClass("headers")) {
                 //create new column
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
