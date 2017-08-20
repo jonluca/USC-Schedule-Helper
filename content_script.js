@@ -259,6 +259,21 @@ function addPostRequests() {
         $(this).attr('type', 'button');
         $(this).unbind('mouseenter mouseleave');
         const id = $(form).find("#sectionid");
+
+        //get the department by matching form ID to the row above
+        const form_id = $(form).attr("id");
+        const row_number = form_id.substring(4);
+        const hrefMatch = `#course_${row_number}`;
+        const aboverow = $(`a[href="${hrefMatch}"]`);
+        const courseSearch = $(aboverow).find(".crsID");
+        let departmentFromAbove = "";
+        if (courseSearch.length !== 0) {
+            const spanElem = $(courseSearch[0]).text();
+            const departmentString = spanElem.split("-");
+            departmentFromAbove = departmentString[0];
+            this.department = departmentFromAbove;
+        }
+
         const courseid = id.val();
         $(this).click(() => {
             swal({
@@ -284,16 +299,24 @@ function addPostRequests() {
                     email = email.trim();
                 }
                 let phone = result[1];
-                let department = $(form).find("#department")[0];
-                department = $(department).attr("value");
+                let departmentElement = $(form).find("#department");
+                let department = "";
+                if (departmentElement.length !== 0) {
+                    department = $(departmentElement[0]).attr("value");
+                }
+                //Third way of getting the department, from above
+                if (department === "" || department == undefined) {
+                    department = this.department;
+                }
                 //If they got to this page by clicking on a specific course on myCourseBin, department won't be included in the form, not sure why
                 //We do a hacky way by getting it from courseid
-                if (department === "") {
+                if (department === "" || department == undefined) {
                     let course = $(form).find("#courseid")[0];
                     course = $(course).attr("value");
                     course = course.split("-");
                     department = course[0];
                 }
+
                 if (phone === undefined) {
                     phone = "";
                 }
