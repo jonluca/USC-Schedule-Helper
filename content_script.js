@@ -326,7 +326,7 @@ Course: ${courseid}`);
                     return;
                 }
                 if (email !== null && email !== "ttrojan@usc.edu" && validateEmail(email) && department !== "") {
-                    sendPostRequest(email, courseid, department, phone);
+                    sendPostR;equest(email, courseid, department, phone);
                 } else {
                     errorModal(`Error with email or department!`);
                 }
@@ -345,7 +345,7 @@ function validateEmail(email) {
 function sendPostRequest(email, courseid, department, phone) {
     $.ajax({
         method: 'POST',
-        url: "https://jonluca.me/soc_api/notify",
+        url: "https://jonlu.ca/soc_api/notify",
         type: 'json',
         data: {
             email,
@@ -396,9 +396,9 @@ function errorModal(message) {
 //Helper function to show pretty success messages
 function successModal(message) {
     swal(
-        'Error!',
+        'Success!',
         message,
-        'error'
+        'success'
     );
 }
 
