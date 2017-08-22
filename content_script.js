@@ -365,24 +365,20 @@ function sendPostRequest(email, courseid, department, phone) {
         },
         success(data, textStatus, jqXHR) {
             if (textStatus === "success" && jqXHR.status === 200) {
-                swal(
-                    'Success!',
-                    "Sent verification email - please verify your email to begin receiving notifications! <br> \
+                successModal("Sent verification email - please verify your email to begin receiving notifications! <br> \
                     <strong> It's probably in your spam folder!</strong> <br> \
                     Please note this service is not guaranteed to work, and is still in beta. <br> \
-                    If you have any questions, please contact jdecaro@usc.edu",
-                    'success'
-                );
+                    If you have any questions, please contact jdecaro@usc.edu");
             }
             //If they've already verified their emails, the server returns 201
             //Don't show the message saying an email was sent
             if (textStatus === "success" && jqXHR.status === 201) {
-                swal(
-                    'Success!',
-                    "Please note this service is not guaranteed to work, and is still in beta. <br> \
-                    If you have any questions, please contact jdecaro@usc.edu",
-                    'success'
-                );
+
+                successModal("Please note this service is not guaranteed to work, and is still in beta. <br> If you have any questions, please contact jdecaro@usc.edu");
+            }
+            //They've been ratelimited
+            if (jqXHR.status === 429) {
+                errorModal("You've been ratelimited! You are limited to 10 notifications in a 15 minute period. Please try again later");
             }
         }
     });
@@ -390,6 +386,15 @@ function sendPostRequest(email, courseid, department, phone) {
 
 //Helper function to show pretty error messages
 function errorModal(message) {
+    swal(
+        'Error!',
+        message,
+        'error'
+    );
+}
+
+//Helper function to show pretty success messages
+function successModal(message) {
     swal(
         'Error!',
         message,
