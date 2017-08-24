@@ -326,7 +326,7 @@ Course: ${courseid}`);
                     return;
                 }
                 if (email !== null && email !== "ttrojan@usc.edu" && validateEmail(email) && department !== "") {
-                    sendPostR;equest(email, courseid, department, phone);
+                    sendPostRequest(email, courseid, department, phone);
                 } else {
                     errorModal(`Error with email or department!`);
                 }

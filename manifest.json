@@ -3,7 +3,7 @@
 
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
-  "version": "5.5",
+  "version": "5.6",
   "page_action": {
     "default_icon": "images/icon.png",
     "default_title": "USC Remaining Spots"
