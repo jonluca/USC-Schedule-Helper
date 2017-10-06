@@ -116,12 +116,13 @@ function parseCurrentSchedule(html) {
 }
 
 //If the section it is currently parsing conflicts with a class in current_schedule
-function addConflictOverlay(row) {
+function addConflictOverlay(row, name) {
     $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
     let add_to_cb = $(row).find(".addtomycb");
     if (add_to_cb.length !== 0) {
         add_to_cb = add_to_cb[0];
-        $(add_to_cb).attr('value', 'Conflict - Overlap');
+        $(add_to_cb).attr('value', 'Overlaps ' + name);
+        $(add_to_cb).attr('orig_name', 'Overlaps ' + name);
         $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
         $(add_to_cb).addClass("warning");
     }
@@ -129,6 +130,13 @@ function addConflictOverlay(row) {
 
 //If the section from myCourseBin is valid, add it to current_schedule
 function parseValidSectionSchedule(sectionDomElement) {
+    //That's a lot of chained calls... hopefully they don't change their layout anytime soon :p
+    let classnameElement = $(sectionDomElement).parents("[id^=course]")[0];
+    classnameElement = $(classnameElement).prev();
+    let classname = $(classnameElement).find(".crsID")[0].innerText;
+
+    classname = classname.split(' ')[0];
+
     let hours = $(sectionDomElement).find("[class^=hours]")[0].innerText;
     hours = hours.replace("Time: ", '');
 
@@ -144,7 +152,8 @@ function parseValidSectionSchedule(sectionDomElement) {
     const time = {
         "day": days,
         "time": hours,
-        "section": section_id
+        "section": section_id,
+        "classname": classname
     };
     current_schedule.push(time);
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
@@ -201,7 +210,7 @@ function parseValidSectionSchedule(sectionDomElement) {
 
                         if (range.overlaps(range2) && section_name !== current_class.section) {
                             should_break = true;
-                            addConflictOverlay(this);
+                            addConflictOverlay(this, current_class.classname);
                         }
                     }
                 }
@@ -212,7 +221,8 @@ function parseValidSectionSchedule(sectionDomElement) {
     $(".warning").hover(function() {
         $(this).attr('value', 'Add Anyway');
     }, function() {
-        $(this).attr('value', 'Warning - Overlaps');
+        var original = $(this).attr('orig_name');
+        $(this).attr('value', original);
     });
 }
 
