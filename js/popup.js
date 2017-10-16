@@ -1,37 +1,32 @@
 $(() => {
     options = loadOptions();
 
-    if (options.extensionEnabled) {
-        $("#chkExtensionDisabled").prop('checked', options.extensionEnabled);
-    }
+    $("#chkExtensionDisabled").prop('checked', options.extensionEnabled);
+    $("#chkConflicts").prop('checked', options.showConflicts);
+    $("#chkCalendar").prop('checked', options.showCalendar);
+    $('input:checked').trigger('gumby.check');
 
-    if (options.showCalendar) {
-        $("#chkConflicts").prop('checked', options.showCalendar);
-    }
-
-    if (options.showConflicts) {
-        $("#chkCalendar").prop('checked', options.showConflicts);
-    }
     $('input').parent().on('gumby.onChange', function () {
         changeOption(this);
     });
-    $('input:checked').trigger('gumby.check');
 
 });
 
 
 function changeOption(elem) {
+
     switch (elem.htmlFor) {
         case "chkExtensionDisabled":
-            options.extensionEnabled = (elem.className.indexOf('checked') !== -1);
+            options.extensionEnabled = $('#chkExtensionDisabled')[0].checked;
             break;
         case "chkCalendar":
-            options.showCalendar = (elem.className.indexOf('checked') !== -1);
+            options.showCalendar = $('#chkCalendar')[0].checked;
             break;
         case "chkConflicts":
-            options.showConflicts = (elem.className.indexOf('checked') !== -1);
+            options.showConflicts = $('#chkConflicts')[0].checked;
             break;
     }
+
     console.log(options);
     saveOptions();
 }
