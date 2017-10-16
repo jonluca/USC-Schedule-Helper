@@ -1,22 +1,27 @@
 {
   "manifest_version": 2,
-
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
   "version": "6.0",
-  "page_action": {
-    "default_icon": "images/icon.png",
-    "default_title": "USC Remaining Spots"
-  },
   "permissions": [
-    "*://classes.usc.edu/*/classes/*", "*://webreg.usc.edu/*", "http://jonluca.me/*", "https://jonluca.me/*", "storage"
+    "*://classes.usc.edu/*/classes/*",
+    "*://webreg.usc.edu/*",
+    "http://jonluca.me/*",
+    "https://jonluca.me/*",
+    "storage"
   ],
   "content_scripts": [
     {
       "matches": [
-        "*://classes.usc.edu/*/classes/*", "*://webreg.usc.edu/*"
+        "*://classes.usc.edu/*/classes/*",
+        "*://webreg.usc.edu/*"
       ],
-      "js": ["js/jquery-2.1.1.min.js", "js/date.js", "content_script.js", "data/sweetalert.min.js"]
+      "js": [
+        "js/jquery-2.1.1.min.js",
+        "js/date.js",
+        "content_script.js",
+        "data/sweetalert.min.js"
+      ]
     }
   ],
   "icons": {
@@ -24,6 +29,10 @@
     "32": "images/icon32.png",
     "38": "images/icon.png",
     "128": "images/icon128.png"
+  },
+  "browser_action": {
+    "default_popup": "html/popup.html",
+    "default_title": "USC Schedule Helper"
   },
   "homepage_url": "https://jonlu.ca",
   "web_accessible_resources": [

@@ -1,4 +1,19 @@
 let professor_ratings = {};
+var options = loadOptions();
+
+function saveOptions() {
+    localStorage.options = JSON.stringify(options);
+    sendOptions(options);
+}
+
+chrome.runtime.onMessage.addListener(onMessage);
+
+function onMessage(message, sender, sendResponse) {
+    if (message.action === 'optionsChanged') {
+        options = message.options;
+    }
+}
+
 
 $(() => {
     //Pages URL
@@ -11,15 +26,20 @@ $(() => {
     //Typically loads in ~40ms, so not a huge issue, I just wish there was a more efficient way of doing it
     const xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (this.readyState === 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             //If we are on webreg or if we're on classes.usc.edu
             if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
                 //Appending to body makes the stylesheet async
                 $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/sweetalert.css")}" type="text/css" />`);
-                getCurrentSchedule();
+                if (options.showConflicts) {
+                    getCurrentSchedule();
+                }
                 parseWebReg();
+                if (options.showCalendar) {
+                    getCalendarHTML();
+                }
             } else {
                 /*
                 This is for courses.usc.edu, not web registration. Original version of the extension only worked
@@ -100,12 +120,37 @@ function getCurrentSchedule() {
     });
 }
 
+function getCalendarHTML() {
+    //Pulls schedule from myCourseBin
+    $.ajax({
+        method: 'GET',
+        url: "https://webreg.usc.edu/myKCal",
+        type: 'text',
+        success(data, textStatus, jqXHR) {
+            insertCalendar(data);
+        }
+    });
+}
+
+function insertCalendar(html) {
+    //Contains html of calendar page, as text
+    const parsedHTML = $(html);
+    const calendar = $(parsedHTML).find("#sb-site > div > div > div.content-wrapper-cal > div:nth-child(5)");
+    const courseList = $(".content-wrapper-courses");
+    //If we're not on a class list view, return out
+    if (courseList.length === 0) {
+        return;
+    }
+    $(courseList).insertBefore(calendar[0]);
+    console.log(calendar);
+}
+
 //Iterates over every section in myCourseBin
 function parseCurrentSchedule(html) {
     const parsedHTML = $(html);
     const sections = $(parsedHTML).find("[id^=section_]");
     for (let i = 0; i < sections.length; i++) {
-        $(sections[i]).find("[class=schUnschRmv]").each(function() {
+        $(sections[i]).find("[class=schUnschRmv]").each(function () {
             const text = $(this).find(".actionbar > a")[0].innerText;
             //If they currently have it scheduled on their calendar
             if ($(this).css('display') === 'block' && text === "Unschedule") {
@@ -157,9 +202,9 @@ function parseValidSectionSchedule(sectionDomElement) {
     };
     current_schedule.push(time);
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-    $(".crs-accordion-content-area").each(function() {
+    $(".crs-accordion-content-area").each(function () {
         const sections = $(this).find(".section_alt1, .section_alt0");
-        sections.each(function() {
+        sections.each(function () {
             //Get hours for current section
             let section_hours = $(this).find("[class^=hours]")[0].innerText;
             section_hours = section_hours.replace("Time: ", '');
@@ -218,9 +263,9 @@ function parseValidSectionSchedule(sectionDomElement) {
         });
     });
 
-    $(".warning").hover(function() {
+    $(".warning").hover(function () {
         $(this).attr('value', 'Add Anyway');
-    }, function() {
+    }, function () {
         var original = $(this).attr('orig_name');
         $(this).attr('value', original);
     });
@@ -262,7 +307,7 @@ function insertExportButton() {
 }
 
 function addPostRequests() {
-    $(".notify").each(function() {
+    $(".notify").each(function () {
         const form = $(this)[0].form;
         $(this).attr('value', 'Notify Me');
         $(this).unbind();
@@ -289,13 +334,13 @@ function addPostRequests() {
             swal({
                 title: 'Notify Me!',
                 html: '<label> Email: </label> <input id="email" class="swal2-input">' +
-                    '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
+                '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
                 preConfirm() {
                     return new Promise(resolve => {
                         resolve([
-                            $('#email').val(),
-                            $('#phone').val()
-                        ]
+                                $('#email').val(),
+                                $('#phone').val()
+                            ]
                         );
                     });
                 },
@@ -550,7 +595,7 @@ function insertProfessorRating(row, professor_info) {
 }
 
 function parseRows(rows) {
-    $(rows).each(function() {
+    $(rows).each(function () {
         //rename Add to myCourseBin button so that it fits/looks nice
         changeAddToCourseBinButton(this);
 
@@ -686,7 +731,7 @@ function insertClassNumbers(element) {
 }
 
 function parseClass(classes) {
-    $(classes).each(function() {
+    $(classes).each(function () {
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
 
@@ -765,7 +810,7 @@ function parseCoursePage(professor_ratings) {
         const table = $(courses[i]).find("> .course-details > table.sections");
 
         //Get rows, iterate over each one
-        $(table[0]).find("> tbody > tr").each(function() {
+        $(table[0]).find("> tbody > tr").each(function () {
             if ($(this).hasClass("headers")) {
                 //create new column
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
