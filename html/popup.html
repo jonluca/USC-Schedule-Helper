@@ -15,28 +15,27 @@
 <div class="pretty container">
     <div class="row">
         <form>
-            <fieldset>
+        <fieldset>
                 <legend data-i18n="extName"></legend>
                 <ul>
                     <li class="field"><label class="checkbox" for="chkExtensionDisabled">
                         <input type="checkbox" id="chkExtensionDisabled"><span></span>
-                        <div id="lblDisable" style="display:inline" data-i18n="popDisableForAllSites"></div>
+                        <div style="display:inline">Enable USC Schedule Helper</div>
                     </label></li>
-                    <li class="field"><label class="checkbox" for="chkExcludeSite">
-                        <input type="checkbox" id="chkExcludeSite"><span></span>
-                        <div id="lblToggle" style="display:inline" data-i18n="popAllowPerSiteToggle"></div>
+                    <li class="field"><label class="checkbox" for="chkConflicts">
+                        <input type="checkbox" id="chkConflicts"><span></span>
+                        <div style="display:inline">Enable Conflicts View</div>
+                    </label></li>
+                    <li class="field"><label class="checkbox" for="chkCalendar">
+                        <input type="checkbox" id="chkCalendar"><span></span>
+                        <div style="display:inline">Enable Calendar</div>
                     </label></li>
                 </ul>
             </fieldset>
         </form>
     </div>
-    <div id="footer" class="row">
-        <div class="twelve columns text-right">
-            <a id="aMoreOptions" href="options.html" target="_blank" data-i18n="popMoreOptions"></a>
-        </div>
-    </div>
 </div>
-<script src="../js/libs/backgroundScriptsAPIBridge.js"></script>
+<script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/libs/gumby.min.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/popup.js"></script>

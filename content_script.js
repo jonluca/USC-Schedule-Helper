@@ -1,11 +1,6 @@
 let professor_ratings = {};
 var options = loadOptions();
 
-function saveOptions() {
-    localStorage.options = JSON.stringify(options);
-    sendOptions(options);
-}
-
 chrome.runtime.onMessage.addListener(onMessage);
 
 function onMessage(message, sender, sendResponse) {

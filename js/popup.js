@@ -1,22 +1,43 @@
 $(() => {
     options = loadOptions();
 
+    if (options.extensionEnabled) {
+        $("#chkExtensionDisabled").prop('checked', options.extensionEnabled);
+    }
+
+    if (options.showCalendar) {
+        $("#chkConflicts").prop('checked', options.showCalendar);
+    }
+
+    if (options.showConflicts) {
+        $("#chkCalendar").prop('checked', options.showConflicts);
+    }
+    $('input').parent().on('gumby.onChange', function () {
+        changeOption(this);
+    });
+    $('input:checked').trigger('gumby.check');
+
 });
 
-function i18n() {
-    console.log("d")
-    $('[data-i18n]').each(function (index, element) {
-        var elem = $(element);
-        elem.text(chrome.i18n.getMessage(elem.attr('data-i18n')));
-    });
-    $('[data-i18n-placeholder]').each(function (index, element) {
-        var elem = $(element);
-        elem.attr('placeholder', chrome.i18n.getMessage(elem.attr('data-i18n-placeholder')));
-    });
-    $('[data-i18n-tooltip]').each(function (index, element) {
-        var elem = $(element);
-        elem.attr('data-tooltip', chrome.i18n.getMessage(elem.attr('data-i18n-tooltip')));
-    });
+
+function changeOption(elem) {
+    switch (elem.htmlFor) {
+        case "chkExtensionDisabled":
+            options.extensionEnabled = (elem.className.indexOf('checked') !== -1);
+            break;
+        case "chkCalendar":
+            options.showCalendar = (elem.className.indexOf('checked') !== -1);
+            break;
+        case "chkConflicts":
+            options.showConflicts = (elem.className.indexOf('checked') !== -1);
+            break;
+    }
+    console.log(options);
+    saveOptions();
 }
 
-i18n();
+
+function saveOptions() {
+    localStorage.options = JSON.stringify(options);
+    sendOptions(options);
+}
