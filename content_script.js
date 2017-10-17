@@ -275,7 +275,7 @@ function splitDays(days) {
 
 function insertExportButton() {
     const navbar = $("ul.nav");
-    $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20173\">Export To Calendar</a></li>");
+    $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20181\">Export To Calendar</a></li>");
     const cals = $(".exportCal");
     $(cals[1]).remove();
 }
