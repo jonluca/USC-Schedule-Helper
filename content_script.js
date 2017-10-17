@@ -115,11 +115,11 @@ const current_schedule = [];
 function getCurrentSchedule() {
     //Pulls schedule from myCourseBin
     $.ajax({
-        method: 'GET',
-        url: "https://webreg.usc.edu/myCourseBin",
+        method: 'POST',
+        url: "https://webreg.usc.edu/Scheduler/Read",
         type: 'text',
         success(data, textStatus, jqXHR) {
-            parseCurrentSchedule(data);
+            parseSchedule(data);
         }
     });
 }
@@ -145,66 +145,24 @@ function insertCalendar(html) {
     if (courseList.length === 0) {
         return;
     }
-    $(courseList).insertBefore(calendar[0]);
+    $(calendar[0]).insertBefore(courseList);
     console.log(calendar);
 }
 
-//Iterates over every section in myCourseBin
-function parseCurrentSchedule(html) {
-    const parsedHTML = $(html);
-    const sections = $(parsedHTML).find("[id^=section_]");
-    for (let i = 0; i < sections.length; i++) {
-        $(sections[i]).find("[class=schUnschRmv]").each(function () {
-            const text = $(this).find(".actionbar > a")[0].innerText;
-            //If they currently have it scheduled on their calendar
-            if ($(this).css('display') === 'block' && text === "Unschedule") {
-                parseValidSectionSchedule($(this).parents("[class^=section_crsbin]")[0]);
-            }
-        });
+function parseSchedule(data) {
+    for (singleClass of data.Data) {
+        var startTime = moment(parseInt(singleClass.Start.slice(6, -2)));
+        var endTime = moment(parseInt(singleClass.End.slice(6, -2)));
+        var classInfo = singleClass.Title.split(" ");
+        const time = {
+            "day": [startTime.format("dddd")],
+            "time": [startTime.format('hh:mma'), endTime.format('hh:mma')],
+            "section": classInfo[1].slice(1, -1),
+            "classname": classInfo[0]
+        };
+        current_schedule.push(time);
     }
-}
 
-//If the section it is currently parsing conflicts with a class in current_schedule
-function addConflictOverlay(row, name) {
-    $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
-    let add_to_cb = $(row).find(".addtomycb");
-    if (add_to_cb.length !== 0) {
-        add_to_cb = add_to_cb[0];
-        $(add_to_cb).attr('value', 'Overlaps ' + name);
-        $(add_to_cb).attr('orig_name', 'Overlaps ' + name);
-        $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
-        $(add_to_cb).addClass("warning");
-    }
-}
-
-//If the section from myCourseBin is valid, add it to current_schedule
-function parseValidSectionSchedule(sectionDomElement) {
-    //That's a lot of chained calls... hopefully they don't change their layout anytime soon :p
-    let classnameElement = $(sectionDomElement).parents("[id^=course]")[0];
-    classnameElement = $(classnameElement).prev();
-    let classname = $(classnameElement).find(".crsID")[0].innerText;
-
-    classname = classname.split(' ')[0];
-
-    let hours = $(sectionDomElement).find("[class^=hours]")[0].innerText;
-    hours = hours.replace("Time: ", '');
-
-    let days = $(sectionDomElement).find("[class^=days]")[0].innerText;
-    days = days.replace("Days: ", '');
-    days = splitDays(days);
-
-    hours = hours.split("-");
-
-    let section_id = $(sectionDomElement).find("[class^=id_alt]")[1].innerText;
-    section_id = section_id.replace("Section: ", '');
-
-    const time = {
-        "day": days,
-        "time": hours,
-        "section": section_id,
-        "classname": classname
-    };
-    current_schedule.push(time);
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
     $(".crs-accordion-content-area").each(function () {
         const sections = $(this).find(".section_alt1, .section_alt0");
@@ -275,6 +233,18 @@ function parseValidSectionSchedule(sectionDomElement) {
     });
 }
 
+//If the section it is currently parsing conflicts with a class in current_schedule
+function addConflictOverlay(row, name) {
+    $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
+    let add_to_cb = $(row).find(".addtomycb");
+    if (add_to_cb.length !== 0) {
+        add_to_cb = add_to_cb[0];
+        $(add_to_cb).attr('value', 'Overlaps ' + name);
+        $(add_to_cb).attr('orig_name', 'Overlaps ' + name);
+        $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
+        $(add_to_cb).addClass("warning");
+    }
+}
 
 function splitDays(days) {
     //Split Thursday first because otherwise it'll get split on Tuesday
