@@ -650,9 +650,9 @@ function insertTotalSpots(element) {
     const name = $(name_element).find('.course-title-indent');
     let spotsRemainingString = `<span class="crsTitl spots_remaining"> - ${available_spots}`;
     if (available_spots === 1) {
-        spotsRemainingString += " remaining spot" + "</span>";
+        spotsRemainingString += " spot remaining" + "</span>";
     } else {
-        spotsRemainingString += " remaining spots" + "</span>";
+        spotsRemainingString += " spots remaining" + "</span>";
     }
     name.append(spotsRemainingString);
     //Let's make the background red if no spots remaining
