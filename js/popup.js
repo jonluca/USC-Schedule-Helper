@@ -1,17 +1,17 @@
+var options;
 $(() => {
-    options = loadOptions();
+    loadOptions(function (recOptions) {
+        options = recOptions;
+        $("#chkExtensionDisabled").prop('checked', options.extensionEnabled);
+        $("#chkConflicts").prop('checked', options.showConflicts);
+        $("#chkCalendar").prop('checked', options.showCalendar);
+        $('input:checked').trigger('gumby.check');
 
-    $("#chkExtensionDisabled").prop('checked', options.extensionEnabled);
-    $("#chkConflicts").prop('checked', options.showConflicts);
-    $("#chkCalendar").prop('checked', options.showCalendar);
-    $('input:checked').trigger('gumby.check');
-
-    $('input').parent().on('gumby.onChange', function () {
-        changeOption(this);
+        $('input').parent().on('gumby.onChange', function () {
+            changeOption(this);
+        });
     });
-
 });
-
 
 function changeOption(elem) {
 
@@ -33,6 +33,9 @@ function changeOption(elem) {
 
 
 function saveOptions() {
-    localStorage.options = JSON.stringify(options);
-    sendOptions(options);
+    chrome.storage.sync.set({
+        'options': options
+    }, () => {
+        sendOptions(options);
+    });
 }

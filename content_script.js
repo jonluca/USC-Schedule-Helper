@@ -1,5 +1,5 @@
 let professor_ratings = {};
-var options = loadOptions();
+var options;
 
 chrome.runtime.onMessage.addListener(onMessage);
 
@@ -11,6 +11,15 @@ function onMessage(message, sender, sendResponse) {
 
 
 $(() => {
+    loadOptions(function (receivedOptions) {
+        options = receivedOptions;
+        if (receivedOptions.extensionEnabled) {
+            startHelper();
+        }
+    });
+});
+
+function startHelper() {
     //Pages URL
     const currentURL = window.location.href;
     if (currentURL.includes("webreg")) {
@@ -45,7 +54,7 @@ $(() => {
         }
     };
     xhr.send();
-});
+}
 
 //Version check for USC Schedule Helper
 const version = chrome.runtime.getManifest().version;

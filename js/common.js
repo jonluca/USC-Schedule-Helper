@@ -1,19 +1,26 @@
 // Load options from local storage
 // Return default values if none exist
-function loadOptions() {
-    var options;
-    if (localStorage.options == null) {
-        localStorage.options = '{}';
-    }
-    options = JSON.parse(localStorage.options);
+function loadOptions(callback) {
 
-    options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
-    options.showCalendar = options.hasOwnProperty('showCalendar') ? options.showCalendar : true;
-    options.showConflicts = options.hasOwnProperty('showConflicts') ? options.showConflicts : true;
+    chrome.storage.sync.get('options', items => {
+        var options = items['options'];
+        if (options == null) {
+            options = '{}';
+        }
+        console.log(options);
 
-    localStorage.options = JSON.stringify(options);
+        options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
+        options.showCalendar = options.hasOwnProperty('showCalendar') ? options.showCalendar : true;
+        options.showConflicts = options.hasOwnProperty('showConflicts') ? options.showConflicts : true;
 
-    return options;
+        chrome.storage.sync.set({
+            'options': options
+        }, () => {
+        });
+
+        callback(options);
+    });
+
 }
 
 // Send options to all tabs and extension pages
