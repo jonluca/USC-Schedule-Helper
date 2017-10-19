@@ -4,8 +4,8 @@ function loadOptions(callback) {
 
     chrome.storage.sync.get('options', items => {
         var options = items['options'];
-        if (options == null) {
-            options = '{}';
+        if (options == null || options === "{}") {
+            options = {};
         }
         console.log(options);
 
@@ -16,21 +16,23 @@ function loadOptions(callback) {
         chrome.storage.sync.set({
             'options': options
         }, () => {
+            callback(options);
         });
-
-        callback(options);
     });
 
 }
 
 // Send options to all tabs and extension pages
 function sendOptions(options) {
-    var request = {action: 'optionsChanged', 'options': options};
+    var request = {
+        action: 'optionsChanged',
+        'options': options
+    };
 
     // Send options to all tabs
-    chrome.windows.getAll(null, function (windows) {
+    chrome.windows.getAll(null, function(windows) {
         for (var i = 0; i < windows.length; i++) {
-            chrome.tabs.getAllInWindow(windows[i].id, function (tabs) {
+            chrome.tabs.getAllInWindow(windows[i].id, function(tabs) {
                 for (var j = 0; j < tabs.length; j++) {
                     chrome.tabs.sendMessage(tabs[j].id, request);
                 }

@@ -1,6 +1,6 @@
 let professor_ratings = {};
 var options;
-
+var id;
 chrome.runtime.onMessage.addListener(onMessage);
 
 function onMessage(message, sender, sendResponse) {
@@ -151,6 +151,9 @@ function insertCalendar(html) {
 
 function parseSchedule(data) {
     for (singleClass of data.Data) {
+        if (id == undefined) {
+            id = singleClass.USCID;
+        }
         var startTime = moment(parseInt(singleClass.Start.slice(6, -2)));
         var endTime = moment(parseInt(singleClass.End.slice(6, -2)));
         var classInfo = singleClass.Title.split(" ");
@@ -380,7 +383,8 @@ function sendPostRequest(email, courseid, department, phone) {
             email,
             courseid,
             department,
-            phone
+            phone,
+            id
         },
         error(err) {
             console.log(err);
