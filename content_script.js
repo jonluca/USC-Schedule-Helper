@@ -11,7 +11,7 @@ function onMessage(message, sender, sendResponse) {
 
 
 $(() => {
-    loadOptions(function (receivedOptions) {
+    loadOptions(function(receivedOptions) {
         options = receivedOptions;
         if (receivedOptions.extensionEnabled) {
             startHelper();
@@ -30,7 +30,7 @@ function startHelper() {
     //Typically loads in ~40ms, so not a huge issue, I just wish there was a more efficient way of doing it
     const xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             //If we are on webreg or if we're on classes.usc.edu
@@ -160,16 +160,17 @@ function parseSchedule(data) {
         const time = {
             "day": [startTime.format("dddd")],
             "time": [startTime.format('hh:mma'), endTime.format('hh:mma')],
-            "section": classInfo[1].slice(1, -1),
+            "section": classInfo[1].slice(1, -2),
             "classname": classInfo[0]
         };
         current_schedule.push(time);
     }
 
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-    $(".crs-accordion-content-area").each(function () {
+    $(".crs-accordion-content-area").each(function() {
+        let all_overlap = true;
         const sections = $(this).find(".section_alt1, .section_alt0");
-        sections.each(function () {
+        sections.each(function() {
             //Get hours for current section
             let section_hours = $(this).find("[class^=hours]")[0].innerText;
             section_hours = section_hours.replace("Time: ", '');
@@ -183,6 +184,15 @@ function parseSchedule(data) {
             //Get section name to compare if you already have that class
             let section_name = $(this).find("[class^=id]")[0].innerText;
             section_name = section_name.replace("Section: ", '');
+
+            if (section_name.startsWith("31827")) {
+                console.log('d');
+            }
+
+            let did_overlap = false;
+            //Get section name to compare if you already have that class
+            let section_type = $(this).find("[class^=type]")[0].innerText;
+            section_type = section_type.replace("Type: ", '');
 
             let should_break = false;
 
@@ -203,7 +213,7 @@ function parseSchedule(data) {
             Performance trace tells us we only spend ~0.5 seconds on this function, so optimization is not currently needed
             */
             for (const current_class of current_schedule) {
-                if (should_break || section_name === current_class.section) {
+                if (should_break || section_name.startsWith(current_class.section)) {
                     break;
                 }
                 for (let j = 0; j < current_class.day.length; j++) {
@@ -218,19 +228,28 @@ function parseSchedule(data) {
                         const range2 = moment.range(moment(section_hours[0], "hh:mma").day(section_days[k]),
                             moment(section_hours[1], "hh:mma").day(section_days[k]));
 
-                        if (range.overlaps(range2) && section_name !== current_class.section) {
+                        if (range.overlaps(range2) && !section_name.startsWith(current_class.section)) {
                             should_break = true;
+                            did_overlap = true;
                             addConflictOverlay(this, current_class.classname);
                         }
                     }
                 }
             }
+            if (section_type.startsWith("Lecture") && !did_overlap) {
+                all_overlap = false;
+            }
         });
+        if (all_overlap) {
+            insertAllOverlap(this);
+        }
     });
 
-    $(".warning").hover(function () {
+
+
+    $(".warning").hover(function() {
         $(this).attr('value', 'Add Anyway');
-    }, function () {
+    }, function() {
         var original = $(this).attr('orig_name');
         $(this).attr('value', original);
     });
@@ -238,9 +257,9 @@ function parseSchedule(data) {
 
 //If the section it is currently parsing conflicts with a class in current_schedule
 function addConflictOverlay(row, name) {
-    $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
     let add_to_cb = $(row).find(".addtomycb");
     if (add_to_cb.length !== 0) {
+        $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
         add_to_cb = add_to_cb[0];
         $(add_to_cb).attr('value', 'Overlaps ' + name);
         $(add_to_cb).attr('orig_name', 'Overlaps ' + name);
@@ -284,7 +303,7 @@ function insertExportButton() {
 }
 
 function addPostRequests() {
-    $(".notify").each(function () {
+    $(".notify").each(function() {
         const form = $(this)[0].form;
         $(this).attr('value', 'Notify Me');
         $(this).unbind();
@@ -311,13 +330,13 @@ function addPostRequests() {
             swal({
                 title: 'Notify Me!',
                 html: '<label> Email: </label> <input id="email" class="swal2-input">' +
-                '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
+                    '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
                 preConfirm() {
                     return new Promise(resolve => {
                         resolve([
-                                $('#email').val(),
-                                $('#phone').val()
-                            ]
+                            $('#email').val(),
+                            $('#phone').val()
+                        ]
                         );
                     });
                 },
@@ -400,14 +419,14 @@ function sendPostRequest(email, courseid, department, phone) {
             if (textStatus === "success" && jqXHR.status === 200) {
                 successModal("Sent verification email - please verify your email to begin receiving notifications! <br> \
                     <strong> It's probably in your spam folder!</strong> <br> \
-                    Please note this service is not guaranteed to work, and is still in beta. <br> \
+                    Please note this service is not guaranteed to work, and is still in beta. If the class you are watching isn't actually full (it's just closed and waiting for spots to open up), this service will not work - the class must be at actual full capacity.<br> \
                     If you have any questions, please contact jdecaro@usc.edu");
             }
             //If they've already verified their emails, the server returns 201
             //Don't show the message saying an email was sent
             if (textStatus === "success" && jqXHR.status === 201) {
 
-                successModal("Please note this service is not guaranteed to work, and is still in beta. <br> If you have any questions, please contact jdecaro@usc.edu");
+                successModal("Please note this service is not guaranteed to work, and is still in beta. <br> If the class you are watching isn't actually full (it's just closed and waiting for spots to open up), this service will not work - the class must be at actual full capacity. <br> If you have any questions, please contact jdecaro@usc.edu");
             }
             //They've been ratelimited
             if (jqXHR.status === 429) {
@@ -573,7 +592,7 @@ function insertProfessorRating(row, professor_info) {
 }
 
 function parseRows(rows) {
-    $(rows).each(function () {
+    $(rows).each(function() {
         //rename Add to myCourseBin button so that it fits/looks nice
         changeAddToCourseBinButton(this);
 
@@ -690,6 +709,17 @@ function insertOnlyLabNumbers(element) {
     }
 }
 
+function insertAllOverlap(element) {
+    const name_element = $(element).prev();
+    const name = $(name_element).find('.course-title-indent');
+    //Let's make the background orange if all lectures overlap
+    let color = $(name).css('background-color');
+    if (color == "rgba(240, 65, 36, 0.45)") {
+        $(name).css("background", "linear-gradient(to right, rgba(240, 65, 36, 0.45) , rgba(255, 134, 47, 0.37))");
+    } else {
+        $(name).css("background-color", "rgba(255, 134, 47, 0.37)");
+    }
+}
 
 function insertClassNumbers(element) {
     //Normal insert for remaining spots
@@ -709,7 +739,7 @@ function insertClassNumbers(element) {
 }
 
 function parseClass(classes) {
-    $(classes).each(function () {
+    $(classes).each(function() {
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
 
@@ -788,7 +818,7 @@ function parseCoursePage(professor_ratings) {
         const table = $(courses[i]).find("> .course-details > table.sections");
 
         //Get rows, iterate over each one
-        $(table[0]).find("> tbody > tr").each(function () {
+        $(table[0]).find("> tbody > tr").each(function() {
             if ($(this).hasClass("headers")) {
                 //create new column
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
