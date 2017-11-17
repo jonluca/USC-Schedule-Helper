@@ -518,7 +518,7 @@ function insertProfessorRating(row, professor_info) {
     //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
     //if there already is one then we know it's another professor
     if ($(row).find('.rating').length !== 0) {
-        $(row).find('.rating').after(`, <a href=${url}>${professor_info.rating}</a>`);
+        $(row).find('.rating').after(`, <a href=${url}>Link</a>`);
     }
     else {
         $(row).addClass("blank_rating");
@@ -527,7 +527,7 @@ function insertProfessorRating(row, professor_info) {
         //actual contents of rating
         const rating_anchor = `<a class="rating" href=${url} target="_blank">Link</a>`;
         //long string just to include new
-        $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md                                 visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
+        $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
         /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
              find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
         if ($(row).find(".empty_rating").length !== 0) {
