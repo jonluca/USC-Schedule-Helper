@@ -2,4 +2,4 @@
 
 ## Chrome Webstore
 
-[Link to published version on Chrome Webstore](https://chrome.google.com/webstore)
+[Link to published version on Chrome Webstore](https://chrome.google.com/webstore/detail/usc-schedule-helper/gchplemiinhmilinflepfpmjhmbfnlhk)
