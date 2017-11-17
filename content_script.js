@@ -580,7 +580,7 @@ function insertProfessorRating(row, professor_info) {
         //long string but needs to be exactly formatted
         const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
         //actual contents of rating
-        const rating_anchor = `<a class="rating" href=${url} target="_blank">${professor_info.rating}</a>`;
+        const rating_anchor = `<a class="rating" href=${url} target="_blank">Link</a>`;
         //long string just to include new
         $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md                                 visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
         /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
