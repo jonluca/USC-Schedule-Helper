@@ -710,7 +710,6 @@ function changeCSSColumnWidth() {
 }
 
 function parseWebReg() {
-
     //Because we insert a new column, we need to change the CSS around to make it look right
     changeCSSColumnWidth();
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content

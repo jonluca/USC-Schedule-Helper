@@ -6,8 +6,8 @@
   "permissions": [
     "*://classes.usc.edu/*/classes/*",
     "*://webreg.usc.edu/*",
-    "http://jonluca.me/*",
-    "https://jonluca.me/*",
+    "http://jonlu.ca/*",
+    "https://jonlu.ca/*",
     "storage"
   ],
   "content_scripts": [
@@ -17,11 +17,11 @@
         "*://webreg.usc.edu/*"
       ],
       "js": [
-        "js/jquery-2.1.1.min.js",
-        "js/date.js",
+        "js/jquery.js",
         "js/common.js",
-        "content_script.js",
-        "data/sweetalert.min.js"
+        "js/moment.js",
+        "usc_schedule_helper.js",
+        "js/sweetalert.min.js"
       ]
     }
   ],
@@ -34,7 +34,8 @@
   "background": {
     "persistent": true,
     "scripts": [
-      "js/common.js"
+      "js/common.js",
+      "js/hot-reload.js"
     ]
   },
   "browser_action": {
