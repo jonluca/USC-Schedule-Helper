@@ -10,7 +10,7 @@ function onMessage(message, sender, sendResponse) {
 }
 
 $(() => {
-    loadOptions(function (receivedOptions) {
+    loadOptions(function(receivedOptions) {
         options = receivedOptions;
         if (receivedOptions.extensionEnabled) {
             startHelper();
@@ -29,7 +29,7 @@ function startHelper() {
     //Typically loads in ~40ms, so not a huge issue, I just wish there was a more efficient way of doing it
     const xhr = new XMLHttpRequest;
     xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             professor_ratings = JSON.parse(xhr.responseText);
             //If we are on webreg or if we're on classes.usc.edu
@@ -43,8 +43,7 @@ function startHelper() {
                 if (options.showCalendar) {
                     getCalendarHTML();
                 }
-            }
-            else {
+            } else {
                 /*
                 This is for courses.usc.edu, not web registration. Original version of the extension only worked
                 here, then I realized it's useless and would be better suited for webreg
@@ -59,7 +58,10 @@ function startHelper() {
 //Version check for USC Schedule Helper
 const version = chrome.runtime.getManifest().version;
 $.ajax({
-    method: 'GET', url: "https://jonlu.ca/soc_api/version", type: 'text', success(data, textStatus, jqXHR) {
+    method: 'GET',
+    url: "https://jonlu.ca/soc_api/version",
+    type: 'text',
+    success(data, textStatus, jqXHR) {
         chrome.storage.sync.get('outdated_version', items => {
             //If there is a new version AND they haven't been notified before
             if (data > version && items['outdated_version'] !== version) {
@@ -105,7 +107,10 @@ const current_schedule = [];
 function getCurrentSchedule() {
     //Pulls schedule from myCourseBin
     $.ajax({
-        method: 'POST', url: "https://webreg.usc.edu/Scheduler/Read", type: 'text', success(data, textStatus, jqXHR) {
+        method: 'POST',
+        url: "https://webreg.usc.edu/Scheduler/Read",
+        type: 'text',
+        success(data, textStatus, jqXHR) {
             parseSchedule(data);
         }
     });
@@ -114,7 +119,10 @@ function getCurrentSchedule() {
 function getCalendarHTML() {
     //Pulls schedule from myCourseBin
     $.ajax({
-        method: 'GET', url: "https://webreg.usc.edu/myKCal", type: 'text', success(data, textStatus, jqXHR) {
+        method: 'GET',
+        url: "https://webreg.usc.edu/myKCal",
+        type: 'text',
+        success(data, textStatus, jqXHR) {
             insertCalendar(data);
         }
     });
@@ -150,10 +158,22 @@ function parseSchedule(data) {
         current_schedule.push(time);
     }
     //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-    $(".crs-accordion-content-area").each(function () {
+    $(".crs-accordion-content-area").each(function() {
         let all_overlap = true;
         const sections = $(this).find(".section_alt1, .section_alt0");
-        sections.each(function () {
+        // get units
+        let units = $(this).find("[class^=type_alt]");
+        if (units.length > 3) {
+            let actual_units = $(units)[3].innerText;
+            actual_units = actual_units.replace("Units: ", "");
+            let header = $(this).prev();
+            let header_text = $(header).find('.course-title-indent');
+            const unit_text = `<span class="crsTitl spots_remaining"> - ${actual_units} units</span>`;
+            $(header_text).append(unit_text);
+            console.log(actual_units);
+        }
+        sections.each(function() {
+
             //Get hours for current section
             let section_hours = $(this).find("[class^=hours]")[0].innerText;
             section_hours = section_hours.replace("Time: ", '');
@@ -165,9 +185,6 @@ function parseSchedule(data) {
             //Get section name to compare if you already have that class
             let section_name = $(this).find("[class^=id]")[0].innerText;
             section_name = section_name.replace("Section: ", '');
-            if (section_name.startsWith("31827")) {
-                console.log('d');
-            }
             let did_overlap = false;
             //Get section name to compare if you already have that class
             let section_type = $(this).find("[class^=type]")[0].innerText;
@@ -217,9 +234,9 @@ function parseSchedule(data) {
             insertAllOverlap(this);
         }
     });
-    $(".warning").hover(function () {
+    $(".warning").hover(function() {
         $(this).attr('value', 'Add Anyway');
-    }, function () {
+    }, function() {
         var original = $(this).attr('orig_name');
         $(this).attr('value', original);
     });
@@ -272,7 +289,7 @@ function insertExportButton() {
 }
 
 function addPostRequests() {
-    $(".notify").each(function () {
+    $(".notify").each(function() {
         const form = $(this)[0].form;
         $(this).attr('value', 'Notify Me');
         $(this).unbind();
@@ -339,8 +356,7 @@ Course: ${courseid}`);
                 }
                 if (email !== null && email !== "ttrojan@usc.edu" && validateEmail(email) && department !== "") {
                     sendPostRequest(email, courseid, department, phone);
-                }
-                else {
+                } else {
                     errorModal(`Error with email or department!`);
                 }
             }).catch(swal.noop);
@@ -355,20 +371,27 @@ function validateEmail(email) {
 
 function sendPostRequest(email, courseid, department, phone) {
     $.ajax({
-        method: 'POST', url: "https://jonlu.ca/soc_api/notify", type: 'json', data: {
-            email, courseid, department, phone, id
-        }, error(err) {
+        method: 'POST',
+        url: "https://jonlu.ca/soc_api/notify",
+        type: 'json',
+        data: {
+            email,
+            courseid,
+            department,
+            phone,
+            id
+        },
+        error(err) {
             console.log(err);
             if (err.status === 501) {
                 errorModal("Error saving data! Please contact jdecaro@usc.edu with the class you are trying to register for.");
-            }
-            else if (err.status === 400) {
+            } else if (err.status === 400) {
                 errorModal("Invalid email!");
-            }
-            else {
+            } else {
                 errorModal("An unknown error occurred! Please contact jdecaro@usc.edu with the class you are trying to register for.");
             }
-        }, success(data, textStatus, jqXHR) {
+        },
+        success(data, textStatus, jqXHR) {
             if (textStatus === "success" && jqXHR.status === 200) {
                 successModal("Sent verification email - please verify your email to begin receiving notifications! <br> \
                     <strong> It's probably in your spam folder!</strong> <br> \
@@ -430,8 +453,7 @@ function parseRegistrationNumbers(row) {
                 const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
                 $(location_of_insert).after(empty_span);
             }
-        }
-        else {
+        } else {
             addRegistrationNumbers(row, registration_numbers[0].trim(), registration_numbers[1].trim());
         }
     }
@@ -485,18 +507,15 @@ function parseClassType(row, class_type) {
         if (available_spots === 0) {
             addNotifyMe(row);
         }
-    }
-    else if (class_type === "Type: Lab") {
+    } else if (class_type === "Type: Lab") {
         hidden_total_spots += total_available;
         hidden_available_spots += (total_available - current_enrolled);
-    }
-    else if (class_type === "Type: Discussion") {
+    } else if (class_type === "Type: Discussion") {
         only_lab = false;
         has_discussion = true;
         discussion_total_spots += total_available;
         discussion_available_spots += (total_available - current_enrolled);
-    }
-    else {
+    } else {
         //If not Lab or Lecture/lecture-lab then set the flag to false
         only_lab = false;
     }
@@ -519,8 +538,7 @@ function insertProfessorRating(row, professor_info) {
     //if there already is one then we know it's another professor
     if ($(row).find('.rating').length !== 0) {
         $(row).find('.rating').after(`, <a href=${url}>Link</a>`);
-    }
-    else {
+    } else {
         $(row).addClass("blank_rating");
         //long string but needs to be exactly formatted
         const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
@@ -537,7 +555,7 @@ function insertProfessorRating(row, professor_info) {
 }
 
 function parseRows(rows) {
-    $(rows).each(function () {
+    $(rows).each(function() {
         //rename Add to myCourseBin button so that it fits/looks nice
         changeAddToCourseBinButton(this);
         parseRegistrationNumbers(this);
@@ -574,8 +592,7 @@ function parseProfessor(instructor, row) {
     //If instructor name in json
     if (actual_name in professor_ratings) {
         insertProfessorRating(row, professor_ratings[actual_name]);
-    }
-    else {
+    } else {
         insertBlankRatingCell(row);
     }
 }
@@ -611,8 +628,7 @@ function insertTotalSpots(element) {
     let spotsRemainingString = `<span class="crsTitl spots_remaining"> - ${available_spots}`;
     if (available_spots === 1) {
         spotsRemainingString += " spot remaining" + "</span>";
-    }
-    else {
+    } else {
         spotsRemainingString += " spots remaining" + "</span>";
     }
     name.append(spotsRemainingString);
@@ -627,8 +643,7 @@ function insertClosedRegistration(element) {
     const name = $(name_element).find('.course-title-indent');
     if (has_discussion) {
         name.append(`<span class="crsTitl spots_remaining"> - closed registration ( ${discussion_available_spots} spots remaining)</span>`);
-    }
-    else {
+    } else {
         name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration</span>");
     }
     //Let's make the background red if no spots remaining
@@ -651,8 +666,7 @@ function insertAllOverlap(element) {
     let color = $(name).css('background-color');
     if (color == "rgba(240, 65, 36, 0.45)") {
         $(name).css("background", "linear-gradient(to right, rgba(240, 65, 36, 0.45) , rgba(255, 134, 47, 0.37))");
-    }
-    else {
+    } else {
         $(name).css("background-color", "rgba(255, 134, 47, 0.37)");
     }
 }
@@ -673,7 +687,7 @@ function insertClassNumbers(element) {
 }
 
 function parseClass(classes) {
-    $(classes).each(function () {
+    $(classes).each(function() {
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
         //Insert Prof Rating column at top of each class view
@@ -693,13 +707,15 @@ function changeCSSColumnWidth() {
         "width": "4%"
     });
     $(".btnAddToMyCourseBin_alt1").css({
-        "width": "12%", "float": "right"
+        "width": "12%",
+        "float": "right"
     });
     $(".rm_alt0").css({
         "width": "4%"
     });
     $(".btnAddToMyCourseBin_alt0").css({
-        "width": "12%", "float": "right"
+        "width": "12%",
+        "float": "right"
     });
     $(".session_alt1").css({
         "width": "4%"
@@ -738,7 +754,7 @@ function parseCoursePage(professor_ratings) {
         //Get table with jQuery selector
         const table = $(courses[i]).find("> .course-details > table.sections");
         //Get rows, iterate over each one
-        $(table[0]).find("> tbody > tr").each(function () {
+        $(table[0]).find("> tbody > tr").each(function() {
             if ($(this).hasClass("headers")) {
                 //create new column
                 $(this).find('.instructor').after('<th>Prof. Rating</th>');
@@ -749,8 +765,7 @@ function parseCoursePage(professor_ratings) {
             let type = $(this).find("td.type");
             if (type.length !== 0) {
                 type = type[0].textContent;
-            }
-            else {
+            } else {
                 return true;
             }
             //Get registration numbers
@@ -778,17 +793,14 @@ function parseCoursePage(professor_ratings) {
                     //If we've never inserted before, insert. Otherwise insert with a comma before it for good formatting
                     if ($(this).find('.rating').length === 0) {
                         $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">${professor_ratings[actual_name].rating}</a></td>`);
-                    }
-                    else {
+                    } else {
                         $(this).find('.rating').append(`, <a href=${url}>${professor_ratings[actual_name].rating}</a>`);
                     }
-                }
-                else {
+                } else {
                     //If not in JSON, we need an empty space to make table format correctly
                     if ($(this).find('.rating').length === 0) {
                         $(this).find('td.instructor').after('<td class="rating"> </td>');
-                    }
-                    else {
+                    } else {
                         $(this).find('.rating').append(' ');
                     }
                 }
