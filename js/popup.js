@@ -6,6 +6,7 @@ $(() => {
         $("#chkExtensionDisabled").prop('checked', options.extensionEnabled);
         $("#chkConflicts").prop('checked', options.showConflicts);
         $("#chkCalendar").prop('checked', options.showCalendar);
+        $("#chkUnits").prop('checked', options.showUnits);
         $('input:checked').trigger('gumby.check');
 
         $('input').parent().on('gumby.onChange', function() {
@@ -32,6 +33,9 @@ function changeOption(elem) {
             break;
         case "chkConflicts":
             options.showConflicts = $('#chkConflicts')[0].checked;
+            break;
+        case "chkUnits":
+            options.showUnits = $('#chkUnits')[0].checked;
             break;
     }
     saveOptions();

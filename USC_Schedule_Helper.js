@@ -681,18 +681,25 @@ function insertClassNumbers(element) {
     }
 }
 
-function parseClass(classes) {
-    $(classes).each(function() {
+function addUnitsToTitle(row) {
+    if (options.showUnits) {
         // get units
-        let units = $(this).find("[class^=type_alt]");
+        let units = $(row).find("[class^=type_alt]");
         if (units.length > 3) {
             let actual_units = $(units)[3].innerText;
             actual_units = actual_units.replace("Units: ", "");
-            let header = $(this).prev();
+            let header = $(row).prev();
             let header_text = $(header).find('.course-title-indent');
             const unit_text = `<span class="crsTitl spots_remaining"> - ${actual_units} units</span>`;
             $(header_text).append(unit_text);
         }
+    }
+}
+
+function parseClass(classes) {
+    $(classes).each(function() {
+        addUnitsToTitle(this);
+
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
         //Insert Prof Rating column at top of each class view
