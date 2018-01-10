@@ -161,17 +161,7 @@ function parseSchedule(data) {
     $(".crs-accordion-content-area").each(function() {
         let all_overlap = true;
         const sections = $(this).find(".section_alt1, .section_alt0");
-        // get units
-        let units = $(this).find("[class^=type_alt]");
-        if (units.length > 3) {
-            let actual_units = $(units)[3].innerText;
-            actual_units = actual_units.replace("Units: ", "");
-            let header = $(this).prev();
-            let header_text = $(header).find('.course-title-indent');
-            const unit_text = `<span class="crsTitl spots_remaining"> - ${actual_units} units</span>`;
-            $(header_text).append(unit_text);
-            console.log(actual_units);
-        }
+
         sections.each(function() {
 
             //Get hours for current section
@@ -688,6 +678,16 @@ function insertClassNumbers(element) {
 
 function parseClass(classes) {
     $(classes).each(function() {
+        // get units
+        let units = $(this).find("[class^=type_alt]");
+        if (units.length > 3) {
+            let actual_units = $(units)[3].innerText;
+            actual_units = actual_units.replace("Units: ", "");
+            let header = $(this).prev();
+            let header_text = $(header).find('.course-title-indent');
+            const unit_text = `<span class="crsTitl spots_remaining"> - ${actual_units} units</span>`;
+            $(header_text).append(unit_text);
+        }
         //set global variables to 0 (counts, class closed, class type, etc)
         reinitializeVariablesPerClass();
         //Insert Prof Rating column at top of each class view
