@@ -28,5 +28,9 @@ input[type=range]::-webkit-slider-runnable-track {
 
 .footer {
     font-size: 60%;
+    display: inline;
+}
 
+.secret {
+    display: inline;
 }

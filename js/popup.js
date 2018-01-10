@@ -1,4 +1,5 @@
 var options;
+var count = 3;
 $(() => {
     loadOptions(function(recOptions) {
         options = recOptions;
@@ -9,6 +10,14 @@ $(() => {
 
         $('input').parent().on('gumby.onChange', function() {
             changeOption(this);
+        });
+        $(".secret").click(function() {
+            console.log(count);
+            --count;
+            if (count == 0) {
+                options.showRatings = true;
+                saveOptions();
+            }
         });
     });
 });
@@ -25,7 +34,6 @@ function changeOption(elem) {
             options.showConflicts = $('#chkConflicts')[0].checked;
             break;
     }
-    console.log(options);
     saveOptions();
 }
 

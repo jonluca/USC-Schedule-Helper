@@ -12,6 +12,7 @@ function loadOptions(callback) {
         options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
         options.showCalendar = options.hasOwnProperty('showCalendar') ? options.showCalendar : true;
         options.showConflicts = options.hasOwnProperty('showConflicts') ? options.showConflicts : true;
+        options.showRatings = options.hasOwnProperty('showRatings') ? options.showRatings : false;
 
         chrome.storage.sync.set({
             'options': options
