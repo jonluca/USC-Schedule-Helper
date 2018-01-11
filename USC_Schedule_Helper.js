@@ -55,28 +55,6 @@ function startHelper() {
     xhr.send();
 }
 
-//Version check for USC Schedule Helper
-const version = chrome.runtime.getManifest().version;
-$.ajax({
-    method: 'GET',
-    url: "https://jonlu.ca/soc_api/version",
-    type: 'text',
-    success(data, textStatus, jqXHR) {
-        chrome.storage.sync.get('outdated_version', items => {
-            //If there is a new version AND they haven't been notified before
-            if (data > version && items['outdated_version'] !== version) {
-                //Tell them to update their extension
-                errorModal("USC Schedule Helper is outdated! Please update now. If chrome does not update automatically, you may follow <a href=\"http://lifehacker.com/5805239/how-to-manually-update-your-chrome-extensions\">this guide</a>");
-                //Save outdated version locally so you don't show the same error constantly
-                chrome.storage.sync.set({
-                    'outdated_version': version
-                }, () => {
-                    console.log(`Saved out of date warning for ${version}`);
-                });
-            }
-        });
-    }
-});
 //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
 let total_spots = 0;
 let available_spots = 0;
@@ -385,13 +363,12 @@ function sendPostRequest(email, courseid, department, phone) {
             if (textStatus === "success" && jqXHR.status === 200) {
                 successModal("Sent verification email - please verify your email to begin receiving notifications! <br> \
                     <strong> It's probably in your spam folder!</strong> <br> \
-                    Please note this service is not guaranteed to work, and is still in beta. If the class you are watching isn't actually full (it's just closed and waiting for spots to open up), this service will not work - the class must be at actual full capacity.<br> \
-                    If you have any questions, please contact jdecaro@usc.edu");
+                    Update: Text message notifications have been disabled because they cost the developer too much to send. Email notifications will still work. <p style=\"font-size:12px\">If you <i>really</i> want text notifications, venmo @JonLuca $1 with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
             }
             //If they've already verified their emails, the server returns 201
             //Don't show the message saying an email was sent
             if (textStatus === "success" && jqXHR.status === 201) {
-                successModal("Please note this service is not guaranteed to work, and is still in beta. <br> If the class you are watching isn't actually full (it's just closed and waiting for spots to open up), this service will not work - the class must be at actual full capacity. <br> If you have any questions, please contact jdecaro@usc.edu");
+                successModal("Update: Text message notifications have been disabled because they cost the developer too much to send. Email notifications will still work. <p style=\"font-size:12px\">If you <i>really</i> want text notifications, venmo @JonLuca $1 with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
             }
             //They've been ratelimited
             if (jqXHR.status === 429) {
