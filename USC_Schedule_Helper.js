@@ -781,7 +781,12 @@ function parseCoursePage(professor_ratings) {
                     const url = url_template + professor_ratings[actual_name].id;
                     //If we've never inserted before, insert. Otherwise insert with a comma before it for good formatting
                     if ($(this).find('.rating').length === 0) {
-                        $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">${professor_ratings[actual_name].rating}</a></td>`);
+                        if (options.showRatings) {
+                            $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">${professor_ratings[actual_name].rating}</a></td>`);
+
+                        } else {
+                            $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">Link</a></td>`);
+                        }
                     } else {
                         $(this).find('.rating').append(`, <a href=${url}>${professor_ratings[actual_name].rating}</a>`);
                     }
