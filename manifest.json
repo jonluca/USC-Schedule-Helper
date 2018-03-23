@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
-  "version": "8.2",
+  "version": "8.3",
   "permissions": [
     "*://classes.usc.edu/*/classes/*",
     "*://webreg.usc.edu/*",
