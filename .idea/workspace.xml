@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ea471cc-5ca7-43f4-988a-0a7296c39675" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/USC_Schedule_Helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/USC_Schedule_Helper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/popup.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/common.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/hot-reload.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/hot-reload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/moment.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/moment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/popup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -45,13 +37,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="USC_Schedule_Helper.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="USC_Schedule_Helper.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/USC_Schedule_Helper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
+            <state relative-caret-position="7350">
               <caret line="529" column="35" selection-start-line="529" selection-start-column="35" selection-end-line="529" selection-end-column="35" />
               <folding>
                 <element signature="e#14737#17074#0" />
+                <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -93,9 +87,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitattributes" pinned="false" current-in-tab="false">
+      <file leaf-file-name=".gitattributes" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitattributes">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="4" selection-start-column="4" selection-end-column="4" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -135,6 +133,7 @@
         <option value="$PROJECT_DIR$/html/popup.html" />
         <option value="$PROJECT_DIR$/js/popup.js" />
         <option value="$PROJECT_DIR$/USC_Schedule_Helper.js" />
+        <option value="$PROJECT_DIR$/.gitattributes" />
       </list>
     </option>
   </component>
@@ -251,12 +250,12 @@
       <updated>1514113621931</updated>
       <workItem from="1514113623294" duration="3387000" />
       <workItem from="1516061576075" duration="566000" />
-      <workItem from="1521826703118" duration="458000" />
+      <workItem from="1521826703118" duration="504000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4411000" />
+    <option name="totallyTimeSpent" value="4457000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
@@ -316,6 +315,8 @@
           <caret line="533" column="43" lean-forward="true" selection-start-line="533" selection-start-column="43" selection-end-line="533" selection-end-column="43" />
           <folding>
             <element signature="e#14737#17074#0" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -365,9 +366,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitattributes">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/html/popup.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -384,11 +382,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/USC_Schedule_Helper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
+        <state relative-caret-position="7350">
           <caret line="529" column="35" selection-start-line="529" selection-start-column="35" selection-end-line="529" selection-end-column="35" />
           <folding>
             <element signature="e#14737#17074#0" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitattributes">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="4" selection-start-column="4" selection-end-column="4" />
         </state>
       </provider>
     </entry>
