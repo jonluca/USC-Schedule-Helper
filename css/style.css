@@ -26,11 +26,28 @@ input[type=range]::-webkit-slider-runnable-track {
     background: #3071a9;
 }
 
-.footer {
-    font-size: 60%;
+.secret {
     display: inline;
 }
 
-.secret {
+body {
+    width: 400px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.footer {
+    font-size: 60%;
+    padding-bottom: 5px;
     display: inline;
+}
+
+.checkBackground {
+    background-color: black !important;
+}
+
+.lastField {
+    padding-bottom: 10px;
 }

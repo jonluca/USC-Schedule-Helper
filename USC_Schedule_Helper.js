@@ -340,7 +340,7 @@ function validateEmail(email) {
 function sendPostRequest(email, courseid, department, phone) {
     $.ajax({
         method: 'POST',
-        url: "https://jonlu.ca/soc_api/notify",
+        url: "https://jonlu.ca/soc/notify",
         type: 'json',
         data: {
             email,
