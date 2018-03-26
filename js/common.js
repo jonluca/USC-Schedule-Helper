@@ -9,7 +9,7 @@ function loadOptions(callback) {
     }
 
     options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
-    options.showCalendar = options.hasOwnProperty('showCalendar') ? options.showCalendar : true;
+    options.showCalendar = options.hasOwnProperty('showCalendar') ? options.showCalendar : false;
     options.showConflicts = options.hasOwnProperty('showConflicts') ? options.showConflicts : true;
     options.showRatings = options.hasOwnProperty('showRatings') ? options.showRatings : false;
     options.showUnits = options.hasOwnProperty('showUnits') ? options.showUnits : true;

@@ -28,11 +28,15 @@ function startHelper() {
   //This loads the JSON of all the professors, rating, and unique ID. Only way I've found to get it, unfortunately, is
   // through a HTTPRequest Typically loads in ~40ms, so not a huge issue, I just wish there was a more efficient way of
   // doing it
-  const xhr = new XMLHttpRequest;
-  xhr.open("GET", chrome.runtime.getURL("data/only_ratings.json"));
-  xhr.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      professor_ratings = JSON.parse(xhr.responseText);
+  $.ajax({
+    method: 'GET',
+    url: chrome.runtime.getURL("data/only_ratings.json"),
+    type: 'json',
+    success(data, textStatus, jqXHR) {
+      professor_ratings = data;
+      if (typeof(data) === "string") {
+        professor_ratings = JSON.parse(data);
+      }
       //If we are on webreg or if we're on classes.usc.edu
       if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
         //Appending to body makes the stylesheet async
@@ -42,7 +46,7 @@ function startHelper() {
         }
         parseWebReg();
         if (options.showCalendar) {
-          getCalendarHTML();
+          insertCalendar();
         }
       } else {
         /*
@@ -52,8 +56,7 @@ function startHelper() {
         parseCoursePage(professor_ratings);
       }
     }
-  };
-  xhr.send();
+  });
 }
 
 //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
@@ -96,29 +99,18 @@ function getCurrentSchedule() {
   });
 }
 
-function getCalendarHTML() {
-  //Pulls schedule from myCourseBin
-  $.ajax({
-    method: 'GET',
-    url: "https://webreg.usc.edu/myKCal",
-    type: 'text',
-    success(data, textStatus, jqXHR) {
-      insertCalendar(data);
-    }
-  });
-}
+function insertCalendar() {
+  // Insert kendo css and js library
+  $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/kendo.css")}" type="text/css" />`);
+  $('body').append(`<script src="${chrome.runtime.getURL("js/libs/kendo.min.js")}"></script>`);
+  //Construct the div containing the calendar
+  let div = `<div id="popupCalendar" ><div id="popupCalendarHeader">Calendar (Alt key to toggle visibility)</div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;
+  $(".layout-container").prepend(div);
+  // Enable dragging around the header
+  dragElement(document.getElementById(("popupCalendar")));
+  // Insert the js that has access to the window.kendo elements that deals with actually constructing the calendar
+  $('body').append(`<script src="${chrome.runtime.getURL("js/calendar.js")}"></script>`);
 
-function insertCalendar(html) {
-  //Contains html of calendar page, as text
-  const parsedHTML = $(html);
-  const calendar = $(parsedHTML).find("#sb-site > div > div > div.content-wrapper-cal > div:nth-child(5)");
-  const courseList = $(".content-wrapper-courses");
-  //If we're not on a class list view, return out
-  if (courseList.length === 0) {
-    return;
-  }
-  $(calendar[0]).insertBefore(courseList);
-  console.log(calendar);
 }
 
 function parseSchedule(data) {
@@ -253,7 +245,7 @@ function splitDays(days) {
 
 function insertExportButton() {
   const navbar = $("ul.nav");
-  $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20181\">Export To Calendar</a></li>");
+  $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20183\">Export To Calendar</a></li>");
   const cals = $(".exportCal");
   $(cals[1]).remove();
 }
@@ -824,4 +816,66 @@ function parseCoursePage(professor_ratings) {
       title.append(availableString);
     }
   }
+}
+
+//Draggable element code from https://www.w3schools.com/howto/howto_js_draggable.asp
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "Header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+function preventEventChng(e) {
+  if ((e.event.Scheduled == "YN") || (e.event.Scheduled == "YY") || (e.event.Scheduled == "NY") || (e.event.Scheduled == "NN") || (e.event.Scheduled == "YN*") || (e.event.Scheduled == "YY*") || (e.event.Scheduled == "NY*") || (e.event.Scheduled == "NN*")) {
+    setTimeout(function () {
+    }, 0);
+    e.preventDefault();
+
+  }
+
+  if (e.event.Scheduled == "Block") {
+    setTimeout(function () {
+    }, 0);
+    $('.k-window-title').text("Block Time");
+  }
+
+  if (e.event.Scheduled == "") {
+    setTimeout(function () {
+    }, 0);
+    $('.k-window-title').text("Block Time");
+  }
+
 }
