@@ -28,13 +28,6 @@ function kRefresh() {
   }, 400);
 }
 
-jQuery.fn.center = function () {
-  this.css("position", "absolute");
-  this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()) + "px");
-  this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
-  return this;
-};
-
 function load() {
   let today = new Date();
   let yesterday = new Date();
@@ -220,7 +213,7 @@ function check() {
   } else {
     setTimeout(() => {
       check();
-    }, 1000);
+    }, 500);
   }
 }
 

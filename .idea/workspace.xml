@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ea471cc-5ca7-43f4-988a-0a7296c39675" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/data/kendo.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/calendar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/libs/kendo.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/USC_Schedule_Helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/USC_Schedule_Helper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sweetalert.css" beforeDir="false" afterPath="$PROJECT_DIR$/data/sweetalert.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/html/popup.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/common.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usc_schedule_helper_new.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/calendar.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -35,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="USC_Schedule_Helper.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="USC_Schedule_Helper.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/USC_Schedule_Helper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="99" column="1" lean-forward="true" selection-start-line="99" selection-start-column="1" selection-end-line="99" selection-end-column="1" />
+            <state relative-caret-position="611">
+              <caret line="106" column="109" selection-start-line="106" selection-start-column="109" selection-end-line="106" selection-end-column="109" />
               <folding>
                 <element signature="e#3546#3762#0" />
                 <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -50,6 +41,8 @@
                 <element signature="e#10272#13190#0" />
                 <element signature="e#13222#13415#0" />
                 <element signature="e#13478#15613#0" />
+                <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
                 <element signature="e#15692#15731#0" />
                 <element signature="e#15814#15857#0" />
                 <element signature="e#16070#16223#0" />
@@ -99,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="calendar.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="calendar.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="49" column="86" selection-start-line="49" selection-start-column="86" selection-end-line="49" selection-end-column="86" />
+            <state relative-caret-position="677">
+              <caret line="215" column="10" selection-start-line="215" selection-start-column="10" selection-end-line="215" selection-end-column="10" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#div#3;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#input#0;n#div#5;n#!!top" expanded="true" />
@@ -184,10 +177,10 @@
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/manifest.json" />
         <option value="$PROJECT_DIR$/js/common.js" />
-        <option value="$PROJECT_DIR$/USC_Schedule_Helper.js" />
         <option value="$PROJECT_DIR$/data/kendo.css" />
         <option value="$PROJECT_DIR$/data/sweetalert.css" />
         <option value="$PROJECT_DIR$/js/calendar.js" />
+        <option value="$PROJECT_DIR$/USC_Schedule_Helper.js" />
       </list>
     </option>
   </component>
@@ -315,12 +308,12 @@
       <workItem from="1514113623294" duration="3387000" />
       <workItem from="1516061576075" duration="566000" />
       <workItem from="1521826703118" duration="1102000" />
-      <workItem from="1522078089382" duration="9177000" />
+      <workItem from="1522078089382" duration="9457000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14232000" />
+    <option name="totallyTimeSpent" value="14512000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
@@ -388,6 +381,8 @@
             <element signature="e#10272#13190#0" />
             <element signature="e#13222#13415#0" />
             <element signature="e#13478#15613#0" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
             <element signature="e#15692#15731#0" />
             <element signature="e#15814#15857#0" />
             <element signature="e#16070#16223#0" />
@@ -484,6 +479,8 @@
             <element signature="e#10272#13190#0" />
             <element signature="e#13222#13415#0" />
             <element signature="e#13478#15613#0" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
             <element signature="e#15692#15731#0" />
             <element signature="e#15814#15857#0" />
             <element signature="e#16070#16223#0" />
@@ -593,13 +590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/popup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="29" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="555">
@@ -634,10 +624,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/calendar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="677">
+          <caret line="215" column="10" selection-start-line="215" selection-start-column="10" selection-end-line="215" selection-end-column="10" />
+          <folding>
+            <element signature="n#style#0;n#input#0;n#div#3;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#5;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/popup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="29" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/USC_Schedule_Helper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="99" column="1" lean-forward="true" selection-start-line="99" selection-start-column="1" selection-end-line="99" selection-end-column="1" />
+        <state relative-caret-position="611">
+          <caret line="106" column="109" selection-start-line="106" selection-start-column="109" selection-end-line="106" selection-end-column="109" />
           <folding>
             <element signature="e#3546#3762#0" />
             <element signature="n#style#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -648,6 +656,8 @@
             <element signature="e#10272#13190#0" />
             <element signature="e#13222#13415#0" />
             <element signature="e#13478#15613#0" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#!!top" expanded="true" />
             <element signature="e#15692#15731#0" />
             <element signature="e#15814#15857#0" />
             <element signature="e#16070#16223#0" />
@@ -674,17 +684,6 @@
             <element signature="e#29764#33518#0" />
             <element signature="e#33777#34935#0" />
             <element signature="e#35210#35795#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/calendar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="49" column="86" selection-start-line="49" selection-start-column="86" selection-end-line="49" selection-end-column="86" />
-          <folding>
-            <element signature="n#style#0;n#input#0;n#div#3;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#5;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
