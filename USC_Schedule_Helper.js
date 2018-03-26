@@ -45,7 +45,7 @@ function startHelper() {
           getCurrentSchedule();
         }
         parseWebReg();
-        if (options.showCalendar) {
+        if (options.showCalendar && !currentURL.includes("/myKCal")) {
           insertCalendar();
         }
       } else {
