@@ -23,15 +23,20 @@ function scheduler_moveE(e) {
 }
 
 function kRefresh() {
-  setTimeout(function () {
     $("#scheduler").data("kendoScheduler").dataSource.read();
-  }, 400);
 }
 
 function load() {
   let today = new Date();
   let yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
+
+  $("btn").click(function () {
+
+    setTimeout(function () {
+      $("#scheduler").data("kendoScheduler").dataSource.read();
+    }, 400);
+  });
 
   jQuery("#scheduler").kendoScheduler({
     "height": "600px",
