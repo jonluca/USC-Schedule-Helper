@@ -1,4 +1,4 @@
-let professor_ratings = {};
+let professorRatings = {};
 var options;
 var id;
 chrome.runtime.onMessage.addListener(onMessage);
@@ -33,9 +33,9 @@ function startHelper() {
     url: chrome.runtime.getURL("data/only_ratings.json"),
     type: 'json',
     success(data, textStatus, jqXHR) {
-      professor_ratings = data;
+      professorRatings = data;
       if (typeof(data) === "string") {
-        professor_ratings = JSON.parse(data);
+        professorRatings = JSON.parse(data);
       }
       //If we are on webreg or if we're on classes.usc.edu
       if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
@@ -53,39 +53,39 @@ function startHelper() {
          This is for courses.usc.edu, not web registration. Original version of the extension only worked
          here, then I realized it's useless and would be better suited for webreg
          */
-        parseCoursePage(professor_ratings);
+        parseCoursePage(professorRatings);
       }
     }
   });
 }
 
 //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
-let total_spots = 0;
-let available_spots = 0;
+let classTotalSpots = 0;
+let classAvailableSpots = 0;
 //This is for sections (such as BIO) which have classes that are labs only. Its the running total of ALL "# of #", but
-// only displayed if only_lab is true
-let hidden_total_spots = 0;
-let hidden_available_spots = 0;
+// only displayed if isOnlyLabSections is true
+let classTotalSpotsLabOnly = 0;
+let classAvailableSpotsLabOnly = 0;
 //This is for when a class is closed - it'll let you know how many spots are open based on discussion
-let discussion_total_spots = 0;
-let discussion_available_spots = 0;
-/*Initialize only_lab to true - will get set to false if type of class is ever anything but Lab
+let classDiscussionTotalSpots = 0;
+let classDiscussionAvailableSpots = 0;
+/*Initialize isOnlyLabSections to true - will get set to false if type of class is ever anything but Lab
  We are usually only interested in Lecture and Lecture-Lab, but some classes *only* have Labs - these are still interesting
  to Bio kids and whatnot. So we'll save all of them, and only display either the Lecture-ish ones or, if it's all Bio, then display totals
  */
-let only_lab = true;
+let isOnlyLabSections = true;
 //Checks whether all lecture sections are closed
-let all_closed = false;
-let has_lecture = false;
-let has_discussion = false;
-let current_closed = false;
+let allLecturesClosed = false;
+let classHasLectureSection = false;
+let currentSectionHasDiscussion = false;
+let currectSectionIsClosed = false;
 //Url template for each professor
-const url_template = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
+const ratingURLTemplate = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
 //Contains a span HTML element, which is just included to insert a blank column cell in each row, to preserve spacing
-const empty_span = '<span class=\"instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span \
+const emptySpanCell = '<span class=\"instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1\"><span \
 class=\"hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall\">Prof. Rating: </span></span>';
 //An array that will contain the schedule that they are currently registered in
-const current_schedule = [];
+const currentScheduleArr = [];
 
 function getCurrentSchedule() {
   //Pulls schedule from myCourseBin
@@ -127,40 +127,40 @@ function parseSchedule(data) {
       "section": classInfo[1].slice(1, -2),
       "classname": classInfo[0]
     };
-    current_schedule.push(time);
+    currentScheduleArr.push(time);
   }
   //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
   $(".crs-accordion-content-area").each(function () {
-    let all_overlap = true;
+    let doAllSectionsOverlap = true;
     const sections = $(this).find(".section_alt1, .section_alt0");
 
     sections.each(function () {
 
       //Get hours for current section
-      let section_hours = $(this).find("[class^=hours]")[0].innerText;
-      section_hours = section_hours.replace("Time: ", '');
-      section_hours = section_hours.split("-");
+      let secHours = $(this).find("[class^=hours]")[0].innerText;
+      secHours = secHours.replace("Time: ", '');
+      secHours = secHours.split("-");
       //Get days for class for current section
-      let section_days = $(this).find("[class^=days]")[0].innerText;
-      section_days = section_days.replace("Days: ", '');
-      section_days = splitDays(section_days);
+      let secDays = $(this).find("[class^=days]")[0].innerText;
+      secDays = secDays.replace("Days: ", '');
+      secDays = splitDays(secDays);
       //Get section name to compare if you already have that class
-      let section_name = $(this).find("[class^=id]")[0].innerText;
-      section_name = section_name.replace("Section: ", '');
-      let did_overlap = false;
+      let secName = $(this).find("[class^=id]")[0].innerText;
+      secName = secName.replace("Section: ", '');
+      let didOverlap = false;
       //Get section name to compare if you already have that class
-      let section_type = $(this).find("[class^=type]")[0].innerText;
-      section_type = section_type.replace("Type: ", '');
-      let should_break = false;
+      let secType = $(this).find("[class^=type]")[0].innerText;
+      secType = secType.replace("Type: ", '');
+      let shouldBreak = false;
       /*Three nested for loops... Wow
        Kinda horrifying... but it works
-       The saved schedule for classes currently in your course bin is current_schedule
-       It iterates over current_schedule, then it iterates over every day in current schedule
+       The saved schedule for classes currently in your course bin is currentScheduleArr
+       It iterates over currentScheduleArr, then it iterates over every day in current schedule
        current schedule { day: ["M", "T", "Th"], time: ["08:00pm","11:00pm"], section: "33333"}
        Then it iterates over the current section (the specific class type per class, like discussion, lecture, etc)
-       jQuery row object... I parsed section_days above, which would be like ["M", "T"]
+       jQuery row object... I parsed secDays above, which would be like ["M", "T"]
 
-       I need to filter it to only iterate over the intersection of the current_schedule day and the current class
+       I need to filter it to only iterate over the intersection of the currentScheduleArr day and the current class
        day. Other than that, though, I can't see a more efficient solution.
 
        This will ideally not loop that many times, though - at most 5*5*(4)ish, if they're registered for 4 classes,
@@ -168,31 +168,31 @@ function parseSchedule(data) {
 
        Performance trace tells us we only spend ~0.5 seconds on this function, so optimization is not currently needed
        */
-      for (const current_class of current_schedule) {
-        if (should_break || section_name.startsWith(current_class.section)) {
+      for (const currClass of currentScheduleArr) {
+        if (shouldBreak || secName.startsWith(currClass.section)) {
           break;
         }
-        for (let j = 0; j < current_class.day.length; j++) {
-          if (should_break) {
+        for (let j = 0; j < currClass.day.length; j++) {
+          if (shouldBreak) {
             break;
           }
-          for (let k = 0; k < section_days.length; k++) {
+          for (let k = 0; k < secDays.length; k++) {
             //Class already registered/scheduled
-            const range = moment.range(moment(current_class.time[0], "hh:mma").day(current_class.day[j]), moment(current_class.time[1], "hh:mma").day(current_class.day[j]));
-            const range2 = moment.range(moment(section_hours[0], "hh:mma").day(section_days[k]), moment(section_hours[1], "hh:mma").day(section_days[k]));
-            if (range.overlaps(range2) && !section_name.startsWith(current_class.section)) {
-              should_break = true;
-              did_overlap = true;
-              addConflictOverlay(this, current_class.classname);
+            const range = moment.range(moment(currClass.time[0], "hh:mma").day(currClass.day[j]), moment(currClass.time[1], "hh:mma").day(currClass.day[j]));
+            const range2 = moment.range(moment(secHours[0], "hh:mma").day(secDays[k]), moment(secHours[1], "hh:mma").day(secDays[k]));
+            if (range.overlaps(range2) && !secName.startsWith(currClass.section)) {
+              shouldBreak = true;
+              didOverlap = true;
+              addConflictOverlay(this, currClass.classname);
             }
           }
         }
       }
-      if (section_type.startsWith("Lecture") && !did_overlap) {
-        all_overlap = false;
+      if (secType.startsWith("Lecture") && !didOverlap) {
+        doAllSectionsOverlap = false;
       }
     });
-    if (all_overlap) {
+    if (doAllSectionsOverlap) {
       insertAllOverlap(this);
     }
   });
@@ -204,43 +204,43 @@ function parseSchedule(data) {
   });
 }
 
-//If the section it is currently parsing conflicts with a class in current_schedule
+//If the section it is currently parsing conflicts with a class in currentScheduleArr
 function addConflictOverlay(row, name) {
-  let add_to_cb = $(row).find(".addtomycb");
-  if (add_to_cb.length !== 0) {
+  let addToCourseBin = $(row).find(".addtomycb");
+  if (addToCourseBin.length !== 0) {
     $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
-    add_to_cb = add_to_cb[0];
-    $(add_to_cb).attr('value', 'Overlaps ' + name);
-    $(add_to_cb).attr('orig_name', 'Overlaps ' + name);
-    $(add_to_cb).attr('title', 'This class overlaps with your current schedule!');
-    $(add_to_cb).addClass("warning");
+    addToCourseBin = addToCourseBin[0];
+    $(addToCourseBin).attr('value', 'Overlaps ' + name);
+    $(addToCourseBin).attr('orig_name', 'Overlaps ' + name);
+    $(addToCourseBin).attr('title', 'This class overlaps with your current schedule!');
+    $(addToCourseBin).addClass("warning");
   }
 }
 
 function splitDays(days) {
   //Split Thursday first because otherwise it'll get split on Tuesday
-  let split_days = days.replace("Th", "D");
-  split_days = split_days.split('');
-  for (let i = 0; i < split_days.length; i++) {
-    switch (split_days[i]) {
+  let split = days.replace("Th", "D");
+  split = split.split('');
+  for (let i = 0; i < split.length; i++) {
+    switch (split[i]) {
       case "M":
-        split_days[i] = "Monday";
+        split[i] = "Monday";
         break;
       case "T":
-        split_days[i] = "Tuesday";
+        split[i] = "Tuesday";
         break;
       case "W":
-        split_days[i] = "Wednesday";
+        split[i] = "Wednesday";
         break;
       case "D":
-        split_days[i] = "Thursday";
+        split[i] = "Thursday";
         break;
       case "F":
-        split_days[i] = "Friday";
+        split[i] = "Friday";
         break;
     }
   }
-  return split_days;
+  return split;
 }
 
 function insertExportButton() {
@@ -259,9 +259,9 @@ function addPostRequests() {
     $(this).unbind('mouseenter mouseleave');
     const id = $(form).find("#sectionid");
     //get the department by matching form ID to the row above
-    const form_id = $(form).attr("id");
-    const row_number = form_id.substring(4);
-    const hrefMatch = `#course_${row_number}`;
+    const formID = $(form).attr("id");
+    const rowNum = formID.substring(4);
+    const hrefMatch = `#course_${rowNum}`;
     const aboverow = $(`a[href="${hrefMatch}"]`);
     const courseSearch = $(aboverow).find(".crsID");
     let departmentFromAbove = "";
@@ -385,10 +385,10 @@ function successModal(message) {
 //This extension adds a new column, thus squeezing a lot of the elements
 //The following function renames the button from "Add to myCourseBin" to "Add" to preserve space
 function changeAddToCourseBinButton(row) {
-  let add_to_cb = $(row).find(".addtomycb");
-  if (add_to_cb.length !== 0) {
-    add_to_cb = add_to_cb[0];
-    $(add_to_cb).attr('value', 'Add');
+  let addToCourseBin = $(row).find(".addtomycb");
+  if (addToCourseBin.length !== 0) {
+    addToCourseBin = addToCourseBin[0];
+    $(addToCourseBin).attr('value', 'Add');
   }
 }
 
@@ -396,27 +396,27 @@ function changeAddToCourseBinButton(row) {
 function parseRegistrationNumbers(row) {
   //Find registration numbers for this row, formatted like "# of #". Hidden content also prepends it with Registered:
   // so that must be cut out
-  const registration_numbers_element = $(row).find(".regSeats_alt1, .regSeats_alt0");
-  let registration_numbers;
+  const regNumElem = $(row).find(".regSeats_alt1, .regSeats_alt0");
+  let regNum;
   //Cut out hidden text before it
   //If class has reg details
-  if (registration_numbers_element.length !== 0) {
-    registration_numbers = registration_numbers_element[0].textContent.replace("Registered: ", "");
+  if (regNumElem.length !== 0) {
+    regNum = regNumElem[0].textContent.replace("Registered: ", "");
     //create array using "of" as delimiter
-    registration_numbers = registration_numbers.split("of");
-    if (registration_numbers.length !== 2) {
-      current_closed = true;
-      if (registration_numbers[0] !== null && registration_numbers[0].trim() === "Closed" && !has_lecture) {
-        all_closed = true;
+    regNum = regNum.split("of");
+    if (regNum.length !== 2) {
+      currectSectionIsClosed = true;
+      if (regNum[0] !== null && regNum[0].trim() === "Closed" && !classHasLectureSection) {
+        allLecturesClosed = true;
       }
       addNotifyMe(row);
       if (!$(row).hasClass("blank_rating")) {
         $(row).addClass("blank_rating");
-        const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
-        $(location_of_insert).after(empty_span);
+        const loc = $(row).find('.instr_alt1, .instr_alt0')[0];
+        $(loc).after(emptySpanCell);
       }
     } else {
-      addRegistrationNumbers(row, registration_numbers[0].trim(), registration_numbers[1].trim());
+      addRegistrationNumbers(row, regNum[0].trim(), regNum[1].trim());
     }
   }
 }
@@ -447,42 +447,42 @@ function addRegistrationNumbers(row, enrolled, total) {
   //Gets each of ("# of #")
   //TODO: This utilizes global variables :( Sorry future person debugging this, I'll try to do a refactor before I
   // leave USC
-  current_enrolled = parseInt(enrolled);
-  total_available = parseInt(total);
+  currentEnrolled = parseInt(enrolled);
+  totalAvailable = parseInt(total);
   //Checks class type - we are only interested in Lecture and Lecture-Lab
-  const class_type_element = $(row).find('.type_alt1, .type_alt0');
-  let class_type;
-  if (class_type_element.length !== 0) {
-    class_type = class_type_element[0].textContent;
-    parseClassType(row, class_type);
+  const classTypeElem = $(row).find('.type_alt1, .type_alt0');
+  let classType;
+  if (classTypeElem.length !== 0) {
+    classType = classTypeElem[0].textContent;
+    parseClassType(row, classType);
   }
 }
 
 // Parses each row for what type of class it is, and whether there are still spots
-function parseClassType(row, class_type) {
+function parseClassType(row, classType) {
   //If it's not a lab or quiz
-  if (class_type === "Type: Lecture" || class_type === "Type: Lecture-Lab" || class_type === "Type: Lecture-Discussion") {
-    //It's not a lab, so only_lab is false
-    only_lab = false;
-    has_lecture = true;
-    total_spots += total_available;
-    available_spots += (total_available - current_enrolled);
-    all_closed = false;
+  if (classType === "Type: Lecture" || classType === "Type: Lecture-Lab" || classType === "Type: Lecture-Discussion") {
+    //It's not a lab, so isOnlyLabSections is false
+    isOnlyLabSections = false;
+    classHasLectureSection = true;
+    classTotalSpots += totalAvailable;
+    classAvailableSpots += (totalAvailable - currentEnrolled);
+    allLecturesClosed = false;
     // If the class is closed, insert the Notify Me button
-    if (available_spots === 0) {
+    if (classAvailableSpots === 0) {
       addNotifyMe(row);
     }
-  } else if (class_type === "Type: Lab") {
-    hidden_total_spots += total_available;
-    hidden_available_spots += (total_available - current_enrolled);
-  } else if (class_type === "Type: Discussion") {
-    only_lab = false;
-    has_discussion = true;
-    discussion_total_spots += total_available;
-    discussion_available_spots += (total_available - current_enrolled);
+  } else if (classType === "Type: Lab") {
+    classTotalSpotsLabOnly += totalAvailable;
+    classAvailableSpotsLabOnly += (totalAvailable - currentEnrolled);
+  } else if (classType === "Type: Discussion") {
+    isOnlyLabSections = false;
+    currentSectionHasDiscussion = true;
+    classDiscussionTotalSpots += totalAvailable;
+    classDiscussionAvailableSpots += (totalAvailable - currentEnrolled);
   } else {
     //If not Lab or Lecture/lecture-lab then set the flag to false
-    only_lab = false;
+    isOnlyLabSections = false;
   }
 }
 
@@ -492,13 +492,13 @@ function insertBlankRatingCell(row) {
   // html if it's a valid professor... TODO refactor for next semester I suppose
   if (!$(row).hasClass("blank_rating")) {
     $(row).addClass("blank_rating");
-    const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
-    $(location_of_insert).after(empty_span);
+    const loc = $(row).find('.instr_alt1, .instr_alt0')[0];
+    $(loc).after(emptySpanCell);
   }
 }
 
 function insertProfessorRating(row, professor_info) {
-  const url = url_template + professor_info.id;
+  const url = ratingURLTemplate + professor_info.id;
   //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
   //if there already is one then we know it's another professor
   if ($(row).find('.rating').length !== 0) {
@@ -555,14 +555,14 @@ function parseProfessor(instructor, row) {
   if (instructor.trim() === "" && !$(row).hasClass("blank_rating")) {
     $(row).addClass("blank_rating");
     const location_of_insert = $(row).find('.instr_alt1, .instr_alt0')[0];
-    $(location_of_insert).after(empty_span);
+    $(location_of_insert).after(emptySpanCell);
   }
   let actual_name = instructor.split(", ");
   //generate actual name
   actual_name = `${actual_name[1]} ${actual_name[0]}`;
   //If instructor name in json
-  if (actual_name in professor_ratings) {
-    insertProfessorRating(row, professor_ratings[actual_name]);
+  if (actual_name in professorRatings) {
+    insertProfessorRating(row, professorRatings[actual_name]);
   } else {
     insertBlankRatingCell(row);
   }
@@ -577,44 +577,44 @@ function insertProfRatingHeader(header) {
 // just grew
 function reinitializeVariablesPerClass() {
   //reinit to 0
-  total_spots = 0;
-  available_spots = 0;
+  classTotalSpots = 0;
+  classAvailableSpots = 0;
   //keeps track of all counts in case it's an all-lab scenario
-  hidden_total_spots = 0;
-  hidden_available_spots = 0;
-  discussion_total_spots = 0;
-  discussion_available_spots = 0;
-  only_lab = true;
+  classTotalSpotsLabOnly = 0;
+  classAvailableSpotsLabOnly = 0;
+  classDiscussionTotalSpots = 0;
+  classDiscussionAvailableSpots = 0;
+  isOnlyLabSections = true;
   //Checks whether all lecture sections are closed
-  all_closed = false;
+  allLecturesClosed = false;
   //If it has ANY lecture sections
-  has_lecture = false;
-  has_discussion = false;
+  classHasLectureSection = false;
+  currentSectionHasDiscussion = false;
   //Is the current class closed for registration?
-  current_closed = false;
+  currectSectionIsClosed = false;
 }
 
 function insertTotalSpots(element) {
-  const name_element = $(element).prev();
-  const name = $(name_element).find('.course-title-indent');
-  let spotsRemainingString = `<span class="crsTitl spots_remaining"> - ${available_spots}`;
-  if (available_spots === 1) {
+  const nameElem = $(element).prev();
+  const name = $(nameElem).find('.course-title-indent');
+  let spotsRemainingString = `<span class="crsTitl spots_remaining"> - ${classAvailableSpots}`;
+  if (classAvailableSpots === 1) {
     spotsRemainingString += " spot remaining" + "</span>";
   } else {
     spotsRemainingString += " spots remaining" + "</span>";
   }
   name.append(spotsRemainingString);
   //Let's make the background red if no spots remaining
-  if (available_spots === 0) {
+  if (classAvailableSpots === 0) {
     $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
   }
 }
 
 function insertClosedRegistration(element) {
-  const name_element = $(element).prev();
-  const name = $(name_element).find('.course-title-indent');
-  if (has_discussion) {
-    name.append(`<span class="crsTitl spots_remaining"> - closed registration ( ${discussion_available_spots} spots remaining)</span>`);
+  const nameElem = $(element).prev();
+  const name = $(nameElem).find('.course-title-indent');
+  if (currentSectionHasDiscussion) {
+    name.append(`<span class="crsTitl spots_remaining"> - closed registration ( ${classDiscussionAvailableSpots} spots remaining)</span>`);
   } else {
     name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration</span>");
   }
@@ -623,17 +623,17 @@ function insertClosedRegistration(element) {
 }
 
 function insertOnlyLabNumbers(element) {
-  const name_element = $(element).prev();
-  const name = $(name_element).find('.course-title-indent');
-  name.append(`<span class="crsTitl spots_remaining"> - ${hidden_available_spots} remaining lab spots</span>`);
-  if (hidden_available_spots === 0) {
+  const nameElem = $(element).prev();
+  const name = $(nameElem).find('.course-title-indent');
+  name.append(`<span class="crsTitl spots_remaining"> - ${classAvailableSpotsLabOnly} remaining lab spots</span>`);
+  if (classAvailableSpotsLabOnly === 0) {
     $(name).css("background-color", "rgba(240, 65, 36, 0.45)");
   }
 }
 
 function insertAllOverlap(element) {
-  const name_element = $(element).prev();
-  const name = $(name_element).find('.course-title-indent');
+  const nameElem = $(element).prev();
+  const name = $(nameElem).find('.course-title-indent');
   //Let's make the background orange if all lectures overlap
   let color = $(name).css('background-color');
   if (color == "rgba(240, 65, 36, 0.45)") {
@@ -645,15 +645,15 @@ function insertAllOverlap(element) {
 
 function insertClassNumbers(element) {
   //Normal insert for remaining spots
-  if (total_spots !== 0 && isNumber(total_spots)) {
+  if (classTotalSpots !== 0 && isNumber(classTotalSpots)) {
     insertTotalSpots(element);
   }
   //If it's closed
-  if (all_closed && !has_lecture) {
+  if (allLecturesClosed && !classHasLectureSection) {
     insertClosedRegistration(element);
   }
   //if there were only labs in this class, show it
-  if (only_lab && hidden_total_spots !== 0 && isNumber(hidden_total_spots)) {
+  if (isOnlyLabSections && classTotalSpotsLabOnly !== 0 && isNumber(classTotalSpotsLabOnly)) {
     insertOnlyLabNumbers(element);
   }
 }
@@ -663,12 +663,12 @@ function addUnitsToTitle(row) {
     // get units
     let units = $(row).find("[class^=type_alt]");
     if (units.length > 3) {
-      let actual_units = $(units)[3].innerText;
-      actual_units = actual_units.replace("Units: ", "");
+      let actualUnits = $(units)[3].innerText;
+      actualUnits = actualUnits.replace("Units: ", "");
       let header = $(row).prev();
-      let header_text = $(header).find('.course-title-indent');
-      const unit_text = `<span class="crsTitl spots_remaining"> - ${actual_units} units</span>`;
-      $(header_text).append(unit_text);
+      let headerText = $(header).find('.course-title-indent');
+      const unitText = `<span class="crsTitl spots_remaining"> - ${actualUnits} units</span>`;
+      $(headerText).append(unitText);
     }
   }
 }
@@ -718,9 +718,9 @@ function parseWebReg() {
   //Because we insert a new column, we need to change the CSS around to make it look right
   changeCSSColumnWidth();
   //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-  const course_individual_class = $(".crs-accordion-content-area");
+  const individualClass = $(".crs-accordion-content-area");
   //Parses each class found previously
-  parseClass(course_individual_class);
+  parseClass(individualClass);
   addPostRequests();
 }
 
@@ -730,16 +730,16 @@ function isNumber(n) {
   return typeof n === 'number' && !isNaN(n) && isFinite(n);
 }
 
-function parseCoursePage(professor_ratings) {
+function parseCoursePage(professorRatings) {
   //Get all courses
   const courses = $(".course-info");
-  let total_spots = 0;
-  let available_spots = 0;
-  const url_template = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
+  let totalSpots = 0;
+  let availSpots = 0;
+  const ratingTemplate = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
   //Iterate over courses on page
   for (let i = 0; i < courses.length; i++) {
-    total_spots = 0;
-    available_spots = 0;
+    totalSpots = 0;
+    availSpots = 0;
     //Get table with jQuery selector
     const table = $(courses[i]).find("> .course-details > table.sections");
     //Get rows, iterate over each one
@@ -758,38 +758,38 @@ function parseCoursePage(professor_ratings) {
         return true;
       }
       //Get registration numbers
-      const registration_numbers = $(this).find("td.registered")[0].textContent.split(" of ");
-      const current_enrolled = parseInt(registration_numbers[0]);
-      const total_available = parseInt(registration_numbers[1]);
+      const registratioNumbers = $(this).find("td.registered")[0].textContent.split(" of ");
+      const currentlyEnrolled = parseInt(registratioNumbers[0]);
+      const totalAvailable = parseInt(registratioNumbers[1]);
       //If it's not a lab or quiz
       if (type === "Lecture" || type === "Lecture-Lab") {
-        total_spots += total_available;
-        available_spots += (total_available - current_enrolled);
+        totalSpots += totalAvailable;
+        availSpots += (totalAvailable - currentlyEnrolled);
       }
       const professor = $(this).find("td.instructor")[0];
       //Professor names are separated by commas, so this handles the case that multiple profs teach a section
-      const professor_name = professor.textContent.split(",");
-      for (let i = 0; i < professor_name.length; i++) {
-        split_prof = professor_name[i];
+      const profName = professor.textContent.split(",");
+      for (let i = 0; i < profName.length; i++) {
+        splitProfName = profName[i];
         //Names are formatted "First Last" so no reordering is necessary
         //However, some names are "First Middle Middle2 Last", and we only want "First Last" as that is the format of
         // our json
-        let actual_name = split_prof.split(" ");
-        actual_name = `${actual_name[0]} ${actual_name[actual_name.length - 1]}`;
+        let name = splitProfName.split(" ");
+        name = `${name[0]} ${name[name.length - 1]}`;
         //If its in JSON
-        if (actual_name in professor_ratings) {
+        if (name in professorRatings) {
           //generate RMP URL
-          const url = url_template + professor_ratings[actual_name].id;
+          const url = ratingTemplate + professorRatings[name].id;
           //If we've never inserted before, insert. Otherwise insert with a comma before it for good formatting
           if ($(this).find('.rating').length === 0) {
             if (options.showRatings) {
-              $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">${professor_ratings[actual_name].rating}</a></td>`);
+              $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">${professorRatings[name].rating}</a></td>`);
 
             } else {
               $(this).find('td.instructor').after(`<td class="rating"><a href=${url} target="_blank">Link</a></td>`);
             }
           } else {
-            $(this).find('.rating').append(`, <a href=${url}>${professor_ratings[actual_name].rating}</a>`);
+            $(this).find('.rating').append(`, <a href=${url}>${professorRatings[name].rating}</a>`);
           }
         } else {
           //If not in JSON, we need an empty space to make table format correctly
@@ -803,12 +803,12 @@ function parseCoursePage(professor_ratings) {
     });
     //insert remaining spots in main
     const title = $(courses[i]).find("> .course-id > h3 > a");
-    if (total_spots !== 0 && isNumber(total_spots)) {
-      let availableString = ` - ${available_spots} remaining spot`;
-      if (available_spots > 1) {
+    if (totalSpots !== 0 && isNumber(totalSpots)) {
+      let availableString = ` - ${availSpots} remaining spot`;
+      if (availSpots > 1) {
         availableString += "s";
       }
-      if (available_spots === 0) {
+      if (availSpots === 0) {
         availableString += "s";
         const background = $(courses[i]).find("> .course-id");
         $(background).css("background-color", "rgba(240, 65, 36, 0.45)");
