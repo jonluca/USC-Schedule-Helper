@@ -30,7 +30,7 @@ function startHelper() {
   // doing it
   $.ajax({
     method: 'GET',
-    url: chrome.runtime.getURL("data/only_ratings.json"),
+    url: chrome.runtime.getURL("data/ratings.json"),
     type: 'json',
     success(data, textStatus, jqXHR) {
       professorRatings = data;
@@ -40,7 +40,7 @@ function startHelper() {
       //If we are on webreg or if we're on classes.usc.edu
       if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
         //Appending to body makes the stylesheet async
-        $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/sweetalert.css")}" type="text/css" />`);
+        $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("css/sweetalert.css")}" type="text/css" />`);
         if (options.showConflicts) {
           getCurrentSchedule();
         }
@@ -101,7 +101,7 @@ function getCurrentSchedule() {
 
 function insertCalendar() {
   // Insert kendo css and js library
-  $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/kendo.css")}" type="text/css" />`);
+  $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("css/kendo.css")}" type="text/css" />`);
   $('body').append(`<script src="${chrome.runtime.getURL("js/libs/kendo.min.js")}"></script>`);
   //Construct the div containing the calendar
   let div = `<div id="popupCalendar" ><div id="popupCalendarHeader">Calendar (Alt key to toggle visibility, drag to move, Esc to close)</div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;

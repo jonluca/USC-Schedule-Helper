@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
-  "version": "9.3",
+  "version": "9.4",
   "permissions": [
     "*://classes.usc.edu/*/classes/*",
     "*://webreg.usc.edu/*",
@@ -17,11 +17,11 @@
         "*://webreg.usc.edu/*"
       ],
       "js": [
-        "js/jquery.js",
+        "js/libs/jquery.js",
         "js/common.js",
-        "js/moment.js",
-        "usc_schedule_helper.js",
-        "js/sweetalert.min.js"
+        "js/libs/moment.js",
+        "USCScheduleHelper.js",
+        "js/libs/sweetalert.min.js"
       ]
     }
   ],
@@ -45,6 +45,7 @@
   "homepage_url": "https://jonlu.ca",
   "web_accessible_resources": [
     "data/*",
+    "css/*",
     "js/*"
   ]
 }

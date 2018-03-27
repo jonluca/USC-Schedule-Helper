@@ -4297,7 +4297,7 @@
 })));
 
 !function (t, e) {
-  "object" == typeof exports && "object" == typeof module ? module.exports = e(require("moment")) : "function" == typeof define && define.amd ? define("moment-range", ["moment"], e) : "object" == typeof exports ? exports["moment-range"] = e(require("moment")) : t["moment-range"] = e(t.moment);
+  "object" == typeof exports && "object" == typeof module ? module.exports = e(require("js/libs/moment")) : "function" == typeof define && define.amd ? define("moment-range", ["js/libs/moment"], e) : "object" == typeof exports ? exports["moment-range"] = e(require("js/libs/moment")) : t["moment-range"] = e(t.moment);
 }(this, function (t) {
   return function (t) {
     function e(r) {

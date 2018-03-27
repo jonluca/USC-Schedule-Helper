@@ -16,6 +16,7 @@ $(() => {
     $('input').parent().on('gumby.onChange', function () {
       changeOption(this);
     });
+    // Fun easter egg
     $(".secret").click(function () {
       --count;
       if (count == 0) {
