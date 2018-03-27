@@ -516,7 +516,7 @@ function insertProfessorRating(row, professor_info) {
       rating_anchor = rating_anchor_with_score;
     }
     //long string just to include new
-    $(location_of_insert).after(`<span class="hours_alt1 text-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
+    $(location_of_insert).after(`<span class="hours_alt1 text-md-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`);
     /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
      find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
     if ($(row).find(".empty_rating").length !== 0) {
@@ -712,6 +712,13 @@ function changeCSSColumnWidth() {
   $(".session_alt0").css({
     "width": "4%"
   });
+  $(`<style type='text/css'>
+      @media (min-width: 992px) {
+          .text-md-center {
+              text-align: center;
+          }
+      }
+     </style>`).appendTo("head");
 }
 
 function parseWebReg() {
