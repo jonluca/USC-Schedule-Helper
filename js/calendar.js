@@ -232,6 +232,7 @@ function toggleCal() {
 }
 
 document.body.onkeyup = function (e) {
+  e.preventDefault();
   if (e.keyCode == 18) {
     toggleCal();
   }else if(e.keyCode == 27){
