@@ -1,5 +1,5 @@
-var options;
-var count = 3;
+let options;
+let count = 3;
 $(() => {
   $('body').on('click', 'a', function () {
     chrome.tabs.create({url: $(this).attr('href')});

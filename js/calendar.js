@@ -3,7 +3,7 @@ function scheduler_save(e) {
 }
 
 function scheduler_remove(e) {
-  var scheduler = $("#scheduler").data("kendoScheduler");
+  const scheduler = $("#scheduler").data("kendoScheduler");
   kRefresh();
 }
 
@@ -23,7 +23,7 @@ function scheduler_moveE(e) {
 }
 
 function kRefresh() {
-    $("#scheduler").data("kendoScheduler").dataSource.read();
+  $("#scheduler").data("kendoScheduler").dataSource.read();
 }
 
 function load() {
@@ -235,7 +235,7 @@ document.body.onkeyup = function (e) {
   if (e.keyCode == 18) {
     e.preventDefault();
     toggleCal();
-  }else if(e.keyCode == 27){
+  } else if (e.keyCode == 27) {
     e.preventDefault();
     $("#popupCalendar").hide();
   }

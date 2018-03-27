@@ -3,7 +3,7 @@
 function loadOptions(callback) {
 
   chrome.storage.sync.get('options', items => {
-    var options = items['options'];
+    let options = items['options'];
     if (options == null || options === "{}") {
       options = {};
     }
@@ -25,16 +25,16 @@ function loadOptions(callback) {
 
 // Send options to all tabs and extension pages
 function sendOptions(options) {
-  var request = {
+  const request = {
     action: 'optionsChanged',
     'options': options
   };
 
   // Send options to all tabs
   chrome.windows.getAll(null, function (windows) {
-    for (var i = 0; i < windows.length; i++) {
+    for (let i = 0; i < windows.length; i++) {
       chrome.tabs.getAllInWindow(windows[i].id, function (tabs) {
-        for (var j = 0; j < tabs.length; j++) {
+        for (let j = 0; j < tabs.length; j++) {
           chrome.tabs.sendMessage(tabs[j].id, request);
         }
       });
