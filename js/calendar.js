@@ -236,6 +236,7 @@ document.body.onkeyup = function (e) {
     e.preventDefault();
     toggleCal();
   }else if(e.keyCode == 27){
+    e.preventDefault();
     $("#popupCalendar").hide();
   }
 };
