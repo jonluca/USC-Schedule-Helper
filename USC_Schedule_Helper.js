@@ -104,7 +104,7 @@ function insertCalendar() {
   $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("data/kendo.css")}" type="text/css" />`);
   $('body').append(`<script src="${chrome.runtime.getURL("js/libs/kendo.min.js")}"></script>`);
   //Construct the div containing the calendar
-  let div = `<div id="popupCalendar" ><div id="popupCalendarHeader">Calendar (Alt key to toggle visibility, drag to move)</div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;
+  let div = `<div id="popupCalendar" ><div id="popupCalendarHeader">Calendar (Alt key to toggle visibility, drag to move, Esc to close)</div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;
   $(".layout-container").prepend(div);
   // Enable dragging around the header
   dragElement(document.getElementById(("popupCalendar")));

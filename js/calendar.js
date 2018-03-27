@@ -234,5 +234,7 @@ function toggleCal() {
 document.body.onkeyup = function (e) {
   if (e.keyCode == 18) {
     toggleCal();
+  }else if(e.keyCode == 27){
+    $("#popupCalendar").hide();
   }
 };
