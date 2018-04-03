@@ -662,9 +662,21 @@ function addUnitsToTitle(row) {
   if (options.showUnits) {
     // get units
     let units = $(row).find("[class^=type_alt]");
+
+    // 3 is because the header has two elements that start with type_alt
     if (units.length > 3) {
       let actualUnits = $(units)[3].innerText;
       actualUnits = actualUnits.replace("Units: ", "");
+      // start at 5 because every row has 2 elements with class ^= type_alt - also increment by 2
+      var nextRowToCheckForNonZeroUnits = 5;
+
+      // Edge case for when the first class in web reg is not the discussion section one, and doesn't have the right
+      // unit value
+      while (actualUnits && actualUnits.trim() == "0.0" && nextRowToCheckForNonZeroUnits < units.length) {
+        actualUnits = $(units)[nextRowToCheckForNonZeroUnits].innerText;
+        actualUnits = actualUnits.replace("Units: ", "");
+        nextRowToCheckForNonZeroUnits += 2;
+      }
       let header = $(row).prev();
       let headerText = $(header).find('.course-title-indent');
       const unitText = `<span class="crsTitl spots_remaining"> - ${actualUnits} units</span>`;
