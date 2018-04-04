@@ -104,17 +104,28 @@ function insertCalendar() {
   $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("css/kendo.css")}" type="text/css" />`);
   $('body').append(`<script src="${chrome.runtime.getURL("js/libs/kendo.min.js")}"></script>`);
   //Construct the div containing the calendar
-  let div = `<div id="popupCalendar" ><div id="popupCalendarHeader">Calendar (Alt key to toggle visibility, drag to move, Esc to close)</div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;
-  $(".layout-container").prepend(div);
+  let div = `<div id="popupCalendar" ><div id="popupCalendarHeader"><span id="popupCalText">Calendar (Alt key to toggle visibility, drag to move, Esc to close)</span><span id="shortCal">Cal</span></div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;
+  $(".searchMargin").append(div);
   // Enable dragging around the header
   dragElement(document.getElementById(("popupCalendar")));
+  $("#popupCalendar").hover(function () {
+    $("#popupCalText").css('display', 'block');
+    $("#popupCalText").addClass("isVis");
+    $("#shortCal").hide();
+  }, function () {
+    $("#popupCalText").hide();
+    $("#popupCalText").removeClass("isVis");
+    $("#shortCal").show();
+
+  });
+
   // Insert the js that has access to the window.kendo elements that deals with actually constructing the calendar
   $('body').append(`<script src="${chrome.runtime.getURL("js/calendar.js")}"></script>`);
 
 }
 
 function parseSchedule(data) {
-  for (singleClass of data.Data) {
+  for (let singleClass of data.Data) {
     if (id == undefined) {
       id = singleClass.USCID;
     }
