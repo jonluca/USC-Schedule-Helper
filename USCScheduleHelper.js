@@ -59,7 +59,7 @@ function startHelper() {
   });
 }
 
-//Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), available is first
+//Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), avail able is first
 let classTotalSpots = 0;
 let classAvailableSpots = 0;
 //This is for sections (such as BIO) which have classes that are labs only. Its the running total of ALL "# of #", but
@@ -102,6 +102,7 @@ function getCurrentSchedule() {
 function insertCalendar() {
   // Insert kendo css and js library
   $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("css/kendo.css")}" type="text/css" />`);
+  $('body').append(`<link rel="stylesheet" href="${chrome.runtime.getURL("css/calendar.css")}" type="text/css" />`);
   $('body').append(`<script src="${chrome.runtime.getURL("js/libs/kendo.min.js")}"></script>`);
   //Construct the div containing the calendar
   let div = `<div id="popupCalendar" ><div id="popupCalendarHeader"><span id="popupCalText">Calendar (Alt key to toggle visibility, drag to move, Esc to close)</span><span id="shortCal">Cal</span></div><div style="display: none;" class="k-widget k-scheduler" id="scheduler"></div></div>`;
