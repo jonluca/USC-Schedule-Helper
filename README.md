@@ -7,7 +7,7 @@
 
 ## Screenshots
 
-<img src="https://i.imgur.com/snfF6yo.png" alt="Options">
+<img src="https://i.imgur.com/snfF6yo.png" alt="Options" width="300px">
 
 <img src="https://i.imgur.com/sSih4to.png" alt="Classes with information">
 
