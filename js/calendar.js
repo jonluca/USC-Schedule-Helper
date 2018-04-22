@@ -29,7 +29,9 @@ function kRefresh() {
 function load() {
   let today = new Date();
   let yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
+  if (yesterday.getDay() != 0) {
+    yesterday.setDate(today.getDate() - 1);
+  }
 
   $("btn").click(function () {
 
