@@ -890,11 +890,12 @@ function dragElement(elmnt) {
 }
 
 function preventEventChng(e) {
-  if ((e.event.Scheduled == "YN") || (e.event.Scheduled == "YY") || (e.event.Scheduled == "NY") || (e.event.Scheduled == "NN") || (e.event.Scheduled == "YN*") || (e.event.Scheduled == "YY*") || (e.event.Scheduled == "NY*") || (e.event.Scheduled == "NN*")) {
+  let prevent = ["YN", "YY", "NY", "NN", "YN*", "YY*", "NY*", "NN*"];
+  let scheduled = e.event.Scheduled;
+  if (prevent.indexOf(scheduled) != -1) {
     setTimeout(function () {
     }, 0);
     e.preventDefault();
-
   }
 
   if (e.event.Scheduled == "Block") {
