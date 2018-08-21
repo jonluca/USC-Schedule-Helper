@@ -270,6 +270,9 @@ function addPostRequests() {
     $(this).attr('type', 'button');
     $(this).unbind('mouseenter mouseleave');
     const id = $(form).find("#sectionid");
+    // Try to extract department from form - USC isn't consistent in when they include the department;
+    const department = $(form).find("#department").val();
+    this.department = department;
     //get the department by matching form ID to the row above
     const formID = $(form).attr("id");
     const rowNum = formID.substring(4);
@@ -277,13 +280,29 @@ function addPostRequests() {
     const aboverow = $(`a[href="${hrefMatch}"]`);
     const courseSearch = $(aboverow).find(".crsID");
     let departmentFromAbove = "";
-    if (courseSearch.length !== 0) {
+    if (courseSearch.length != 0) {
       const spanElem = $(courseSearch[0]).text();
       const departmentString = spanElem.split("-");
       departmentFromAbove = departmentString[0];
-      this.department = departmentFromAbove;
+      if (departmentFromAbove) {
+        this.department = departmentFromAbove;
+      }
+    }
+    let titleTopbar = $(form).parents(".crs-accordion-content-area");
+    if (titleTopbar) {
+      let header = $(titleTopbar).prev();
+      let crsId = $(header).find(".crsID");
+      if (crsId && crsId.text()) {
+        crsId = crsId.text().split("-");
+        if (crsId[0]) {
+          this.department = crsId[0];
+        }
+      }
     }
     const courseid = id.val();
+    if (courseid == "65070") {
+      console.log("hi");
+    }
     $(this).click(() => {
       swal({
         title: 'Notify Me!',
@@ -303,29 +322,31 @@ function addPostRequests() {
           email = email.trim();
         }
         let phone = result[1];
-        let departmentElement = $(form).find("#department");
-        let department = "";
-        if (departmentElement.length !== 0) {
-          department = $(departmentElement[0]).attr("value");
-        }
-        //Third way of getting the department, from above
-        if (department === "" || department == undefined) {
-          department = this.department;
-        }
+        // Try multiple ways of getting the department
+        let department = $(form).find("#department").val();
+
         //If they got to this page by clicking on a specific course on myCourseBin, department won't be included in the
         // form, not sure why We do a hacky way by getting it from courseid
-        if (department === "" || department == undefined) {
+        if (!department) {
           let course = $(form).find("#courseid")[0];
           course = $(course).attr("value");
-          course = course.split("-");
-          department = course[0];
+          if (course) {
+            course = course.split("-");
+            department = course[0];
+          }
+        }
+        //Third way of getting the department, from above
+        if (!department) {
+          department = this.department;
         }
         if (phone === undefined) {
           phone = "";
         }
         if (department === "" || department === undefined) {
           errorModal(`Department in post request was null. Please contact jdecaro@usc.edu with a screenshot of this error!
-Course: ${courseid}`);
+Course: ${courseid}
+Form: ${$(form).html()}
+`);
           return;
         }
         if (email !== null && email !== "ttrojan@usc.edu" && validateEmail(email) && department !== "") {
