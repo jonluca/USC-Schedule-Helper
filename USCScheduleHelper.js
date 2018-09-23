@@ -34,7 +34,7 @@ function startHelper() {
     type: 'json',
     success(data, textStatus, jqXHR) {
       professorRatings = data;
-      if (typeof(data) === "string") {
+      if (typeof (data) === "string") {
         professorRatings = JSON.parse(data);
       }
       //If we are on webreg or if we're on classes.usc.edu
@@ -257,7 +257,7 @@ function splitDays(days) {
 
 function insertExportButton() {
   const navbar = $("ul.nav");
-  $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20183\">Export To Calendar</a></li>");
+  $(navbar).append("<li><a class=\"exportCal\" href=\"https://my.usc.edu/ical/?term=20191\">Export To Calendar</a></li>");
   const cals = $(".exportCal");
   $(cals[1]).remove();
 }
@@ -872,7 +872,10 @@ function parseCoursePage(professorRatings) {
 
 //Draggable element code from https://www.w3schools.com/howto/howto_js_draggable.asp
 function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  var pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
   if (document.getElementById(elmnt.id + "Header")) {
     /* if present, the header is where you move the DIV from:*/
     document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
