@@ -59,6 +59,13 @@ function startHelper() {
   });
 }
 
+/*
+ * TODO(jonluca) Refactor out globals and have tighter coupling within functions
+ *
+ * Each global should have minimum viable scope attached.
+ *
+ * Attempt to change class iteration into mapping functions
+ * */
 //Total spots is all lecture and lecture-lab spots (sum of 2nd # in "# of #"), avail able is first
 let classTotalSpots = 0;
 let classAvailableSpots = 0;
@@ -300,9 +307,6 @@ function addPostRequests() {
       }
     }
     const courseid = id.val();
-    if (courseid == "65070") {
-      console.log("hi");
-    }
     $(this).click(() => {
       swal({
         title: 'Notify Me!',
@@ -560,27 +564,33 @@ function insertProfessorRating(row, professor_info) {
 
 function parseRows(rows) {
   $(rows).each(function () {
-    //rename Add to myCourseBin button so that it fits/looks nice
-    changeAddToCourseBinButton(this);
-    parseRegistrationNumbers(this);
-    //Retrieve Instructor cell from row
-    const instructor_name_element = $(this).find(".instr_alt1, .instr_alt0");
-    if (instructor_name_element.length === 0) {
-      //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but
-      // better safe than sorry here. If in the future they change it this'll prevent it from looking misaligned
-      insertBlankRatingCell(this);
-      //jQuery way of saying continue;
-      return true;
+    try {
+      //rename Add to myCourseBin button so that it fits/looks nice
+      changeAddToCourseBinButton(this);
+      parseRegistrationNumbers(this);
+      //Retrieve Instructor cell from row
+      const instructor_name_element = $(this).find(".instr_alt1, .instr_alt0");
+      if (instructor_name_element.length === 0) {
+        //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but
+        // better safe than sorry here. If in the future they change it this'll prevent it from looking misaligned
+        insertBlankRatingCell(this);
+        //jQuery way of saying continue;
+        return true;
+      }
+      //get all professor names in a hacky way
+      const instructor_names = instructor_name_element[0].innerHTML.split("span>");
+      //split on line breaks
+      const instructor_name = instructor_names[1].split("<br>");
+      //if there are multiple instructors
+      for (const name of instructor_name) {
+        //single instructor name, comma delimited
+        parseProfessor(name, this);
+      }
+    } catch (e) {
+      console.error(e);
+      console.error(`Failed to parse row ${this}!`);
     }
-    //get all professor names in a hacky way
-    const instructor_names = instructor_name_element[0].innerHTML.split("span>");
-    //split on line breaks
-    const instructor_name = instructor_names[1].split("<br>");
-    //if there are multiple instructors
-    for (const name of instructor_name) {
-      //single instructor name, comma delimited
-      parseProfessor(name, this);
-    }
+
   });
 }
 
@@ -720,18 +730,23 @@ function addUnitsToTitle(row) {
 
 function parseClass(classes) {
   $(classes).each(function () {
-    addUnitsToTitle(this);
+    try {
+      //set global variables to 0 (counts, class closed, class type, etc)
+      reinitializeVariablesPerClass();
+      addUnitsToTitle(this);
+      //Insert Prof Rating column at top of each class view
+      const header = $(this).find(".section_head_alt1, .section_alt0");
+      insertProfRatingHeader(header);
+      //Iterate over every section in row. To get alternating colors, USC uses alt0 and alt1, so we must search for both
+      const sections = $(this).find(".section_alt1, .section_alt0");
+      parseRows(sections);
+      //If total spots is a number and it's not 0, insert
+      insertClassNumbers(this);
+    } catch (e) {
+      console.error(e);
+      console.error("Failed to parse a class!");
+    }
 
-    //set global variables to 0 (counts, class closed, class type, etc)
-    reinitializeVariablesPerClass();
-    //Insert Prof Rating column at top of each class view
-    const header = $(this).find(".section_head_alt1, .section_alt0");
-    insertProfRatingHeader(header);
-    //Iterate over every section in row. To get alternating colors, USC uses alt0 and alt1, so we must search for both
-    const sections = $(this).find(".section_alt1, .section_alt0");
-    parseRows(sections);
-    //If total spots is a number and it's not 0, insert
-    insertClassNumbers(this);
   });
 }
 
