@@ -133,6 +133,9 @@ function insertCalendar() {
 }
 
 function parseSchedule(data) {
+  if (!data || !data.Data || !data.Data.length) {
+    return;
+  }
   for (let singleClass of data.Data) {
     if (id == undefined) {
       id = singleClass.USCID;
@@ -147,6 +150,10 @@ function parseSchedule(data) {
       "classname": classInfo[0]
     };
     currentScheduleArr.push(time);
+  }
+  //bail if no classes
+  if (currentScheduleArr.length === 0) {
+    return;
   }
   //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
   $(".crs-accordion-content-area").each(function () {
