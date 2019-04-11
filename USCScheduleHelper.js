@@ -401,12 +401,12 @@ function sendPostRequest(email, courseid, department, phone) {
       if (textStatus === "success" && jqXHR.status === 200) {
         successModal("Sent verification email - please verify your email to begin receiving notifications! <br> \
                     <strong> It's probably in your spam folder!</strong> <br> \
-                    Text message notifications have been disabled because they cost the developer too much to send. Email notifications will still work. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
+                    Email notifications are enabled. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 <b>per section</p> with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
       }
       //If they've already verified their emails, the server returns 201
       //Don't show the message saying an email was sent
       if (textStatus === "success" && jqXHR.status === 201) {
-        successModal("Text message notifications have been disabled because they cost the developer too much to send. Email notifications will still work. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
+        successModal("Email notifications are enabled. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 <b>per section</p> with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
       }
       //They've been ratelimited
       if (jqXHR.status === 429) {
