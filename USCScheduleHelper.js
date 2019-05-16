@@ -398,15 +398,17 @@ function sendPostRequest(email, courseid, department, phone) {
       }
     },
     success(data, textStatus, jqXHR) {
-      if (textStatus === "success" && jqXHR.status === 200) {
-        successModal("Sent verification email - please verify your email to begin receiving notifications! <br> \
-                    <strong> It's probably in your spam folder!</strong> <br> \
-                    Email notifications are enabled. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 <b>per section</p> with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
-      }
-      //If they've already verified their emails, the server returns 201
-      //Don't show the message saying an email was sent
-      if (textStatus === "success" && jqXHR.status === 201) {
-        successModal("Email notifications are enabled. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 <b>per section</p> with your email in the subject and I'll manually enable them for your account. </p> <br> If you have any questions, please contact jdecaro@usc.edu");
+      if (textStatus === "success") {
+        let textNotif = '';
+        // server returns a 200 if they've never signed up/verified their email, and a 201 if they have. If they
+        // haven't, show email verification notice
+        if (jqXHR.status === 200) {
+          textNotif = "Sent verification email - please verify your email to begin receiving notifications! <br> \
+                    <strong> It's probably in your spam folder!</strong> <br>";
+        }
+        textNotif += "Email notifications are enabled. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 <b>per section</p> with your email in the subject and I'll manually enable them for your account. The subject of the venmo should <b>just be your email</b> - without your email, I can't whitelist your account. </p> <br> If you have any questions, please contact usc@jonlu.ca";
+        successModal(textNotif);
+
       }
       //They've been ratelimited
       if (jqXHR.status === 429) {
