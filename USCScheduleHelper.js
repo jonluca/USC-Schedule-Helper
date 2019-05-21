@@ -666,7 +666,7 @@ function insertClosedRegistration(element) {
   const nameElem = $(element).prev();
   const name = $(nameElem).find('.course-title-indent');
   if (currentSectionHasDiscussion) {
-    name.append(`<span class="crsTitl spots_remaining"> - closed registration ( ${classDiscussionAvailableSpots} spots remaining)</span>`);
+    name.append(`<span class="crsTitl spots_remaining"> - closed registration (${classDiscussionAvailableSpots} spots remaining)</span>`);
   } else {
     name.append("<span class=\"crsTitl spots_remaining\">" + " - closed registration</span>");
   }
