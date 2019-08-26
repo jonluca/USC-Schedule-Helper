@@ -11,7 +11,8 @@ function loadOptions(callback) {
     options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
     options.showCalendar = options.hasOwnProperty('showCalendar') ? options.showCalendar : false;
     options.showConflicts = options.hasOwnProperty('showConflicts') ? options.showConflicts : true;
-    options.showRatings = options.hasOwnProperty('showRatings') ? options.showRatings : false;
+    // options.showRatings = options.hasOwnProperty('showRatings') ? options.showRatings : false;
+    options.showRatings = true;
     options.showUnits = options.hasOwnProperty('showUnits') ? options.showUnits : true;
 
     chrome.storage.sync.set({
@@ -31,9 +32,9 @@ function sendOptions(options) {
   };
 
   // Send options to all tabs
-  chrome.windows.getAll(null, function (windows) {
+  chrome.windows.getAll(null, windows => {
     for (let i = 0; i < windows.length; i++) {
-      chrome.tabs.getAllInWindow(windows[i].id, function (tabs) {
+      chrome.tabs.getAllInWindow(windows[i].id, tabs => {
         for (let j = 0; j < tabs.length; j++) {
           chrome.tabs.sendMessage(tabs[j].id, request);
         }

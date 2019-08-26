@@ -2,13 +2,13 @@ const filesInDirectory = dir => new Promise(resolve =>
 
   dir.createReader().readEntries(entries =>
 
-    Promise.all(entries.filter(e => e.name[0] !== '.').map(e =>
+    Promise.all(entries.filter(({name}) => name[0] !== '.').map(e =>
 
       e.isDirectory ? filesInDirectory(e) : new Promise(resolve => e.file(resolve))))
       .then(files => [].concat(...files))
       .then(resolve)));
 
-const timestampForFilesInDirectory = dir => filesInDirectory(dir).then(files => files.map(f => f.name + f.lastModifiedDate).join());
+const timestampForFilesInDirectory = dir => filesInDirectory(dir).then(files => files.map(({name, lastModifiedDate}) => name + lastModifiedDate).join());
 
 const reload = () => {
 
@@ -41,9 +41,9 @@ const watchChanges = (dir, lastTimestamp) => {
 
 };
 
-chrome.management.getSelf(self => {
+chrome.management.getSelf(({installType}) => {
 
-  if (self.installType === 'development') {
+  if (installType === 'development') {
 
     chrome.runtime.getPackageDirectoryEntry(dir => watchChanges(dir));
   }

@@ -1,6 +1,6 @@
 let professorRatings = {};
-var options;
-var id;
+let options;
+let id;
 chrome.runtime.onMessage.addListener(onMessage);
 
 function onMessage(message, sender, sendResponse) {
@@ -10,7 +10,7 @@ function onMessage(message, sender, sendResponse) {
 }
 
 $(() => {
-  loadOptions(function (receivedOptions) {
+  loadOptions(receivedOptions => {
     options = receivedOptions;
     if (receivedOptions.extensionEnabled) {
       startHelper();
@@ -19,6 +19,7 @@ $(() => {
 });
 
 function startHelper() {
+
   //Pages URL
   const currentURL = window.location.href;
   if (currentURL.includes("webreg")) {
@@ -116,11 +117,11 @@ function insertCalendar() {
   $(".searchMargin").append(div);
   // Enable dragging around the header
   dragElement(document.getElementById(("popupCalendar")));
-  $("#popupCalendar").hover(function () {
+  $("#popupCalendar").hover(() => {
     $("#popupCalText").css('display', 'block');
     $("#popupCalText").addClass("isVis");
     $("#shortCal").hide();
-  }, function () {
+  }, () => {
     $("#popupCalText").hide();
     $("#popupCalText").removeClass("isVis");
     $("#shortCal").show();
@@ -140,9 +141,9 @@ function parseSchedule(data) {
     if (id == undefined) {
       id = singleClass.USCID;
     }
-    var startTime = moment(parseInt(singleClass.Start.slice(6, -2)));
-    var endTime = moment(parseInt(singleClass.End.slice(6, -2)));
-    var classInfo = singleClass.Title.split(" ");
+    const startTime = moment(parseInt(singleClass.Start.slice(6, -2)));
+    const endTime = moment(parseInt(singleClass.End.slice(6, -2)));
+    const classInfo = singleClass.Title.split(" ");
     const time = {
       "day": [startTime.format("dddd")],
       "time": [startTime.format('hh:mma'), endTime.format('hh:mma')],
@@ -225,7 +226,7 @@ function parseSchedule(data) {
   $(".warning").hover(function () {
     $(this).attr('value', 'Add Anyway');
   }, function () {
-    var original = $(this).attr('orig_name');
+    const original = $(this).attr('orig_name');
     $(this).attr('value', original);
   });
 }
@@ -236,8 +237,8 @@ function addConflictOverlay(row, name) {
   if (addToCourseBin.length !== 0) {
     $(row).css('background-color', 'rgba(255, 134, 47, 0.37)');
     addToCourseBin = addToCourseBin[0];
-    $(addToCourseBin).attr('value', 'Overlaps ' + name);
-    $(addToCourseBin).attr('orig_name', 'Overlaps ' + name);
+    $(addToCourseBin).attr('value', `Overlaps ${name}`);
+    $(addToCourseBin).attr('orig_name', `Overlaps ${name}`);
     $(addToCourseBin).attr('title', 'This class overlaps with your current schedule!');
     $(addToCourseBin).addClass("warning");
   }
@@ -314,25 +315,48 @@ function addPostRequests() {
       }
     }
     const courseid = id.val();
-    $(this).click(() => {
-      swal({
-        title: 'Notify Me!',
-        html: '<label> Email: </label> <input id="email" class="swal2-input">' + '<label> Phone number (optional, for text notifications only)</label><input id="phone" class="swal2-input">',
-        preConfirm() {
-          return new Promise(resolve => {
-            resolve([$('#email').val(), $('#phone').val()]);
-          });
-        },
-        onOpen() {
-          $('#email').focus();
-        },
-        showCancelButton: true
-      }).then(result => {
-        let email = result[0];
-        if (email) {
-          email = email.trim();
+    $(this).click(async () => {
+      try {
+        let response = await Swal.fire({
+          title: 'Email',
+          input: 'email',
+          type: 'question',
+          showCancelButton: true
+        });
+
+        if (!response || !response.value) {
+          return;
         }
-        let phone = result[1];
+
+        const textNotifsResponse = await Swal.fire({
+          title: 'Text Messages',
+          text: 'Text messages cost $1 and are good for unlimited messages for 1 class for 1 semester',
+          showCancelButton: true,
+          type: 'question',
+          confirmButtonText: "Yes",
+          cancelButtonText: "No"
+        });
+        let phone = '';
+
+        if (textNotifsResponse && textNotifsResponse.value) {
+          let phoneResponse = await Swal.fire({
+            title: 'Phone number',
+            html: `Venmo @JonLuca $1 and make sure the format is as below. <br><br><strong>Any other information and it will not process correctly.</strong><br> <br> Once I like the payment it has been processed. <br> <br><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/></div></label><input id="phone" placeholder="2135559020" class="swal2-input">`,
+            preConfirm() {
+              return new Promise(resolve => {
+                resolve($('#phone').val());
+              });
+            },
+            onOpen() {
+              $('#phone').focus();
+            },
+            showCancelButton: true,
+          });
+          if (phoneResponse && phoneResponse.value) {
+            phone = phoneResponse.value;
+          }
+        }
+        const email = response.value.trim().toLowerCase();
         // Try multiple ways of getting the department
         let department = $(form).find("#department").val();
 
@@ -350,9 +374,7 @@ function addPostRequests() {
         if (!department) {
           department = this.department;
         }
-        if (phone === undefined) {
-          phone = "";
-        }
+
         if (department === "" || department === undefined) {
           errorModal(`Department in post request was null. Please contact jdecaro@usc.edu with a screenshot of this error!
 Course: ${courseid}
@@ -360,19 +382,14 @@ Form: ${$(form).html()}
 `);
           return;
         }
-        if (email !== null && email !== "ttrojan@usc.edu" && validateEmail(email) && department !== "") {
-          sendPostRequest(email, courseid, department, phone);
-        } else {
-          errorModal(`Error with email or department!`);
-        }
-      }).catch(swal.noop);
+
+        sendPostRequest(email, courseid, department, phone);
+
+      } catch (e) {
+        console.error(e);
+      }
     });
   });
-}
-
-function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
 }
 
 function sendPostRequest(email, courseid, department, phone) {
@@ -397,12 +414,12 @@ function sendPostRequest(email, courseid, department, phone) {
         errorModal("An unknown error occurred! Please contact jdecaro@usc.edu with the class you are trying to register for.");
       }
     },
-    success(data, textStatus, jqXHR) {
+    success(data, textStatus, {status}) {
       if (textStatus === "success") {
         let textNotif = '';
         // server returns a 200 if they've never signed up/verified their email, and a 201 if they have. If they
         // haven't, show email verification notice
-        if (jqXHR.status === 200) {
+        if (status === 200) {
           textNotif = "Sent verification email - please verify your email to begin receiving notifications! <br> \
                     <strong> It's probably in your spam folder!</strong> <br>";
         }
@@ -411,7 +428,7 @@ function sendPostRequest(email, courseid, department, phone) {
 
       }
       //They've been ratelimited
-      if (jqXHR.status === 429) {
+      if (status === 429) {
         errorModal("You've been ratelimited! You are limited to 10 notifications in a 15 minute period. Please try again later");
       }
     }
@@ -420,12 +437,12 @@ function sendPostRequest(email, courseid, department, phone) {
 
 //Helper function to show pretty error messages
 function errorModal(message) {
-  swal('Error!', message, 'error');
+  Swal.fire('Error!', message, 'error');
 }
 
 //Helper function to show pretty success messages
 function successModal(message) {
-  swal('Success!', message, 'success');
+  Swal.fire('Success!', message, 'success');
 }
 
 //This extension adds a new column, thus squeezing a lot of the elements
@@ -720,7 +737,7 @@ function addUnitsToTitle(row) {
       let actualUnits = $(units)[3].innerText;
       actualUnits = actualUnits.replace("Units: ", "");
       // start at 5 because every row has 2 elements with class ^= type_alt - also increment by 2
-      var nextRowToCheckForNonZeroUnits = 5;
+      let nextRowToCheckForNonZeroUnits = 5;
 
       // Edge case for when the first class in web reg is not the discussion section one, and doesn't have the right
       // unit value
@@ -896,20 +913,19 @@ function parseCoursePage(professorRatings) {
 
 //Draggable element code from https://www.w3schools.com/howto/howto_js_draggable.asp
 function dragElement(elmnt) {
-  var pos1 = 0,
-    pos2 = 0,
-    pos3 = 0,
-    pos4 = 0;
-  if (document.getElementById(elmnt.id + "Header")) {
+  let pos1 = 0;
+  let pos2 = 0;
+  let pos3 = 0;
+  let pos4 = 0;
+  if (document.getElementById(`${elmnt.id}Header`)) {
     /* if present, the header is where you move the DIV from:*/
-    document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
+    document.getElementById(`${elmnt.id}Header`).onmousedown = dragMouseDown;
   } else {
     /* otherwise, move the DIV from anywhere inside the DIV:*/
     elmnt.onmousedown = dragMouseDown;
   }
 
-  function dragMouseDown(e) {
-    e = e || window.event;
+  function dragMouseDown(e = window.event) {
     // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
@@ -918,16 +934,15 @@ function dragElement(elmnt) {
     document.onmousemove = elementDrag;
   }
 
-  function elementDrag(e) {
-    e = e || window.event;
+  function elementDrag(e = window.event) {
     // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
     // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    elmnt.style.top = `${elmnt.offsetTop - pos2}px`;
+    elmnt.style.left = `${elmnt.offsetLeft - pos1}px`;
   }
 
   function closeDragElement() {
@@ -940,20 +955,20 @@ function dragElement(elmnt) {
 function preventEventChng(e) {
   let prevent = ["YN", "YY", "NY", "NN", "YN*", "YY*", "NY*", "NN*"];
   let scheduled = e.event.Scheduled;
-  if (prevent.indexOf(scheduled) != -1) {
-    setTimeout(function () {
+  if (prevent.includes(scheduled)) {
+    setTimeout(() => {
     }, 0);
     e.preventDefault();
   }
 
   if (e.event.Scheduled == "Block") {
-    setTimeout(function () {
+    setTimeout(() => {
     }, 0);
     $('.k-window-title').text("Block Time");
   }
 
   if (e.event.Scheduled == "") {
-    setTimeout(function () {
+    setTimeout(() => {
     }, 0);
     $('.k-window-title').text("Block Time");
   }

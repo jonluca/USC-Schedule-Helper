@@ -13,7 +13,7 @@ function scheduler_cancel(e) {
 
 function scheduler_moveE(e) {
   if ((e.event.Scheduled == "YN") || (e.event.Scheduled == "YY") || (e.event.Scheduled == "NY") || (e.event.Scheduled == "NN") || (e.event.Scheduled == "YN*") || (e.event.Scheduled == "YY*") || (e.event.Scheduled == "NY*") || (e.event.Scheduled == "NN*")) {
-    setTimeout(function () {
+    setTimeout(() => {
     }, 0);
     e.preventDefault();
   }
@@ -33,9 +33,9 @@ function load() {
     yesterday.setDate(today.getDate() - 1);
   }
 
-  $("btn").click(function () {
+  $("btn").click(() => {
 
-    setTimeout(function () {
+    setTimeout(() => {
       $("#scheduler").data("kendoScheduler").dataSource.read();
     }, 400);
   });
@@ -140,9 +140,7 @@ function load() {
       "minorTickCount": 1 // display one time slot per major tick
     }],
     "dataSource": {
-      "type": (function () {
-        return 'aspnetmvc-ajax';
-      })(),
+      "type": (() => 'aspnetmvc-ajax')(),
       "transport": {
         "read": {"url": "/Scheduler/Read"},
         "prefix": "",
@@ -233,7 +231,7 @@ function toggleCal() {
   $("#scheduler").toggle();
 }
 
-document.body.onkeyup = function (e) {
+document.body.onkeyup = e => {
   if (e.keyCode == 18) {
     e.preventDefault();
     toggleCal();
