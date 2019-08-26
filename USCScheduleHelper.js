@@ -341,7 +341,7 @@ function addPostRequests() {
         if (textNotifsResponse && textNotifsResponse.value) {
           let phoneResponse = await Swal.fire({
             title: 'Phone number',
-            html: `Venmo @JonLuca $1 and make sure the format is as below. <br><br><strong>Any other information and it will not process correctly.</strong><br> <br> Once I like the payment it has been processed. <br> <br><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/></div></label><input id="phone" placeholder="2135559020" class="swal2-input">`,
+            html: `Venmo @JonLuca $1 and make sure the format is as below. <br><br><strong>Any other information and it will not process correctly.</strong><br> <br> Once I like the payment it has been processed. <br> <br><i>Only include your email in the description, nothing else!</i><br><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/></div><input id="phone" placeholder="2135559020" class="swal2-input">`,
             preConfirm() {
               return new Promise(resolve => {
                 resolve($('#phone').val());
