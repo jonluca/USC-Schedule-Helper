@@ -338,7 +338,9 @@ function addPostRequests() {
         });
         let phone = '';
 
-        if (textNotifsResponse && textNotifsResponse.value) {
+        const didAskForTextMessages = textNotifsResponse && textNotifsResponse.value;
+
+        if (didAskForTextMessages) {
           let phoneResponse = await Swal.fire({
             title: 'Phone number',
             html: `Venmo @JonLuca $1 and make sure the format is as below. <br><br><strong>Any other information and it will not process correctly.</strong><br> <br> Once I like the payment it has been processed. <br> <br><i>Only include your email in the description, nothing else!</i><br><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/></div><input id="phone" placeholder="2135559020" class="swal2-input">`,
@@ -383,7 +385,7 @@ Form: ${$(form).html()}
           return;
         }
 
-        sendPostRequest(email, courseid, department, phone);
+        sendPostRequest(email, courseid, department, phone, !didAskForTextMessages);
 
       } catch (e) {
         console.error(e);
@@ -392,7 +394,7 @@ Form: ${$(form).html()}
   });
 }
 
-function sendPostRequest(email, courseid, department, phone) {
+function sendPostRequest(email, courseid, department, phone, shouldShowVenmoNotice) {
   $.ajax({
     method: 'POST',
     url: "https://jonlu.ca/soc/notify",
@@ -421,9 +423,13 @@ function sendPostRequest(email, courseid, department, phone) {
         // haven't, show email verification notice
         if (status === 200) {
           textNotif = "Sent verification email - please verify your email to begin receiving notifications! <br> \
-                    <strong> It's probably in your spam folder!</strong> <br>";
+                    <strong> It's probably in your spam folder!</strong> <br><br>";
         }
-        textNotif += "Email notifications are enabled. <p style=\"font-size:12px\">If you want text notifications, venmo @JonLuca $1 <b>per section</p> with your email in the subject and I'll manually enable them for your account. The subject of the venmo should <b>just be your email</b> - without your email, I can't whitelist your account. </p> <br> If you have any questions, please contact usc@jonlu.ca";
+        textNotif += "Email notifications are enabled."
+        if(shouldShowVenmoNotice){
+          textNotif += "<br><br><br><p style=\"font-size:14px\">If you want text notifications, fill out this form again with your phone number and venmo @JonLuca $1 <b>per section</b> with your email in the subject and I'll manually enable them for your account.";
+        }
+        textNotif += "<br><br>If you have any questions, please reach out to <a href=\"mailto:usc@jonlu.ca\">usc@jonlu.ca</a>"
         successModal(textNotif);
 
       }
