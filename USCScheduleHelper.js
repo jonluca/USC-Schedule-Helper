@@ -328,36 +328,21 @@ function addPostRequests() {
           return;
         }
 
-        const textNotifsResponse = await Swal.fire({
-          title: 'Text Messages',
-          text: 'Text messages cost $1 and are good for unlimited messages for 1 class for 1 semester',
-          showCancelButton: true,
-          type: 'question',
-          confirmButtonText: "Yes",
-          cancelButtonText: "No"
+        let phoneResponse = await Swal.fire({
+          title: 'Phone number',
+          html: `If you'd like texts in addition to emails, add your phone number here (costs $1 per section per semester) - optional. <input id="phone" placeholder="2135559020" class="swal2-input">`,
+          preConfirm() {
+            return new Promise(resolve => {
+              resolve($('#phone').val());
+            });
+          },
+          onOpen() {
+            $('#phone').focus();
+          },
+          showCancelButton: true
         });
-        let phone = '';
+        phone = phoneResponse && phoneResponse.value || '';
 
-        const didAskForTextMessages = textNotifsResponse && textNotifsResponse.value;
-
-        if (didAskForTextMessages) {
-          let phoneResponse = await Swal.fire({
-            title: 'Phone number',
-            html: `Venmo @JonLuca $1 and make sure the format is as below. <br><br><strong>Any other information and it will not process correctly.</strong><br> <br> Once I like the payment it has been processed. <br> <br><i>Only include your email in the description, nothing else!</i><br><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/></div><input id="phone" placeholder="2135559020" class="swal2-input">`,
-            preConfirm() {
-              return new Promise(resolve => {
-                resolve($('#phone').val());
-              });
-            },
-            onOpen() {
-              $('#phone').focus();
-            },
-            showCancelButton: true,
-          });
-          if (phoneResponse && phoneResponse.value) {
-            phone = phoneResponse.value;
-          }
-        }
         const email = response.value.trim().toLowerCase();
         // Try multiple ways of getting the department
         let department = $(form).find("#department").val();
@@ -385,7 +370,7 @@ Form: ${$(form).html()}
           return;
         }
 
-        sendPostRequest(email, courseid, department, phone, !didAskForTextMessages);
+        sendPostRequest(email, courseid, department, phone);
 
       } catch (e) {
         console.error(e);
@@ -394,7 +379,7 @@ Form: ${$(form).html()}
   });
 }
 
-function sendPostRequest(email, courseid, department, phone, shouldShowVenmoNotice) {
+function sendPostRequest(email, courseid, department, phone) {
   $.ajax({
     method: 'POST',
     url: "https://jonlu.ca/soc/notify",
@@ -418,18 +403,17 @@ function sendPostRequest(email, courseid, department, phone, shouldShowVenmoNoti
     },
     success(data, textStatus, {status}) {
       if (textStatus === "success") {
-        let textNotif = '';
+        let textNotif = `Email: <b>${data.email}</b><br>${data.phone && `Phone: <b>${data.phone}</b><br>`}<br>`;
         // server returns a 200 if they've never signed up/verified their email, and a 201 if they have. If they
         // haven't, show email verification notice
         if (status === 200) {
-          textNotif = "Sent verification email - please verify your email to begin receiving notifications! <br> \
-                    <strong> It's probably in your spam folder!</strong> <br><br>";
+          textNotif += "Sent verification email - please verify your email to begin receiving notifications! <br> \
+                    <strong> It's probably in your spam folder!</strong>";
         }
-        textNotif += "Email notifications are enabled."
-        if(shouldShowVenmoNotice){
-          textNotif += "<br><br><br><p style=\"font-size:14px\">If you want text notifications, fill out this form again with your phone number and venmo @JonLuca $1 <b>per section</b> with your email in the subject and I'll manually enable them for your account.";
-        }
-        textNotif += "<br><br>If you have any questions, please reach out to <a href=\"mailto:usc@jonlu.ca\">usc@jonlu.ca</a>"
+        const link = `<a href=venmo://paycharge?txn=pay&recipients=JonLuca&amount=1&note=${data.section && data.section.rand}>You can also copy and paste this Text yourself this link to enable text notifications and text it to yourself to auto open Venmo with the right fields.</a>`;
+        textNotif += data.phone && `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b>${data.section && data.section.rand}</b><br><br> <br> Once I like the payment it has been processed and you will not be texted.<br> <strong>Your venmo should look exactly like the image below, with nothing else.</strong><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/><span class="randSectionId">${data.section && data.section.rand}</span><br>${link}</div>` || '';
+
+        textNotif += "<br><br>If you have any questions, please reach out to <a href=\"mailto:usc@jonlu.ca\">usc@jonlu.ca</a>";
         successModal(textNotif);
 
       }
