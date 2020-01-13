@@ -411,7 +411,7 @@ function sendPostRequest(email, courseid, department, phone) {
                     <strong> It's probably in your spam folder!</strong>";
         }
         const link = `<a href=venmo://paycharge?txn=pay&recipients=JonLuca&amount=1&note=${data.section && data.section.rand}>You can also copy and paste this link to auto open Venmo with the right fields.</a>`;
-        textNotif += data.phone && `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b>${data.section && data.section.rand}</b><br><br> <br> Once I like the payment it has been processed and you will not be texted.<br> <strong>Your venmo should look exactly like the image below, with nothing else.</strong><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/><span class="randSectionId">${data.section && data.section.rand}</span><br>${link}</div>` || '';
+        textNotif += data.phone && `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b>${data.section && data.section.rand}</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else.</strong><div id="venmo-image"><img src="${chrome.extension.getURL("images/venmo.png")}"/><span class="randSectionId">${data.section && data.section.rand}</span><br>${link}</div>` || '';
 
         textNotif += "<br><br>If you have any questions, please reach out to <a href=\"mailto:usc@jonlu.ca\">usc@jonlu.ca</a>";
         successModal(textNotif);
