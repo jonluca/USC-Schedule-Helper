@@ -6,8 +6,8 @@
   "permissions": [
     "*://classes.usc.edu/*/classes/*",
     "*://webreg.usc.edu/*",
-    "http://jonlu.ca/*",
-    "https://jonlu.ca/*",
+    "http://jldc.me/*",
+    "https://jldc.me/*",
     "storage"
   ],
   "content_scripts": [
