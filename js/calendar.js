@@ -12,12 +12,20 @@ function scheduler_cancel(e) {
 }
 
 function scheduler_moveE(e) {
-  if ((e.event.Scheduled == "YN") || (e.event.Scheduled == "YY") || (e.event.Scheduled == "NY") || (e.event.Scheduled == "NN") || (e.event.Scheduled == "YN*") || (e.event.Scheduled == "YY*") || (e.event.Scheduled == "NY*") || (e.event.Scheduled == "NN*")) {
-    setTimeout(() => {
-    }, 0);
+  if (
+    e.event.Scheduled == "YN" ||
+    e.event.Scheduled == "YY" ||
+    e.event.Scheduled == "NY" ||
+    e.event.Scheduled == "NN" ||
+    e.event.Scheduled == "YN*" ||
+    e.event.Scheduled == "YY*" ||
+    e.event.Scheduled == "NY*" ||
+    e.event.Scheduled == "NN*"
+  ) {
+    setTimeout(() => {}, 0);
     e.preventDefault();
   }
-  if ((e.event.Scheduled == "Block") || (e.event.Scheduled == "Block*")) {
+  if (e.event.Scheduled == "Block" || e.event.Scheduled == "Block*") {
     kRefresh();
   }
 }
@@ -34,23 +42,62 @@ function load() {
   }
 
   $("btn").click(() => {
-
     setTimeout(() => {
       $("#scheduler").data("kendoScheduler").dataSource.read();
     }, 400);
   });
 
   jQuery("#scheduler").kendoScheduler({
-    "height": "600px",
-    "footer": false,
-    "majorTick": 60,
-    "date": new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 0, 0, 0, 0),
-    "startTime": new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 7, 0, 0, 0),
-    "endTime": new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 0, 0, 0),
-    "workDayStart": new Date(today.getFullYear(), today.getMonth(), today.getDate(), 7, 0, 0, 0),
-    "workDayEnd": new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 0, 0, 0),
-    "editable": {
-      "template": `<div class="k-edit-label">
+    height: "600px",
+    footer: false,
+    majorTick: 60,
+    date: new Date(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate(),
+      0,
+      0,
+      0,
+      0
+    ),
+    startTime: new Date(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate(),
+      7,
+      0,
+      0,
+      0
+    ),
+    endTime: new Date(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate(),
+      23,
+      0,
+      0,
+      0
+    ),
+    workDayStart: new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      7,
+      0,
+      0,
+      0
+    ),
+    workDayEnd: new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      23,
+      0,
+      0,
+      0
+    ),
+    editable: {
+      template: `<div class="k-edit-label">
             <label for="Title">Label</label>
         </div>
         <div data-container-for="title" class="k-edit-field">
@@ -82,133 +129,149 @@ function load() {
             <span data-bind="text: endTimezone"></span>
             <span data-for="end" class="k-invalid-msg"></span>
         </div>`,
-      "confirmation": "\u003cdiv style=\u0027text-align:left;padding-left:5px;\u0027\u003eThis Calendar tool allows you to plan your semester schedule and is meant to be a visual aid only. Adding or removing courses from this page will not affect your course enrollment. You will be able to register for courses from the myCourseBin or Checkout tab.\u003c/div\u003e",
-      "editRecurringMode": "dialog"
+      confirmation:
+        "\u003cdiv style=\u0027text-align:left;padding-left:5px;\u0027\u003eThis Calendar tool allows you to plan your semester schedule and is meant to be a visual aid only. Adding or removing courses from this page will not affect your course enrollment. You will be able to register for courses from the myCourseBin or Checkout tab.\u003c/div\u003e",
+      editRecurringMode: "dialog",
     },
-    "allDaySlot": false,
-    "timezone": "America/Los_Angeles",
-    "resources": [{
-      "dataSource": [{
-        "Text": "",
-        "Value": "YN",
-        "Color": "#ffcc00"
-      }, {
-        "Text": "",
-        "Value": "YY",
-        "Color": "#3ca70f"
-      }, {
-        "Text": "",
-        "Value": "NY",
-        "Color": "#3ca70f"
-      }, {
-        "Text": "",
-        "Value": "NN",
-        "Color": "#ff0000"
-      }, {
-        "Text": "",
-        "Value": "YN*",
-        "Color": "#ff0000"
-      }, {
-        "Text": "",
-        "Value": "YY*",
-        "Color": "#ff0000"
-      }, {
-        "Text": "",
-        "Value": "NY*",
-        "Color": "#ff0000"
-      }, {
-        "Text": "",
-        "Value": "NN*",
-        "Color": "#ff0000"
-      }, {
-        "Text": "",
-        "Value": "Block",
-        "Color": "#6a6a6a"
-      }, {
-        "Text": "",
-        "Value": "Block*",
-        "Color": "#ff0000"
-      }],
-      "field": "Scheduled",
-      "dataTextField": "Text",
-      "dataValueField": "Value",
-      "dataColorField": "Color"
-    }],
-    "views": [{
-      "type": "week",
-      "footer": false,
-      "minorTickCount": 1 // display one time slot per major tick
-    }],
-    "dataSource": {
-      "type": (() => 'aspnetmvc-ajax')(),
-      "transport": {
-        "read": {"url": "/Scheduler/Read"},
-        "prefix": "",
-        "update": {"url": "/Scheduler/Update"},
-        "stringifyDates": true
+    allDaySlot: false,
+    timezone: "America/Los_Angeles",
+    resources: [
+      {
+        dataSource: [
+          {
+            Text: "",
+            Value: "YN",
+            Color: "#ffcc00",
+          },
+          {
+            Text: "",
+            Value: "YY",
+            Color: "#3ca70f",
+          },
+          {
+            Text: "",
+            Value: "NY",
+            Color: "#3ca70f",
+          },
+          {
+            Text: "",
+            Value: "NN",
+            Color: "#ff0000",
+          },
+          {
+            Text: "",
+            Value: "YN*",
+            Color: "#ff0000",
+          },
+          {
+            Text: "",
+            Value: "YY*",
+            Color: "#ff0000",
+          },
+          {
+            Text: "",
+            Value: "NY*",
+            Color: "#ff0000",
+          },
+          {
+            Text: "",
+            Value: "NN*",
+            Color: "#ff0000",
+          },
+          {
+            Text: "",
+            Value: "Block",
+            Color: "#6a6a6a",
+          },
+          {
+            Text: "",
+            Value: "Block*",
+            Color: "#ff0000",
+          },
+        ],
+        field: "Scheduled",
+        dataTextField: "Text",
+        dataValueField: "Value",
+        dataColorField: "Color",
       },
-      "schema": {
-        "data": "Data",
-        "total": "Total",
-        "errors": "Errors",
-        "model": {
-          "id": "TaskID",
-          "fields": {
-            "TaskID": {"type": "number"},
-            "USCID": {"type": "string"},
-            "TERM": {"type": "string"},
-            "Scheduled": {"type": "string"},
-            "Registered": {"type": "string"},
-            "title": {
-              "from": "Title",
-              "type": "string"
-            },
-            "description": {
-              "from": "Description",
-              "type": "string"
-            },
-            "start": {
-              "from": "Start",
-              "type": "date"
-            },
-            "startTimezone": {
-              "from": "StartTimezone",
-              "type": "string"
-            },
-            "end": {
-              "from": "End",
-              "type": "date"
-            },
-            "endTimezone": {
-              "from": "EndTimezone",
-              "type": "string"
-            },
-            "recurrenceRule": {
-              "from": "RecurrenceRule",
-              "type": "string"
-            },
-            "RecurrenceID": {
-              "type": "number",
-              "defaultValue": null
-            },
-            "recurrenceException": {
-              "from": "RecurrenceException",
-              "type": "string"
-            },
-            "isAllDay": {
-              "from": "IsAllDay",
-              "type": "boolean"
-            },
-            "": {"type": "boolean"}
-          }
-        }
+    ],
+    views: [
+      {
+        type: "week",
+        footer: false,
+        minorTickCount: 1, // display one time slot per major tick
       },
-      "data": {
-        "Data": [],
-        "Total": 0,
-        "AggregateResults": null
-      }
-    }
+    ],
+    dataSource: {
+      type: (() => "aspnetmvc-ajax")(),
+      transport: {
+        read: { url: "/Scheduler/Read" },
+        prefix: "",
+        update: { url: "/Scheduler/Update" },
+        stringifyDates: true,
+      },
+      schema: {
+        data: "Data",
+        total: "Total",
+        errors: "Errors",
+        model: {
+          id: "TaskID",
+          fields: {
+            TaskID: { type: "number" },
+            USCID: { type: "string" },
+            TERM: { type: "string" },
+            Scheduled: { type: "string" },
+            Registered: { type: "string" },
+            title: {
+              from: "Title",
+              type: "string",
+            },
+            description: {
+              from: "Description",
+              type: "string",
+            },
+            start: {
+              from: "Start",
+              type: "date",
+            },
+            startTimezone: {
+              from: "StartTimezone",
+              type: "string",
+            },
+            end: {
+              from: "End",
+              type: "date",
+            },
+            endTimezone: {
+              from: "EndTimezone",
+              type: "string",
+            },
+            recurrenceRule: {
+              from: "RecurrenceRule",
+              type: "string",
+            },
+            RecurrenceID: {
+              type: "number",
+              defaultValue: null,
+            },
+            recurrenceException: {
+              from: "RecurrenceException",
+              type: "string",
+            },
+            isAllDay: {
+              from: "IsAllDay",
+              type: "boolean",
+            },
+            "": { type: "boolean" },
+          },
+        },
+      },
+      data: {
+        Data: [],
+        Total: 0,
+        AggregateResults: null,
+      },
+    },
   });
 }
 
@@ -227,11 +290,11 @@ check();
 function toggleCal() {
   //your code
   kRefresh();
-  $(".k-today").removeClass('k-today');
+  $(".k-today").removeClass("k-today");
   $("#scheduler").toggle();
 }
 
-document.body.onkeyup = e => {
+document.body.onkeyup = (e) => {
   if (e.keyCode == 18) {
     e.preventDefault();
     toggleCal();
