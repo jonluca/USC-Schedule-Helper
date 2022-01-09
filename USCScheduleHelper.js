@@ -57,9 +57,9 @@ function startHelper() {
         }
       } else {
         /*
-         This is for courses.usc.edu, not web registration. Original version of the extension only worked
-         here, then I realized it's useless and would be better suited for webreg
-         */
+                 This is for courses.usc.edu, not web registration. Original version of the extension only worked
+                 here, then I realized it's useless and would be better suited for webreg
+                 */
         parseCoursePage(professorRatings);
       }
     },
@@ -99,7 +99,7 @@ const ratingURLTemplate =
 //Contains a span HTML element, which is just included to insert a blank column cell in each row, to preserve spacing
 const emptySpanCell =
   '<span class="instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1"><span \
-class="hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span></span>';
+  class="hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span></span>';
 //An array that will contain the schedule that they are currently registered in
 const currentScheduleArr = [];
 
@@ -154,12 +154,17 @@ function insertCalendar() {
   );
 }
 
+function hoursToPSTMoment(hours) {
+  const dateObj = moment(hours, "hh:mma");
+  const strVersion = dateObj.toString().slice(0, -9);
+  return moment(`${strVersion} GMT-0800`);
+}
 function parseSchedule(data) {
   if (!data || !data.Data || !data.Data.length) {
     return;
   }
   for (let singleClass of data.Data) {
-    if (id == undefined) {
+    if (!id) {
       id = singleClass.USCID;
     }
     const startTime = moment(parseInt(singleClass.Start.slice(6, -2)));
@@ -195,57 +200,33 @@ function parseSchedule(data) {
         //Get section name to compare if you already have that class
         let secName = $(this).find("[class^=id]")[0].innerText;
         secName = secName.replace("Section: ", "");
-        let didOverlap = false;
         //Get section name to compare if you already have that class
         let secType = $(this).find("[class^=type]")[0].innerText;
         secType = secType.replace("Type: ", "");
-        let shouldBreak = false;
-        /*Three nested for loops... Wow
-       Kinda horrifying... but it works
-       The saved schedule for classes currently in your course bin is currentScheduleArr
-       It iterates over currentScheduleArr, then it iterates over every day in current schedule
-       current schedule { day: ["M", "T", "Th"], time: ["08:00pm","11:00pm"], section: "33333"}
-       Then it iterates over the current section (the specific class type per class, like discussion, lecture, etc)
-       jQuery row object... I parsed secDays above, which would be like ["M", "T"]
-
-       I need to filter it to only iterate over the intersection of the currentScheduleArr day and the current class
-       day. Other than that, though, I can't see a more efficient solution.
-
-       This will ideally not loop that many times, though - at most 5*5*(4)ish, if they're registered for 4 classes,
-       and all 4 classes having MTWTHF classes. This is not likely though - on average, it'll loop 4*2*3.
-
-       Performance trace tells us we only spend ~0.5 seconds on this function, so optimization is not currently needed
-       */
         for (const currClass of currentScheduleArr) {
-          if (shouldBreak || secName.startsWith(currClass.section)) {
-            break;
+          if (secName.startsWith(currClass.section)) {
+            continue;
           }
-          for (let j = 0; j < currClass.day.length; j++) {
-            if (shouldBreak) {
-              break;
+          for (const currClassDay of currClass.day) {
+            const secDay = secDays.find((d) => d === currClassDay);
+            if (!secDay) {
+              continue;
             }
-            for (let k = 0; k < secDays.length; k++) {
-              //Class already registered/scheduled
-              const range = moment.range(
-                moment(currClass.time[0], "hh:mma").day(currClass.day[j]),
-                moment(currClass.time[1], "hh:mma").day(currClass.day[j])
-              );
-              const range2 = moment.range(
-                moment(secHours[0], "hh:mma").day(secDays[k]),
-                moment(secHours[1], "hh:mma").day(secDays[k])
-              );
-              if (
-                range.overlaps(range2) &&
-                !secName.startsWith(currClass.section)
-              ) {
-                shouldBreak = true;
-                didOverlap = true;
-                addConflictOverlay(this, currClass.classname);
-              }
+            //Class already registered/scheduled
+            const start = moment(currClass.time[0], "hh:mma");
+            const end = moment(currClass.time[1], "hh:mma");
+            const range = moment.range(start, end);
+
+            const start2 = hoursToPSTMoment(secHours[0]);
+            const end2 = hoursToPSTMoment(secHours[1]);
+            const range2 = moment.range(start2, end2);
+            if (range.overlaps(range2)) {
+              addConflictOverlay(this, currClass.classname);
+              return;
             }
           }
         }
-        if (secType.startsWith("Lecture") && !didOverlap) {
+        if (secType.startsWith("Lecture")) {
           doAllSectionsOverlap = false;
         }
       } catch (e) {
@@ -472,7 +453,7 @@ function sendPostRequest(email, courseid, department, phone) {
         if (status === 200) {
           textNotif +=
             "Sent verification email - please verify your email to begin receiving notifications! <br> \
-                    <strong> It's probably in your spam folder!</strong>";
+                                <strong> It's probably in your spam folder!</strong>";
         }
 
         const link = `<a href=venmo://paycharge?txn=pay&recipients=JonLuca&amount=1&note=${
@@ -663,7 +644,7 @@ function insertProfessorRating(row, professor_info) {
       `<span class="hours_alt1 text-md-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`
     );
     /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
-     find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
+         find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
     if ($(row).find(".empty_rating").length !== 0) {
       $(row).find(".empty_rating")[0].remove();
     }
@@ -686,9 +667,8 @@ function parseRows(rows) {
         return true;
       }
       //get all professor names in a hacky way
-      const instructor_names = instructor_name_element[0].innerHTML.split(
-        "span>"
-      );
+      const instructor_names =
+        instructor_name_element[0].innerHTML.split("span>");
       //split on line breaks
       const instructor_name = instructor_names[1].split("<br>");
       //if there are multiple instructors
