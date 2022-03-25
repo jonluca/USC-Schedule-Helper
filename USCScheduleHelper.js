@@ -154,10 +154,13 @@ function insertCalendar() {
   );
 }
 
+function convertTZ(date, tzString) {
+  return new Date(date).toLocaleString("en-US", {timeZone: tzString})
+}
+
 function hoursToPSTMoment(hours) {
-  const dateObj = moment(hours, "hh:mma");
-  const strVersion = dateObj.toString().slice(0, -9);
-  return moment(`${strVersion} GMT-0800`);
+  const dateObj = convertTZ(hours, "America/Los_Angeles")
+  return moment(dateObj)
 }
 function parseSchedule(data) {
   if (!data || !data.Data || !data.Data.length) {
@@ -167,8 +170,8 @@ function parseSchedule(data) {
     if (!id) {
       id = singleClass.USCID;
     }
-    const startTime = moment(parseInt(singleClass.Start.slice(6, -2)));
-    const endTime = moment(parseInt(singleClass.End.slice(6, -2)));
+    const startTime = hoursToPSTMoment(parseInt(singleClass.Start.slice(6, -2)));
+    const endTime = hoursToPSTMoment(parseInt(singleClass.End.slice(6, -2)));
     const classInfo = singleClass.Title.split(" ");
     const time = {
       day: [startTime.format("dddd")],
@@ -217,8 +220,8 @@ function parseSchedule(data) {
             const end = moment(currClass.time[1], "hh:mma");
             const range = moment.range(start, end);
 
-            const start2 = hoursToPSTMoment(secHours[0]);
-            const end2 = hoursToPSTMoment(secHours[1]);
+            const start2 = moment(secHours[0], "hh:mma");
+            const end2 = moment(secHours[1], "hh:mma");
             const range2 = moment.range(start2, end2);
             if (range.overlaps(range2)) {
               addConflictOverlay(this, currClass.classname);
