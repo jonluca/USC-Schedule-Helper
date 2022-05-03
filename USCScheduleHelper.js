@@ -439,7 +439,8 @@ function sendPostRequest(email, courseid, department, phone) {
           "Error saving data! Please contact jdecaro@usc.edu with the class you are trying to register for."
         );
       } else if (err.status === 400) {
-        errorModal("Invalid email!");
+        const message = err.responseJSON && err.responseJSON.error || "Invalid email"
+        errorModal(message)
       } else {
         errorModal(
           "An unknown error occurred! Please contact jdecaro@usc.edu with the class you are trying to register for."
