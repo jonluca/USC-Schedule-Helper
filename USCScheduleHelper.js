@@ -155,12 +155,12 @@ function insertCalendar() {
 }
 
 function convertTZ(date, tzString) {
-  return new Date(date).toLocaleString("en-US", {timeZone: tzString})
+  return new Date(date).toLocaleString("en-US", { timeZone: tzString });
 }
 
 function hoursToPSTMoment(hours) {
-  const dateObj = convertTZ(hours, "America/Los_Angeles")
-  return moment(dateObj)
+  const dateObj = convertTZ(hours, "America/Los_Angeles");
+  return moment(dateObj);
 }
 function parseSchedule(data) {
   if (!data || !data.Data || !data.Data.length) {
@@ -170,7 +170,9 @@ function parseSchedule(data) {
     if (!id) {
       id = singleClass.USCID;
     }
-    const startTime = hoursToPSTMoment(parseInt(singleClass.Start.slice(6, -2)));
+    const startTime = hoursToPSTMoment(
+      parseInt(singleClass.Start.slice(6, -2))
+    );
     const endTime = hoursToPSTMoment(parseInt(singleClass.End.slice(6, -2)));
     const classInfo = singleClass.Title.split(" ");
     const time = {
@@ -301,6 +303,21 @@ function insertExportButton() {
   const cals = $(".exportCal");
   $(cals[1]).remove();
 }
+Mailcheck.defaultDomains.push("usc.edu", "yahoo.com"); // extend existing domains
+Mailcheck.defaultTopLevelDomains.push("edu"); // extend existing TLDs
+async function checkEmail(email) {
+  return new Promise((resolve) => {
+    Mailcheck.run({
+      email: email,
+      suggested: function (suggestion) {
+        resolve(suggestion);
+      },
+      empty: function () {
+        resolve(null);
+      },
+    });
+  });
+}
 
 function addPostRequests() {
   $(".notify").each(function () {
@@ -359,20 +376,61 @@ function addPostRequests() {
         return;
       }
       try {
+        let defaultValue = "";
+        let localStorageEmailKey = "uscScheduleHelperEmail";
+        let localStoragePhoneKey = "uscScheduleHelperPhone";
+        try {
+          defaultValue = localStorage.getItem(localStorageEmailKey) || "";
+        } catch (e) {
+          console.error(e);
+        }
         let response = await Swal.fire({
           title: "Email",
           input: "email",
           type: "question",
           showCancelButton: true,
+          inputValue: defaultValue,
         });
 
         if (!response || !response.value) {
           return;
         }
+        let email = response.value.trim().toLowerCase();
 
+        const suggested = await checkEmail(email);
+
+        if (suggested) {
+          let emailSuggestion = await Swal.fire({
+            title: "Possible incorrect email",
+            html: `The email you entered is ${email}.<br /> Did you mean <b>${suggested.full}</b>?`,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Yes`,
+            denyButtonText: `No (use my original email)`,
+          });
+          if (emailSuggestion.isConfirmed) {
+            email = (suggested.full || "").trim().toLowerCase();
+          }
+          if (emailSuggestion.isDismissed) {
+            return;
+          }
+        }
+        try {
+          localStorage.setItem(localStorageEmailKey, email);
+        } catch (e) {
+          console.error(e);
+        }
+        let defaultPhoneValue = "";
+
+        try {
+          defaultPhoneValue = localStorage.getItem(localStoragePhoneKey) || "";
+        } catch (e) {
+          console.error(e);
+        }
         let phoneResponse = await Swal.fire({
           title: "Phone number",
-          html: `If you'd like texts in addition to emails, add your phone number here (costs $1 per section per semester) - optional. <input id="phone" placeholder="2135559020" class="swal2-input">`,
+          cancelButtonText: `Skip`,
+          html: `If you'd like texts in addition to emails, add your phone number here (costs $1 per section per semester) - optional. <input id="phone" placeholder="2135559020" value="${defaultPhoneValue}" class="swal2-input">`,
           preConfirm() {
             return new Promise((resolve) => {
               resolve($("#phone").val());
@@ -383,9 +441,14 @@ function addPostRequests() {
           },
           showCancelButton: true,
         });
-        phone = (phoneResponse && phoneResponse.value) || "";
-
-        const email = response.value.trim().toLowerCase();
+        const phone = (phoneResponse && phoneResponse.value) || "";
+        if (phone) {
+          try {
+            localStorage.setItem(localStoragePhoneKey, phone);
+          } catch (e) {
+            console.error(e);
+          }
+        }
         // Try multiple ways of getting the department
         let department = $(form).find("#department").val();
 
@@ -439,8 +502,9 @@ function sendPostRequest(email, courseid, department, phone) {
           "Error saving data! Please contact jdecaro@usc.edu with the class you are trying to register for."
         );
       } else if (err.status === 400) {
-        const message = err.responseJSON && err.responseJSON.error || "Invalid email"
-        errorModal(message)
+        const message =
+          (err.responseJSON && err.responseJSON.error) || "Invalid email";
+        errorModal(message);
       } else {
         errorModal(
           "An unknown error occurred! Please contact jdecaro@usc.edu with the class you are trying to register for."

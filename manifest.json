@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
-  "version": "11.4",
+  "version": "12.0",
   "permissions": [
     "*://classes.usc.edu/*/classes/*",
     "*://webreg.usc.edu/*",
@@ -20,6 +20,7 @@
         "js/libs/jquery.js",
         "js/common.js",
         "js/libs/moment.js",
+        "js/libs/mailcheck.min.js",
         "js/libs/sweetalert.min.js",
         "USCScheduleHelper.js"
       ]
