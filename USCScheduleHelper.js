@@ -346,13 +346,16 @@ function addPostRequests() {
       }
     }
     let titleTopbar = $(form).parents(".crs-accordion-content-area");
+    let fullCourseId;
     if (titleTopbar) {
       let header = $(titleTopbar).prev();
-      let crsId = $(header).find(".crsID");
-      if (crsId && crsId.text()) {
-        crsId = crsId.text().split("-");
-        if (crsId[0]) {
-          this.department = crsId[0];
+      fullCourseId = $(header).find(".crsID");
+      let text = fullCourseId.text();
+      if (fullCourseId && text) {
+        const splitcrsId = text.split("-");
+        fullCourseId = text.split(" ")[0];
+        if (splitcrsId[0]) {
+          this.department = splitcrsId[0];
         }
       }
     }
@@ -475,7 +478,7 @@ Form: ${$(form).html()}
           return;
         }
 
-        sendPostRequest(email, courseid, department, phone);
+        sendPostRequest(email, courseid, fullCourseId, department, phone);
       } catch (e) {
         console.error(e);
       }
@@ -483,7 +486,19 @@ Form: ${$(form).html()}
   });
 }
 
-function sendPostRequest(email, courseid, department, phone) {
+function sendPostRequest(email, courseid, fullCourseId, department, phone) {
+  let semester = "";
+  try {
+    const termTab = document.getElementById("activeTermTab");
+    if (termTab) {
+      const [term, year] = termTab.textContent.trim().toLowerCase().split(" ");
+      if (year && ["fall", "spring"].includes(term)) {
+        semester = `${year}${term === "fall" ? "3" : "1"}`;
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
   $.ajax({
     method: "POST",
     url: "https://jonlu.ca/soc/notify",
@@ -494,6 +509,8 @@ function sendPostRequest(email, courseid, department, phone) {
       department,
       phone,
       id,
+      semester,
+      fullCourseId,
     },
     error(err) {
       console.log(err);
