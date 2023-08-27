@@ -1,8 +1,9 @@
 let professorRatings = new Map();
 let options;
 let id;
+let textsEnabled = undefined;
 chrome.runtime.onMessage.addListener(onMessage);
-
+let venmoImage = chrome.runtime.getURL("images/venmo.png");
 function onMessage(message, sender, sendResponse) {
   if (message.action === "optionsChanged") {
     options = message.options;
@@ -441,26 +442,43 @@ function addPostRequests() {
         } catch (e) {
           console.error(e);
         }
-        let phoneResponse = await Swal.fire({
-          title: "Phone number",
-          cancelButtonText: `Skip`,
-          html: `If you'd like texts in addition to emails, add your phone number here (costs $1 per section per semester) - optional. <input id="phone" placeholder="2135559020" value="${defaultPhoneValue}" class="swal2-input">`,
-          preConfirm() {
-            return new Promise((resolve) => {
-              resolve($("#phone").val());
-            });
-          },
-          onOpen() {
-            $("#phone").focus();
-          },
-          showCancelButton: true,
-        });
-        const phone = (phoneResponse && phoneResponse.value) || "";
-        if (phone) {
+        if (textsEnabled === undefined) {
           try {
-            localStorage.setItem(localStoragePhoneKey, phone);
+            const data = await fetch("https://jonlu.ca/soc/texts-enabled", {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+              },
+            });
+            const response = await data.json();
+            textsEnabled = response.enabled;
           } catch (e) {
             console.error(e);
+          }
+        }
+        let phone = "";
+        if (textsEnabled) {
+          let phoneResponse = await Swal.fire({
+            title: "Phone number",
+            cancelButtonText: `Skip`,
+            html: `If you'd like texts in addition to emails, add your phone number here (costs $1 per section per semester) - optional. <input id="phone" placeholder="2135559020" value="${defaultPhoneValue}" class="swal2-input">`,
+            preConfirm() {
+              return new Promise((resolve) => {
+                resolve($("#phone").val());
+              });
+            },
+            onOpen() {
+              $("#phone").focus();
+            },
+            showCancelButton: true,
+          });
+          phone = (phoneResponse && phoneResponse.value) || "";
+          if (phone) {
+            try {
+              localStorage.setItem(localStoragePhoneKey, phone);
+            } catch (e) {
+              console.error(e);
+            }
           }
         }
         // Try multiple ways of getting the department
@@ -555,13 +573,13 @@ function sendPostRequest(email, courseid, fullCourseId, department, phone) {
         const link = `<a href=venmo://paycharge?txn=pay&recipients=JonLuca&amount=1&note=${
           data.section && data.section.rand
         }>You can also copy and paste this link to auto open Venmo with the right fields.</a>`;
+
         textNotif +=
           (data.phone &&
+            textsEnabled &&
             `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b>${
               data.section && data.section.rand
-            }</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else.</strong><div id="venmo-image"><img src="${chrome.extension.getURL(
-              "images/venmo.png"
-            )}"/><span class="randSectionId">${
+            }</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else.</strong><div id="venmo-image"><img src="${venmoImage}"/><span class="randSectionId">${
               data.section && data.section.rand
             }</span><br>${link}</div>`) ||
           "";
@@ -793,6 +811,9 @@ function parseProfessor(instructor, row) {
   //generate actual name
   const professors =
     professorRatings.get(getCleanName(`${nameParts[1]} ${nameParts[0]}`)) ||
+    professorRatings.get(
+      getCleanName([nameParts.pop(), ...nameParts].join(" "))
+    ) ||
     professorRatings.get(getCleanName(nameParts.reverse().join(" ")));
   //If instructor name in json
   if (professors) {
