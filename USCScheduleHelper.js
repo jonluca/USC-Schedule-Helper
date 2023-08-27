@@ -1,4 +1,4 @@
-let professorRatings = {};
+let professorRatings = new Map();
 let options;
 let id;
 chrome.runtime.onMessage.addListener(onMessage);
@@ -18,6 +18,10 @@ $(() => {
   });
 });
 
+function getCleanName(name) {
+  return name.toLowerCase().replace(/[^a-zA-Z]/gi, "");
+}
+
 function startHelper() {
   //Pages URL
   const currentURL = window.location.href;
@@ -33,9 +37,17 @@ function startHelper() {
     url: chrome.runtime.getURL("data/ratings.json"),
     type: "json",
     success(data, textStatus, jqXHR) {
-      professorRatings = data;
+      let ratings = data;
       if (typeof data === "string") {
-        professorRatings = JSON.parse(data);
+        ratings = JSON.parse(data);
+      }
+      for (const professor of ratings) {
+        const nameClean = getCleanName(
+          `${professor.firstName} ${professor.lastName}`
+        );
+        const professorsEntryForName = professorRatings.get(nameClean) || [];
+        professorsEntryForName.push(professor);
+        professorRatings.set(nameClean, professorsEntryForName);
       }
       //If we are on webreg or if we're on classes.usc.edu
       if (
@@ -60,7 +72,7 @@ function startHelper() {
                  This is for courses.usc.edu, not web registration. Original version of the extension only worked
                  here, then I realized it's useless and would be better suited for webreg
                  */
-        parseCoursePage(professorRatings);
+        parseCoursePage();
       }
     },
   });
@@ -94,8 +106,7 @@ let classHasLectureSection = false;
 let currentSectionHasDiscussion = false;
 let currectSectionIsClosed = false;
 //Url template for each professor
-const ratingURLTemplate =
-  "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
+const ratingURLTemplate = "https://www.ratemyprofessors.com/professor/";
 //Contains a span HTML element, which is just included to insert a blank column cell in each row, to preserve spacing
 const emptySpanCell =
   '<span class="instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1"><span \
@@ -155,7 +166,7 @@ function insertCalendar() {
 }
 
 function convertTZ(date, tzString) {
-  return new Date(date).toLocaleString("en-US", { timeZone: tzString });
+  return new Date(date).toISOString("en-US", { timeZone: tzString });
 }
 
 function hoursToPSTMoment(hours) {
@@ -706,32 +717,36 @@ function insertBlankRatingCell(row) {
   }
 }
 
-function insertProfessorRating(row, professor_info) {
-  const url = ratingURLTemplate + professor_info.id;
-  //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
-  //if there already is one then we know it's another professor
-  if ($(row).find(".rating").length !== 0) {
-    $(row).find(".rating").after(`, <a href=${url}>Link</a>`);
-  } else {
-    $(row).addClass("blank_rating");
-    //long string but needs to be exactly formatted
-    const location_of_insert = $(row).find(".instr_alt1, .instr_alt0")[0];
-    //actual contents of rating
-    let rating_anchor = `<a class="rating" href=${url} target="_blank">Link</a>`;
-    // If you want the rating on the page, just delete the string above and rename the one below this comment to
-    // rating_anchor
-    const rating_anchor_with_score = `<a class="rating" href=${url} target="_blank">${professor_info.rating}</a>`;
-    if (options.showRatings) {
-      rating_anchor = rating_anchor_with_score;
-    }
-    //long string just to include new
-    $(location_of_insert).after(
-      `<span class="hours_alt1 text-md-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`
-    );
-    /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
+function insertProfessorRating(row, professors) {
+  for (const prof of professors) {
+    const url = ratingURLTemplate + prof.legacyId;
+    //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
+    //if there already is one then we know it's another professor
+    if ($(row).find(".rating").length !== 0) {
+      $(row).find(".rating").after(`, <a href=${url}>Link</a>`);
+    } else {
+      $(row).addClass("blank_rating");
+      //long string but needs to be exactly formatted
+      const location_of_insert = $(row).find(".instr_alt1, .instr_alt0")[0];
+      //actual contents of rating
+      let rating_anchor = `<a class="rating" href=${url} target="_blank">Link</a>`;
+      // If you want the rating on the page, just delete the string above and rename the one below this comment to
+      // rating_anchor
+      const rating_anchor_with_score = `<a class="rating" href=${url} target="_blank">${
+        prof.avgRating || "Link"
+      }</a>`;
+      if (options.showRatings) {
+        rating_anchor = rating_anchor_with_score;
+      }
+      //long string just to include new
+      $(location_of_insert).after(
+        `<span class="hours_alt1 text-md-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`
+      );
+      /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
          find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
-    if ($(row).find(".empty_rating").length !== 0) {
-      $(row).find(".empty_rating")[0].remove();
+      if ($(row).find(".empty_rating").length !== 0) {
+        $(row).find(".empty_rating")[0].remove();
+      }
     }
   }
 }
@@ -774,12 +789,14 @@ function parseProfessor(instructor, row) {
     const location_of_insert = $(row).find(".instr_alt1, .instr_alt0")[0];
     $(location_of_insert).after(emptySpanCell);
   }
-  let actual_name = instructor.split(", ");
+  let nameParts = instructor.split(/[, ]/).filter(Boolean);
   //generate actual name
-  actual_name = `${actual_name[1]} ${actual_name[0]}`;
+  const professors =
+    professorRatings.get(getCleanName(`${nameParts[1]} ${nameParts[0]}`)) ||
+    professorRatings.get(getCleanName(nameParts.reverse().join(" ")));
   //If instructor name in json
-  if (actual_name in professorRatings) {
-    insertProfessorRating(row, professorRatings[actual_name]);
+  if (professors) {
+    insertProfessorRating(row, professors);
   } else {
     insertBlankRatingCell(row);
   }
@@ -989,12 +1006,11 @@ function isNumber(n) {
   return typeof n === "number" && !isNaN(n) && isFinite(n);
 }
 
-function parseCoursePage(professorRatings) {
+function parseCoursePage() {
   //Get all courses
   const courses = $(".course-info");
   let totalSpots = 0;
   let availSpots = 0;
-  const ratingTemplate = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=";
   //Iterate over courses on page
   for (let i = 0; i < courses.length; i++) {
     totalSpots = 0;
@@ -1038,32 +1054,39 @@ function parseCoursePage(professorRatings) {
           //However, some names are "First Middle Middle2 Last", and we only want "First Last" as that is the format of
           // our json
           let name = splitProfName.split(" ");
-          name = `${name[0]} ${name[name.length - 1]}`;
+          name = getCleanName(`${name[0]} ${name[name.length - 1]}`);
           //If its in JSON
-          if (name in professorRatings) {
+          const professors = professorRatings.get(name);
+          if (professors) {
             //generate RMP URL
-            const url = ratingTemplate + professorRatings[name].id;
-            //If we've never inserted before, insert. Otherwise insert with a comma before it for good formatting
-            if ($(this).find(".rating").length === 0) {
-              if (options.showRatings) {
-                $(this)
-                  .find("td.instructor")
-                  .after(
-                    `<td class="rating"><a href=${url} target="_blank">${professorRatings[name].rating}</a></td>`
-                  );
+            for (const prof of professors) {
+              const url = ratingURLTemplate + prof.legacyId;
+              //If we've never inserted before, insert. Otherwise insert with a comma before it for good formatting
+              if ($(this).find(".rating").length === 0) {
+                if (options.showRatings) {
+                  $(this)
+                    .find("td.instructor")
+                    .after(
+                      `<td class="rating"><a href=${url} target="_blank">${
+                        prof.avgRating || "Link"
+                      }</a></td>`
+                    );
+                } else {
+                  $(this)
+                    .find("td.instructor")
+                    .after(
+                      `<td class="rating"><a href=${url} target="_blank">Link</a></td>`
+                    );
+                }
               } else {
                 $(this)
-                  .find("td.instructor")
-                  .after(
-                    `<td class="rating"><a href=${url} target="_blank">Link</a></td>`
+                  .find(".rating")
+                  .append(
+                    `, <a href=${url} target="_blank">${
+                      prof.avgRating || "Link"
+                    }</a>`
                   );
               }
-            } else {
-              $(this)
-                .find(".rating")
-                .append(
-                  `, <a href=${url}>${professorRatings[name].rating}</a>`
-                );
             }
           } else {
             //If not in JSON, we need an empty space to make table format correctly
