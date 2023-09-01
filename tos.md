@@ -120,3 +120,7 @@ Dispute Resolution. Please read this Arbitration Agreement carefully. It is part
 
 <p>Address: usc@jonlu.ca</p>
 <p>Email: usc@jonlu.ca</p>
+
+#### SMS Terms & Conditions
+
+USC SChedule Helper, also known as 'JonLuca DeCaro Consulting' offers the option to our customers to receive notifications for class availability. Message frequency varies. Message and data rates may apply. Text HELP to [Number] for help. Reply STOP to cancel. Carriers are not liable for any delays or undelivered messages
