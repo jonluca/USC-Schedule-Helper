@@ -577,9 +577,9 @@ function sendPostRequest(email, courseid, fullCourseId, department, phone) {
         textNotif +=
           (data.phone &&
             textsEnabled &&
-            `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b>${
+            `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b style="font-size: 18px;">${
               data.section && data.section.rand
-            }</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else.</strong><div id="venmo-image"><img src="${venmoImage}"/><span class="randSectionId">${
+            }</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else. If it asks for a last 4 digits of the phone number, use 9020</strong><div id="venmo-image"><img src="${venmoImage}"/><span class="randSectionId">${
               data.section && data.section.rand
             }</span><br>${link}</div>`) ||
           "";
@@ -706,10 +706,7 @@ function parseClassType(row, classType) {
     classTotalSpots += totalAvailable;
     classAvailableSpots += totalAvailable - currentEnrolled;
     allLecturesClosed = false;
-    // If the class is closed, insert the Notify Me button
-    if (classAvailableSpots === 0) {
-      addNotifyMe(row);
-    }
+    addNotifyMe(row);
   } else if (classType === "Type: Lab") {
     classTotalSpotsLabOnly += totalAvailable;
     classAvailableSpotsLabOnly += totalAvailable - currentEnrolled;
