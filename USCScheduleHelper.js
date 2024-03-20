@@ -108,16 +108,19 @@ const emptySpanCell =
 //An array that will contain the schedule that they are currently registered in
 const currentScheduleArr = [];
 
-function getCurrentSchedule() {
-  //Pulls schedule from myCourseBin
-  $.ajax({
-    method: "POST",
-    url: "https://webreg.usc.edu/Scheduler/Read",
-    type: "text",
-    success(data, textStatus, jqXHR) {
-      parseSchedule(data);
-    },
-  });
+async function getCurrentSchedule() {
+  const data = await fetch("https://webreg.usc.edu/Calendar");
+  const text = await data.text();
+  const syncScript = text.split("<script>kendo.syncReady")[1]?.split("\n")[0];
+  if (!syncScript) {
+    return;
+  }
+  // there's a json object of the form "data":{"Data" that we want to parse
+  const json = syncScript.split('data":{"Data":')[1]?.split("]")[0];
+  if (json) {
+    const dataObject = JSON.parse(`{"Data":${json}]}`);
+    parseSchedule(dataObject);
+  }
 }
 
 function insertCalendar() {
@@ -196,24 +199,33 @@ function parseSchedule(data) {
   //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
   $(".accordion-content-area").each(function () {
     let doAllSectionsOverlap = true;
-    const sections = $(this).find(".section_alt1, .section_alt0");
+    const sections = $(this).find(".section");
 
     sections.each(function () {
       try {
+        const rows = $(this).find(".section_row").toArray();
         //Get hours for current section
-        let secHours = $(this).find("[class^=hours]")[0].innerText;
-        secHours = secHours.replace("Time: ", "");
-        secHours = secHours.split("-");
+        let secHours = rows.find((r) =>
+          r.innerText.includes("Time:")
+        )?.innerText;
+        secHours = secHours?.replace("Time: ", "")?.trim();
+        secHours = secHours?.split("-");
         //Get days for class for current section
-        let secDays = $(this).find("[class^=days]")[0].innerText;
-        secDays = secDays.replace("Days: ", "");
+        let secDays = rows.find((r) =>
+          r.innerText.includes("Days:")
+        )?.innerText;
+        secDays = secDays?.replace("Days: ", "")?.trim();
         secDays = splitDays(secDays);
         //Get section name to compare if you already have that class
-        let secName = $(this).find("[class^=id]")[0].innerText;
-        secName = secName.replace("Section: ", "");
+        let secName = rows.find((r) =>
+          r.innerText.includes("Section:")
+        )?.innerText;
+        secName = secName?.replace("Section: ", "")?.trim();
         //Get section name to compare if you already have that class
-        let secType = $(this).find("[class^=type]")[0].innerText;
-        secType = secType.replace("Type: ", "");
+        let secType = rows.find((r) =>
+          r.innerText.includes("Type:")
+        )?.innerText;
+        secType = secType?.replace("Type: ", "")?.trim();
         for (const currClass of currentScheduleArr) {
           if (secName.startsWith(currClass.section)) {
             continue;
@@ -276,6 +288,9 @@ function addConflictOverlay(row, name) {
 }
 
 function splitDays(days) {
+  if (!days) {
+    return [];
+  }
   //Split Thursday first because otherwise it'll get split on Tuesday
   let split = days.replace("Th", "D");
   split = split.split("");
@@ -641,8 +656,11 @@ function parseRegistrationNumbers(section) {
       addNotifyMe(section);
       if (!$(section).hasClass("blank_rating")) {
         $(section).addClass("blank_rating");
-        const loc = $(section).find(".instr_alt1, .instr_alt0")[0];
-        $(loc).after(emptySpanCell);
+        const rows = $(section).find(".section_row").toArray();
+        const instructorRow = rows.find((r) =>
+          r.innerText.includes("Instructor")
+        );
+        if (instructorRow) $(instructorRow).after(emptySpanCell);
       }
     } else {
       addRegistrationNumbers(section, regNum[0].trim(), regNum[1].trim());
@@ -808,6 +826,8 @@ function parseSections(sections) {
       const names = instructors
         .trim()
         .split("<br>")
+        .filter(Boolean)
+        .flatMap((l) => l.split("\n"))
         .map((l) => l.trim())
         .filter(Boolean);
 

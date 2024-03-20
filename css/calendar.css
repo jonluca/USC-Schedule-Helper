@@ -30,3 +30,7 @@
 #scheduler {
     width: 600px
 }
+
+.spots_remaining {
+    padding-right: 4px;
+}
