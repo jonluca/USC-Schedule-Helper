@@ -4,6 +4,7 @@ let id;
 let textsEnabled = undefined;
 chrome.runtime.onMessage.addListener(onMessage);
 let venmoImage = chrome.runtime.getURL("images/venmo.png");
+
 function onMessage(message, sender, sendResponse) {
   if (message.action === "optionsChanged") {
     options = message.options;
@@ -23,7 +24,7 @@ function getCleanName(name) {
   return name.toLowerCase().replace(/[^a-zA-Z]/gi, "");
 }
 
-function startHelper() {
+async function startHelper() {
   //Pages URL
   const currentURL = window.location.href;
   if (currentURL.includes("webreg")) {
@@ -33,50 +34,42 @@ function startHelper() {
   //This loads the JSON of all the professors, rating, and unique ID. Only way I've found to get it, unfortunately, is
   // through a HTTPRequest Typically loads in ~40ms, so not a huge issue, I just wish there was a more efficient way of
   // doing it
-  $.ajax({
-    method: "GET",
-    url: chrome.runtime.getURL("data/ratings.json"),
-    type: "json",
-    success(data, textStatus, jqXHR) {
-      let ratings = data;
-      if (typeof data === "string") {
-        ratings = JSON.parse(data);
-      }
-      for (const professor of ratings) {
-        const nameClean = getCleanName(
-          `${professor.firstName} ${professor.lastName}`
-        );
-        const professorsEntryForName = professorRatings.get(nameClean) || [];
-        professorsEntryForName.push(professor);
-        professorRatings.set(nameClean, professorsEntryForName);
-      }
-      //If we are on webreg or if we're on classes.usc.edu
-      if (
-        currentURL.includes("webreg") &&
-        !currentURL.includes("/myCourseBin")
-      ) {
-        //Appending to body makes the stylesheet async
-        $("body").append(
-          `<link rel="stylesheet" href="${chrome.runtime.getURL(
-            "css/sweetalert.css"
-          )}" type="text/css" />`
-        );
-        if (options.showConflicts) {
-          getCurrentSchedule();
-        }
-        parseWebReg();
-        if (options.showCalendar && !currentURL.includes("/myKCal")) {
-          insertCalendar();
-        }
-      } else {
-        /*
+  const response = await fetch(chrome.runtime.getURL("data/ratings.json"));
+  const data = await response.json();
+  let ratings = data;
+  if (typeof data === "string") {
+    ratings = JSON.parse(data);
+  }
+  for (const professor of ratings) {
+    const nameClean = getCleanName(
+      `${professor.firstName} ${professor.lastName}`
+    );
+    const professorsEntryForName = professorRatings.get(nameClean) || [];
+    professorsEntryForName.push(professor);
+    professorRatings.set(nameClean, professorsEntryForName);
+  }
+  //If we are on webreg or if we're on classes.usc.edu
+  if (currentURL.includes("webreg") && !currentURL.includes("/myCourseBin")) {
+    //Appending to body makes the stylesheet async
+    $("body").append(
+      `<link rel="stylesheet" href="${chrome.runtime.getURL(
+        "css/sweetalert.css"
+      )}" type="text/css" />`
+    );
+    if (options.showConflicts) {
+      getCurrentSchedule();
+    }
+    parseWebReg();
+    if (options.showCalendar && !currentURL.includes("/myKCal")) {
+      insertCalendar();
+    }
+  } else {
+    /*
                  This is for courses.usc.edu, not web registration. Original version of the extension only worked
                  here, then I realized it's useless and would be better suited for webreg
                  */
-        parseCoursePage();
-      }
-    },
-  });
+    parseCoursePage();
+  }
 }
 
 /*
@@ -111,7 +104,7 @@ const ratingURLTemplate = "https://www.ratemyprofessors.com/professor/";
 //Contains a span HTML element, which is just included to insert a blank column cell in each row, to preserve spacing
 const emptySpanCell =
   '<span class="instr_alt1 empty_rating col-xs-12 col-sm-12 col-md-1 col-lg-1"><span \
-  class="hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span></span>';
+    class="hidden-lg hidden-md visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span></span>';
 //An array that will contain the schedule that they are currently registered in
 const currentScheduleArr = [];
 
@@ -174,6 +167,7 @@ function hoursToPSTMoment(hours) {
   const dateObj = convertTZ(hours, "America/Los_Angeles");
   return moment(dateObj);
 }
+
 function parseSchedule(data) {
   if (!data || !data.Data || !data.Data.length) {
     return;
@@ -200,7 +194,7 @@ function parseSchedule(data) {
     return;
   }
   //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-  $(".crs-accordion-content-area").each(function () {
+  $(".accordion-content-area").each(function () {
     let doAllSectionsOverlap = true;
     const sections = $(this).find(".section_alt1, .section_alt0");
 
@@ -315,6 +309,7 @@ function insertExportButton() {
   const cals = $(".exportCal");
   $(cals[1]).remove();
 }
+
 Mailcheck.defaultDomains.push("usc.edu", "yahoo.com"); // extend existing domains
 Mailcheck.defaultTopLevelDomains.push("edu"); // extend existing TLDs
 async function checkEmail(email) {
@@ -338,18 +333,17 @@ function addPostRequests() {
     $(this).unbind();
     $(this).attr("type", "button");
     $(this).unbind("mouseenter mouseleave");
-    const id = $(form).find("#sectionid");
-    // Try to extract department from form - USC isn't consistent in when they include the department;
-    const department = $(form).find("#department").val();
-    this.department = department;
+    const id = form.attributes["data-ajax-url"]?.textContent.split("/")[3];
+    if (!id) {
+      console.warn("No id found for notify button, skipping.");
+      return true;
+    }
+    let titleTopbar = $(form).parents(".accordion-content-area");
+    let header = $(titleTopbar).prev();
     //get the department by matching form ID to the row above
-    const formID = $(form).attr("id");
-    const rowNum = formID.substring(4);
-    const hrefMatch = `#course_${rowNum}`;
-    const aboverow = $(`a[href="${hrefMatch}"]`);
-    const courseSearch = $(aboverow).find(".crsID");
+    const courseSearch = $(header).find(".crsID");
     let departmentFromAbove = "";
-    if (courseSearch.length != 0) {
+    if (courseSearch.length) {
       const spanElem = $(courseSearch[0]).text();
       const departmentString = spanElem.split("-");
       departmentFromAbove = departmentString[0];
@@ -357,7 +351,7 @@ function addPostRequests() {
         this.department = departmentFromAbove;
       }
     }
-    let titleTopbar = $(form).parents(".crs-accordion-content-area");
+
     let fullCourseId;
     if (titleTopbar) {
       let header = $(titleTopbar).prev();
@@ -371,7 +365,7 @@ function addPostRequests() {
         }
       }
     }
-    const courseid = id.val();
+    const courseid = id;
     $(this).click(async () => {
       let currentDepartmentYearText = "";
       try {
@@ -488,10 +482,12 @@ function addPostRequests() {
         // form, not sure why We do a hacky way by getting it from courseid
         if (!department) {
           let course = $(form).find("#courseid")[0];
-          course = $(course).attr("value");
           if (course) {
-            course = course.split("-");
-            department = course[0];
+            course = $(course).attr("value");
+            if (course) {
+              course = course.split("-");
+              department = course[0];
+            }
           }
         }
         //Third way of getting the department, from above
@@ -567,7 +563,7 @@ function sendPostRequest(email, courseid, fullCourseId, department, phone) {
         if (status === 200) {
           textNotif +=
             "Sent verification email - please verify your email to begin receiving notifications! <br> \
-                                <strong> It's probably in your spam folder!</strong>";
+                                            <strong> It's probably in your spam folder!</strong>";
         }
 
         const link = `<a href=venmo://paycharge?txn=pay&recipients=JonLuca&amount=1&note=${
@@ -619,15 +615,18 @@ function changeAddToCourseBinButton(row) {
 }
 
 //Each row (which corresponds to a single lecture/lab/discussion time) needs to be parsed for times and spots available
-function parseRegistrationNumbers(row) {
+function parseRegistrationNumbers(section) {
   //Find registration numbers for this row, formatted like "# of #". Hidden content also prepends it with Registered:
   // so that must be cut out
-  const regNumElem = $(row).find(".regSeats_alt1, .regSeats_alt0");
+  const rows = $(section).find(".section_row");
+  const regNumElem =
+    rows.toArray().find((r) => r.innerText.includes("Registered:")) ||
+    $(section).find(".RegSeatCol")[0];
   let regNum;
   //Cut out hidden text before it
   //If class has reg details
-  if (regNumElem.length !== 0) {
-    regNum = regNumElem[0].textContent.replace("Registered: ", "");
+  if (regNumElem) {
+    regNum = regNumElem.textContent.replace("Registered: ", "").trim();
     //create array using "of" as delimiter
     regNum = regNum.split("of");
     if (regNum.length !== 2) {
@@ -639,22 +638,22 @@ function parseRegistrationNumbers(row) {
       ) {
         allLecturesClosed = true;
       }
-      addNotifyMe(row);
-      if (!$(row).hasClass("blank_rating")) {
-        $(row).addClass("blank_rating");
-        const loc = $(row).find(".instr_alt1, .instr_alt0")[0];
+      addNotifyMe(section);
+      if (!$(section).hasClass("blank_rating")) {
+        $(section).addClass("blank_rating");
+        const loc = $(section).find(".instr_alt1, .instr_alt0")[0];
         $(loc).after(emptySpanCell);
       }
     } else {
-      addRegistrationNumbers(row, regNum[0].trim(), regNum[1].trim());
+      addRegistrationNumbers(section, regNum[0].trim(), regNum[1].trim());
     }
   }
 }
 
 //Any course that is full will get a Notify Me button, which allows users to type in their information and be notified
 // if the class opens up again
-function addNotifyMe(row) {
-  let addToCourseBinButton = $(row).find(".addtomycb");
+function addNotifyMe(section) {
+  let addToCourseBinButton = $(section).find(".addtomycb");
   if (addToCourseBinButton.length !== 0) {
     $(addToCourseBinButton[0]).after(
       '<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12 notify" type="button">'
@@ -663,12 +662,12 @@ function addNotifyMe(row) {
   ///If the class is already in their coursebin (doesn't mean they've registered for it, though - this fixes the edge
   // case that a lot of people have, in which they have a course in their coursebin and are just waiting for a spot to
   // open up)
-  const alreadyInCourseBin = $(row).find(".alrdyinmycb");
+  const alreadyInCourseBin = $(section).find(".alrdyinmycb");
   if (alreadyInCourseBin.length !== 0) {
     $(alreadyInCourseBin).replaceWith(
       '<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12" type="button">'
     );
-    let addToCourseBinAlready = $(row).find(".addtomycb");
+    let addToCourseBinAlready = $(section).find(".addtomycb");
     addToCourseBinAlready = addToCourseBinAlready[0];
     $(addToCourseBinAlready).attr("value", "Notify Me");
     $(addToCourseBinAlready).removeAttr("type");
@@ -677,18 +676,28 @@ function addNotifyMe(row) {
 }
 
 // TODO: Fix this function, as it does too many things that are unrelated
-function addRegistrationNumbers(row, enrolled, total) {
+function addRegistrationNumbers(section, enrolled, total) {
   //Gets each of ("# of #")
   //TODO: This utilizes global variables :( Sorry future person debugging this, I'll try to do a refactor before I
   // leave USC
   currentEnrolled = parseInt(enrolled);
   totalAvailable = parseInt(total);
   //Checks class type - we are only interested in Lecture and Lecture-Lab
-  const classTypeElem = $(row).find(".type_alt1, .type_alt0");
+  const rows = $(section).find(".section_row");
+  if (!rows.length) {
+    return;
+  }
+  const classTypeElem = rows
+    .toArray()
+    .find((r) => r.innerText.includes("Type:"));
   let classType;
-  if (classTypeElem.length !== 0) {
-    classType = classTypeElem[0].textContent;
-    parseClassType(row, classType);
+  if (classTypeElem) {
+    classType = classTypeElem.textContent
+      .trim()
+      .replace(/\s+/gi, "")
+      .split("Type:")
+      .filter((l) => l.trim())[0];
+    parseClassType(section, classType);
   }
 }
 
@@ -696,9 +705,9 @@ function addRegistrationNumbers(row, enrolled, total) {
 function parseClassType(row, classType) {
   //If it's not a lab or quiz
   if (
-    classType === "Type: Lecture" ||
-    classType === "Type: Lecture-Lab" ||
-    classType === "Type: Lecture-Discussion"
+    classType === "Lecture" ||
+    classType === "Lecture-Lab" ||
+    classType === "Lecture-Discussion"
   ) {
     //It's not a lab, so isOnlyLabSections is false
     isOnlyLabSections = false;
@@ -707,10 +716,10 @@ function parseClassType(row, classType) {
     classAvailableSpots += totalAvailable - currentEnrolled;
     allLecturesClosed = false;
     addNotifyMe(row);
-  } else if (classType === "Type: Lab") {
+  } else if (classType === "Lab") {
     classTotalSpotsLabOnly += totalAvailable;
     classAvailableSpotsLabOnly += totalAvailable - currentEnrolled;
-  } else if (classType === "Type: Discussion") {
+  } else if (classType === "Discussion") {
     isOnlyLabSections = false;
     currentSectionHasDiscussion = true;
     classDiscussionTotalSpots += totalAvailable;
@@ -727,8 +736,9 @@ function insertBlankRatingCell(row) {
   // html if it's a valid professor... TODO refactor for next semester I suppose
   if (!$(row).hasClass("blank_rating")) {
     $(row).addClass("blank_rating");
-    const loc = $(row).find(".instr_alt1, .instr_alt0")[0];
-    $(loc).after(emptySpanCell);
+    const rows = $(row).find(".section_row").toArray();
+    const instructorRow = rows.find((r) => r.innerText.includes("Instructor"));
+    if (instructorRow) $(instructorRow).after(emptySpanCell);
   }
 }
 
@@ -738,11 +748,16 @@ function insertProfessorRating(row, professors) {
     //To prevent reinserting, or if there are multiple professors, we insert an anchor with a rating class
     //if there already is one then we know it's another professor
     if ($(row).find(".rating").length !== 0) {
-      $(row).find(".rating").after(`, <a href=${url}>Link</a>`);
+      $(row)
+        .find(".rating")
+        .after(`, <a href=${url}>${prof.avgRating || "Link"}</a>`);
     } else {
       $(row).addClass("blank_rating");
       //long string but needs to be exactly formatted
-      const location_of_insert = $(row).find(".instr_alt1, .instr_alt0")[0];
+      const rows = $(row).find(".section_row").toArray();
+      const instructorRow = rows.find((r) =>
+        r.innerText.includes("Instructor")
+      );
       //actual contents of rating
       let rating_anchor = `<a class="rating" href=${url} target="_blank">Link</a>`;
       // If you want the rating on the page, just delete the string above and rename the one below this comment to
@@ -754,11 +769,11 @@ function insertProfessorRating(row, professors) {
         rating_anchor = rating_anchor_with_score;
       }
       //long string just to include new
-      $(location_of_insert).after(
+      $(instructorRow).after(
         `<span class="hours_alt1 text-md-center col-xs-12 col-sm-12 col-md-1 col-lg-1"><span class="hidden-lg hidden-md hidden-visible-xs-* visible-sm-* table-headers-xsmall">Prof. Rating: </span>${rating_anchor}</span>`
       );
       /* Very specific edge case - if you have two professors and you could not find the first, it'll insert an empty cell. However, if you can
-         find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
+               find the second you still want his score to be visible, so we need to remove the previously inserted blank one */
       if ($(row).find(".empty_rating").length !== 0) {
         $(row).find(".empty_rating")[0].remove();
       }
@@ -766,15 +781,19 @@ function insertProfessorRating(row, professors) {
   }
 }
 
-function parseRows(rows) {
-  $(rows).each(function () {
+function parseSections(sections) {
+  $(sections).each(function () {
     try {
       //rename Add to myCourseBin button so that it fits/looks nice
       changeAddToCourseBinButton(this);
       parseRegistrationNumbers(this);
       //Retrieve Instructor cell from row
-      const instructor_name_element = $(this).find(".instr_alt1, .instr_alt0");
-      if (instructor_name_element.length === 0) {
+      const rows = $(this).find(".section_row").toArray();
+      const instructorRow = rows.find((r) =>
+        r.innerText.includes("Instructor")
+      );
+
+      if (!instructorRow) {
         //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but
         // better safe than sorry here. If in the future they change it this'll prevent it from looking misaligned
         insertBlankRatingCell(this);
@@ -782,12 +801,25 @@ function parseRows(rows) {
         return true;
       }
       //get all professor names in a hacky way
-      const instructor_names =
-        instructor_name_element[0].innerHTML.split("span>");
+      const instructors = instructorRow.innerText
+        .replace("Instructor:", "")
+        .trim();
       //split on line breaks
-      const instructor_name = instructor_names[1].split("<br>");
+      const names = instructors
+        .trim()
+        .split("<br>")
+        .map((l) => l.trim())
+        .filter(Boolean);
+
+      if (!names.length) {
+        //I don't think this code actually ever runs, as USC creates blank cells with that class if it's empty, but
+        // better safe than sorry here. If in the future they change it this'll prevent it from looking misaligned
+        insertBlankRatingCell(this);
+        //jQuery way of saying continue;
+        return true;
+      }
       //if there are multiple instructors
-      for (const name of instructor_name) {
+      for (const name of names) {
         //single instructor name, comma delimited
         parseProfessor(name, this);
       }
@@ -799,11 +831,6 @@ function parseRows(rows) {
 }
 
 function parseProfessor(instructor, row) {
-  if (instructor.trim() === "" && !$(row).hasClass("blank_rating")) {
-    $(row).addClass("blank_rating");
-    const location_of_insert = $(row).find(".instr_alt1, .instr_alt0")[0];
-    $(location_of_insert).after(emptySpanCell);
-  }
   let nameParts = instructor.split(/[, ]/).filter(Boolean);
   //generate actual name
   const professors =
@@ -821,10 +848,17 @@ function parseProfessor(instructor, row) {
 }
 
 function insertProfRatingHeader(header) {
-  const days = $(header).find(".instr_alt1, .instr_alt0")[0];
-  $(days).after(
-    '<span class="instr_alt1 col-md-1 col-lg-1"><b>Prof. Rating</b></span>'
-  );
+  if (!header) {
+    return;
+  }
+  let rows = $(header).find(".section_row");
+  const instructorRow =
+    rows.toArray().find((r) => r.innerText.includes("Instructor")) || rows[7];
+  if (instructorRow) {
+    $(instructorRow).before(
+      '<span class="section_row col-md-1 col-lg-1"><b>Prof. Rating</b></span>'
+    );
+  }
 }
 
 // Resets global variables to 0. Ideally I'd refactor this to not have any globs, but the project started small and
@@ -928,30 +962,31 @@ function insertClassNumbers(element) {
 function addUnitsToTitle(row) {
   if (options.showUnits) {
     // get units
-    let units = $(row).find("[class^=type_alt]");
+    let sections = $(row).find(".section");
+    if (sections.length === 0) {
+      return;
+    }
+    for (const section of sections) {
+      let rows = $(section).find(".section_row");
 
-    // 3 is because the header has two elements that start with type_alt
-    if (units.length > 3) {
-      let actualUnits = $(units)[3].innerText;
-      actualUnits = actualUnits.replace("Units: ", "");
-      // start at 5 because every row has 2 elements with class ^= type_alt - also increment by 2
-      let nextRowToCheckForNonZeroUnits = 5;
-
-      // Edge case for when the first class in web reg is not the discussion section one, and doesn't have the right
-      // unit value
-      while (
-        actualUnits &&
-        actualUnits.trim() == "0.0" &&
-        nextRowToCheckForNonZeroUnits < units.length
-      ) {
-        actualUnits = $(units)[nextRowToCheckForNonZeroUnits].innerText;
-        actualUnits = actualUnits.replace("Units: ", "");
-        nextRowToCheckForNonZeroUnits += 2;
+      // 3 is because the header has two elements that start with type_alt
+      if (rows.length > 3) {
+        let actualUnits = $(rows)[3].innerText;
+        actualUnits = actualUnits.replace("Units: ", "").trim();
+        if (actualUnits.trim() === "0.0") {
+          continue;
+        }
+        const unitText = `<span class="crsTitl spots_remaining"> - ${actualUnits} units</span>`;
+        let header = $(row).prev();
+        let headerText = $(header).find(".course-title-indent");
+        const title = $(headerText).find(".crsTitl")[0];
+        if (title) {
+          title.innerText = `${title.innerText} - ${actualUnits} units`;
+        } else {
+          $(headerText).append(unitText);
+        }
+        return;
       }
-      let header = $(row).prev();
-      let headerText = $(header).find(".course-title-indent");
-      const unitText = `<span class="crsTitl spots_remaining"> - ${actualUnits} units</span>`;
-      $(headerText).append(unitText);
     }
   }
 }
@@ -963,11 +998,11 @@ function parseClass(classes) {
       reinitializeVariablesPerClass();
       addUnitsToTitle(this);
       //Insert Prof Rating column at top of each class view
-      const header = $(this).find(".section_head_alt1, .section_alt0");
+      const header = $(this).find(".section_head");
       insertProfRatingHeader(header);
       //Iterate over every section in row. To get alternating colors, USC uses alt0 and alt1, so we must search for both
-      const sections = $(this).find(".section_alt1, .section_alt0");
-      parseRows(sections);
+      const sections = $(this).find(".section_crsbin");
+      parseSections(sections);
       //If total spots is a number and it's not 0, insert
       insertClassNumbers(this);
     } catch (e) {
@@ -979,26 +1014,18 @@ function parseClass(classes) {
 
 function changeCSSColumnWidth() {
   //Sets CSS of page to display everything correctly
-  $(".rm_alt1").css({
+  $(".rm_").css({
     width: "4%",
   });
-  $(".btnAddToMyCourseBin_alt1").css({
+  $(".btnAddToMyCourseBin").css({
     width: "12%",
     float: "right",
   });
-  $(".rm_alt0").css({
+
+  $(".session").css({
     width: "4%",
   });
-  $(".btnAddToMyCourseBin_alt0").css({
-    width: "12%",
-    float: "right",
-  });
-  $(".session_alt1").css({
-    width: "4%",
-  });
-  $(".session_alt0").css({
-    width: "4%",
-  });
+
   $(`<style type='text/css'>
       @media (min-width: 992px) {
           .text-md-center {
@@ -1012,9 +1039,9 @@ function parseWebReg() {
   //Because we insert a new column, we need to change the CSS around to make it look right
   changeCSSColumnWidth();
   //Iterate over every div. The layout of webreg is alternating divs for class name/code and then its content
-  const individualClass = $(".crs-accordion-content-area");
+  const classes = $(".accordion-content-area");
   //Parses each class found previously
-  parseClass(individualClass);
+  parseClass(classes);
   addPostRequests();
 }
 

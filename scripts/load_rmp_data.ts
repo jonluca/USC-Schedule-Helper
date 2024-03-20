@@ -1,5 +1,9 @@
 import axios from "axios";
 import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 const schoolId = "U2Nob29sLTEzODE=";
 
 export interface RMPResponse {
@@ -160,10 +164,6 @@ fragment TeacherBookmark_teacher on Teacher {
   return response.data;
 };
 
-import path from "path";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -181,6 +181,18 @@ const run = async () => {
     console.log(`Fetched ${professors.length} professors`);
   }
 
+  const existing = await fs.readFile(
+    path.join(__dirname, "../data/ratings.json"),
+    "utf-8"
+  );
+  const existingProfessors = JSON.parse(existing);
+  const newProfessorIds = new Set(professors.map((p: Professor) => p.id));
+  const professorsToAdd = professors.filter(
+    (p: Professor) => !newProfessorIds.has(p.id)
+  );
+  professors = existingProfessors.concat(professorsToAdd);
+  // sort professors by their id
+  professors.sort((a, b) => a.id.localeCompare(b.id));
   await fs.writeFile(
     path.join(__dirname, "../data/ratings.json"),
     JSON.stringify(professors, null, 4)
