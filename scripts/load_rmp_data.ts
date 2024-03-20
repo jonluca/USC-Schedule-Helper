@@ -187,10 +187,10 @@ const run = async () => {
   );
   const existingProfessors = JSON.parse(existing);
   const newProfessorIds = new Set(professors.map((p: Professor) => p.id));
-  const professorsToAdd = professors.filter(
+  const professorsToAdd = existingProfessors.filter(
     (p: Professor) => !newProfessorIds.has(p.id)
   );
-  professors = existingProfessors.concat(professorsToAdd);
+  professors = professors.concat(professorsToAdd);
   // sort professors by their id
   professors.sort((a, b) => a.id.localeCompare(b.id));
   await fs.writeFile(

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "USC Schedule Helper",
   "description": "Shows available seats, professor ratings, and gives you the ability to export your calendar!",
-  "version": "13.0.1",
+  "version": "14.0.0",
   "permissions": [
     "storage"
   ],

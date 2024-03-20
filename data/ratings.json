@@ -141,7 +141,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 70
+        "wouldTakeAgainPercent": 71.875
     },
     {
         "avgDifficulty": 3.6,
@@ -449,14 +449,14 @@
     },
     {
         "avgDifficulty": 4.1,
-        "avgRating": 2.8,
+        "avgRating": 2.7,
         "department": "Political Science",
         "firstName": "Alison",
         "id": "VGVhY2hlci00MzYyMjE=",
         "isSaved": false,
         "lastName": "Renteln",
         "legacyId": 436221,
-        "numRatings": 132,
+        "numRatings": 138,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -1549,7 +1549,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 95.8333
+        "wouldTakeAgainPercent": 96
     },
     {
         "avgDifficulty": 3.2,
@@ -1981,7 +1981,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 83.871
+        "wouldTakeAgainPercent": 84.127
     },
     {
         "avgDifficulty": 2.8,
@@ -1997,7 +1997,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.5
+        "wouldTakeAgainPercent": 88.8889
     },
     {
         "avgDifficulty": 3,
@@ -2224,15 +2224,15 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 1.9,
-        "avgRating": 3.8,
+        "avgDifficulty": 1.8,
+        "avgRating": 3.5,
         "department": "Film",
         "firstName": "Akira",
         "id": "VGVhY2hlci02NjU5ODM=",
         "isSaved": false,
         "lastName": "Lippit",
         "legacyId": 665983,
-        "numRatings": 26,
+        "numRatings": 29,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -2385,19 +2385,19 @@
     },
     {
         "avgDifficulty": 4,
-        "avgRating": 3.3,
+        "avgRating": 3.2,
         "department": "Engineering",
         "firstName": "Ali",
         "id": "VGVhY2hlci02NTM5NzM=",
         "isSaved": false,
         "lastName": "Zahid",
         "legacyId": 653973,
-        "numRatings": 78,
+        "numRatings": 90,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 62.7907
+        "wouldTakeAgainPercent": 63.6364
     },
     {
         "avgDifficulty": 2.3,
@@ -2461,7 +2461,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 28.5714
+        "wouldTakeAgainPercent": 37.5
     },
     {
         "avgDifficulty": 3,
@@ -2637,7 +2637,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 50
+        "wouldTakeAgainPercent": 60
     },
     {
         "avgDifficulty": 2.7,
@@ -3453,7 +3453,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 43.9024
+        "wouldTakeAgainPercent": 45.2381
     },
     {
         "avgDifficulty": 0,
@@ -3869,7 +3869,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 0,
@@ -4093,7 +4093,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 97.0588
+        "wouldTakeAgainPercent": 97.1429
     },
     {
         "avgDifficulty": 3.6,
@@ -4144,8 +4144,8 @@
         "wouldTakeAgainPercent": 0
     },
     {
-        "avgDifficulty": 2.1,
-        "avgRating": 4,
+        "avgDifficulty": 2.3,
+        "avgRating": 4.2,
         "department": "Film",
         "firstName": "Tara",
         "id": "VGVhY2hlci03NTI4",
@@ -4157,7 +4157,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 3,
@@ -4285,7 +4285,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 90.9774
+        "wouldTakeAgainPercent": 91.1111
     },
     {
         "avgDifficulty": 3.1,
@@ -4445,7 +4445,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 90
+        "wouldTakeAgainPercent": 90.9091
     },
     {
         "avgDifficulty": 4.4,
@@ -4461,7 +4461,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 70.2703
+        "wouldTakeAgainPercent": 71.0526
     },
     {
         "avgDifficulty": 2.5,
@@ -4749,7 +4749,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 80
+        "wouldTakeAgainPercent": 83.3333
     },
     {
         "avgDifficulty": 3.8,
@@ -5729,14 +5729,14 @@
     },
     {
         "avgDifficulty": 3.6,
-        "avgRating": 3.6,
+        "avgRating": 3.5,
         "department": "Computer Science",
         "firstName": "Bill",
         "id": "VGVhY2hlci05MTMwODg=",
         "isSaved": false,
         "lastName": "Cheng",
         "legacyId": 913088,
-        "numRatings": 151,
+        "numRatings": 160,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -6125,7 +6125,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 61.4458
+        "wouldTakeAgainPercent": 61.9048
     },
     {
         "avgDifficulty": 4.1,
@@ -6221,7 +6221,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 81.8182
+        "wouldTakeAgainPercent": 82.2785
     },
     {
         "avgDifficulty": 0,
@@ -7009,19 +7009,19 @@
     },
     {
         "avgDifficulty": 3.3,
-        "avgRating": 3.8,
+        "avgRating": 4.1,
         "department": "Communication",
         "firstName": "Daniela",
         "id": "VGVhY2hlci0xMDg1OTIw",
         "isSaved": false,
-        "lastName": "Baroffio-Bota",
+        "lastName": "Baroffio",
         "legacyId": 1085920,
-        "numRatings": 34,
+        "numRatings": 38,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.6667
+        "wouldTakeAgainPercent": 88.2353
     },
     {
         "avgDifficulty": 4.4,
@@ -7405,7 +7405,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 95.8333
+        "wouldTakeAgainPercent": 95.8763
     },
     {
         "avgDifficulty": 2.2,
@@ -7665,14 +7665,14 @@
     },
     {
         "avgDifficulty": 2.9,
-        "avgRating": 3.7,
+        "avgRating": 3.6,
         "department": "Anthropology",
         "firstName": "Tok",
         "id": "VGVhY2hlci0xMjA3NDk1",
         "isSaved": false,
         "lastName": "Thompson",
         "legacyId": 1207495,
-        "numRatings": 68,
+        "numRatings": 70,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -7757,7 +7757,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 76.1905
+        "wouldTakeAgainPercent": 80
     },
     {
         "avgDifficulty": 2.5,
@@ -7997,7 +7997,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 88.8889
+        "wouldTakeAgainPercent": 89.0411
     },
     {
         "avgDifficulty": 3.6,
@@ -8221,7 +8221,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 88.2353
+        "wouldTakeAgainPercent": 88.4615
     },
     {
         "avgDifficulty": 5,
@@ -8349,7 +8349,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 55.1724
+        "wouldTakeAgainPercent": 56.6667
     },
     {
         "avgDifficulty": 1,
@@ -8397,7 +8397,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 92.6471
+        "wouldTakeAgainPercent": 92.7536
     },
     {
         "avgDifficulty": 0,
@@ -9213,7 +9213,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 80
     },
     {
         "avgDifficulty": 3.2,
@@ -9416,12 +9416,12 @@
         "isSaved": false,
         "lastName": "Papa",
         "legacyId": 1104782,
-        "numRatings": 294,
+        "numRatings": 311,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 83.3333
+        "wouldTakeAgainPercent": 83.75
     },
     {
         "avgDifficulty": 4,
@@ -9613,7 +9613,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.5
+        "wouldTakeAgainPercent": 88.5714
     },
     {
         "avgDifficulty": 4.8,
@@ -10797,7 +10797,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 90
+        "wouldTakeAgainPercent": 90.9091
     },
     {
         "avgDifficulty": 3.3,
@@ -11024,15 +11024,15 @@
         "wouldTakeAgainPercent": 91.6667
     },
     {
-        "avgDifficulty": 3,
-        "avgRating": 4.6,
+        "avgDifficulty": 3.1,
+        "avgRating": 4.5,
         "department": "Fine Arts",
         "firstName": "China",
         "id": "VGVhY2hlci0xMzcxNDU0",
         "isSaved": false,
         "lastName": "Adams",
         "legacyId": 1371454,
-        "numRatings": 18,
+        "numRatings": 22,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -11373,7 +11373,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 80
+        "wouldTakeAgainPercent": 81.25
     },
     {
         "avgDifficulty": 2.2,
@@ -11741,7 +11741,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.5
+        "wouldTakeAgainPercent": 88.8889
     },
     {
         "avgDifficulty": 0,
@@ -11808,15 +11808,15 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 2.6,
-        "avgRating": 3.6,
+        "avgDifficulty": 2.8,
+        "avgRating": 3.4,
         "department": "Geology",
         "firstName": "Sarah",
         "id": "VGVhY2hlci0xMzM1OTc0",
         "isSaved": false,
         "lastName": "Feakins",
         "legacyId": 1335974,
-        "numRatings": 51,
+        "numRatings": 61,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -11853,7 +11853,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.4865
+        "wouldTakeAgainPercent": 86.8421
     },
     {
         "avgDifficulty": 3.1,
@@ -12784,7 +12784,7 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 3.8,
+        "avgDifficulty": 3.9,
         "avgRating": 3.7,
         "department": "Business",
         "firstName": "Stacy",
@@ -12792,12 +12792,12 @@
         "isSaved": false,
         "lastName": "Geck",
         "legacyId": 1369508,
-        "numRatings": 115,
+        "numRatings": 117,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 59.0909
+        "wouldTakeAgainPercent": 60.8696
     },
     {
         "avgDifficulty": 2.6,
@@ -14349,7 +14349,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 81.8182
+        "wouldTakeAgainPercent": 83.3333
     },
     {
         "avgDifficulty": 3.6,
@@ -14481,14 +14481,14 @@
     },
     {
         "avgDifficulty": 2.6,
-        "avgRating": 4.4,
+        "avgRating": 4.5,
         "department": "Writing",
         "firstName": "Sandra",
         "id": "VGVhY2hlci0xNDk2OTY3",
         "isSaved": false,
         "lastName": "Ross",
         "legacyId": 1496967,
-        "numRatings": 24,
+        "numRatings": 26,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -14669,7 +14669,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 60.8696
+        "wouldTakeAgainPercent": 62.5
     },
     {
         "avgDifficulty": 3.1,
@@ -14797,7 +14797,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 84.058
+        "wouldTakeAgainPercent": 84.1727
     },
     {
         "avgDifficulty": 1.5,
@@ -15200,15 +15200,15 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 3.8,
-        "avgRating": 2.6,
+        "avgDifficulty": 3.9,
+        "avgRating": 2.5,
         "department": "Accounting",
         "firstName": "Zivia",
         "id": "VGVhY2hlci0xNDQ4MDM5",
         "isSaved": false,
         "lastName": "Sweeney",
         "legacyId": 1448039,
-        "numRatings": 104,
+        "numRatings": 117,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -15325,7 +15325,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 1.7,
@@ -16048,7 +16048,7 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 3.4,
+        "avgDifficulty": 3.6,
         "avgRating": 3.4,
         "department": "History",
         "firstName": "Ramzi",
@@ -16056,7 +16056,7 @@
         "isSaved": false,
         "lastName": "Rouighi",
         "legacyId": 1601275,
-        "numRatings": 25,
+        "numRatings": 29,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -16525,7 +16525,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.2069
+        "wouldTakeAgainPercent": 87.0968
     },
     {
         "avgDifficulty": 3,
@@ -16664,7 +16664,7 @@
         "isSaved": false,
         "lastName": "Serna",
         "legacyId": 1687349,
-        "numRatings": 53,
+        "numRatings": 52,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -17021,7 +17021,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 82.4561
+        "wouldTakeAgainPercent": 82.7586
     },
     {
         "avgDifficulty": 0,
@@ -17437,7 +17437,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.8407
+        "wouldTakeAgainPercent": 86.087
     },
     {
         "avgDifficulty": 3.5,
@@ -17664,15 +17664,15 @@
         "wouldTakeAgainPercent": 80.9524
     },
     {
-        "avgDifficulty": 2.9,
-        "avgRating": 4.7,
+        "avgDifficulty": 3.1,
+        "avgRating": 4.3,
         "department": "Political Science",
         "firstName": "Lee",
         "id": "VGVhY2hlci0xNjMwMTc1",
         "isSaved": false,
         "lastName": "Epstein",
         "legacyId": 1630175,
-        "numRatings": 13,
+        "numRatings": 22,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -18045,7 +18045,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.7143
+        "wouldTakeAgainPercent": 86.6667
     },
     {
         "avgDifficulty": 2.3,
@@ -18376,12 +18376,12 @@
         "isSaved": false,
         "lastName": "Patton",
         "legacyId": 1653453,
-        "numRatings": 87,
+        "numRatings": 84,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 97.4359
+        "wouldTakeAgainPercent": 97.619
     },
     {
         "avgDifficulty": 3.8,
@@ -18705,19 +18705,19 @@
     },
     {
         "avgDifficulty": 3.8,
-        "avgRating": 4.7,
+        "avgRating": 4.6,
         "department": "Writing",
         "firstName": "Shefali",
         "id": "VGVhY2hlci0xNTA1ODcz",
         "isSaved": false,
         "lastName": "Rajamannar",
         "legacyId": 1505873,
-        "numRatings": 38,
+        "numRatings": 42,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 95.8333
+        "wouldTakeAgainPercent": 96
     },
     {
         "avgDifficulty": 1.8,
@@ -19309,7 +19309,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 79.4521
+        "wouldTakeAgainPercent": 79.7297
     },
     {
         "avgDifficulty": 4,
@@ -19501,7 +19501,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 71.0526
+        "wouldTakeAgainPercent": 71.7949
     },
     {
         "avgDifficulty": 2.5,
@@ -20141,7 +20141,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 66.6667
+        "wouldTakeAgainPercent": 71.4286
     },
     {
         "avgDifficulty": 1.9,
@@ -20269,7 +20269,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 49.2754
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 3.1,
@@ -20333,7 +20333,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 76.1905
+        "wouldTakeAgainPercent": 77.2727
     },
     {
         "avgDifficulty": 3.1,
@@ -20397,7 +20397,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 93.3333
+        "wouldTakeAgainPercent": 93.75
     },
     {
         "avgDifficulty": 1,
@@ -20973,7 +20973,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 60.8108
+        "wouldTakeAgainPercent": 61.3333
     },
     {
         "avgDifficulty": 3.1,
@@ -21437,7 +21437,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 93.3333
+        "wouldTakeAgainPercent": 93.75
     },
     {
         "avgDifficulty": 2.8,
@@ -21457,14 +21457,14 @@
     },
     {
         "avgDifficulty": 3.1,
-        "avgRating": 3.9,
+        "avgRating": 3.7,
         "department": "Political Science",
         "firstName": "Fayez",
         "id": "VGVhY2hlci0xNTU4Nzkz",
         "isSaved": false,
         "lastName": "Hammad",
         "legacyId": 1558793,
-        "numRatings": 18,
+        "numRatings": 19,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -21709,7 +21709,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.1852
+        "wouldTakeAgainPercent": 86.2069
     },
     {
         "avgDifficulty": 2.7,
@@ -22301,7 +22301,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 66.6667
+        "wouldTakeAgainPercent": 71.4286
     },
     {
         "avgDifficulty": 2,
@@ -23069,7 +23069,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 82.1429
+        "wouldTakeAgainPercent": 82.7586
     },
     {
         "avgDifficulty": 2.2,
@@ -23757,7 +23757,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.5
+        "wouldTakeAgainPercent": 88
     },
     {
         "avgDifficulty": 2,
@@ -24504,12 +24504,12 @@
         "isSaved": false,
         "lastName": "Skibo",
         "legacyId": 1738659,
-        "numRatings": 261,
+        "numRatings": 251,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 12.2302
+        "wouldTakeAgainPercent": 12.8
     },
     {
         "avgDifficulty": 2.2,
@@ -25133,7 +25133,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 98.4615
+        "wouldTakeAgainPercent": 98.4848
     },
     {
         "avgDifficulty": 3.5,
@@ -25680,15 +25680,15 @@
         "wouldTakeAgainPercent": 50
     },
     {
-        "avgDifficulty": 2,
-        "avgRating": 4.8,
+        "avgDifficulty": 1.9,
+        "avgRating": 4.9,
         "department": "Communication",
         "firstName": "Carlos",
         "id": "VGVhY2hlci0xODA3ODQ4",
         "isSaved": false,
         "lastName": "Godoy",
         "legacyId": 1807848,
-        "numRatings": 33,
+        "numRatings": 41,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -26557,7 +26557,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 96.1538
+        "wouldTakeAgainPercent": 96.2963
     },
     {
         "avgDifficulty": 5,
@@ -26957,7 +26957,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 91.6667
+        "wouldTakeAgainPercent": 92
     },
     {
         "avgDifficulty": 2.4,
@@ -27053,7 +27053,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 94.3396
+        "wouldTakeAgainPercent": 94.4444
     },
     {
         "avgDifficulty": 2,
@@ -27437,7 +27437,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 80
+        "wouldTakeAgainPercent": 81.25
     },
     {
         "avgDifficulty": 1.8,
@@ -27533,7 +27533,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 4.8,
@@ -27693,7 +27693,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 33.3333
+        "wouldTakeAgainPercent": 42.8571
     },
     {
         "avgDifficulty": 3,
@@ -27869,7 +27869,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 63.6364
+        "wouldTakeAgainPercent": 66.6667
     },
     {
         "avgDifficulty": 4.5,
@@ -28280,7 +28280,7 @@
         "isSaved": false,
         "lastName": "Hopkins",
         "legacyId": 18909,
-        "numRatings": 117,
+        "numRatings": 119,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -28877,7 +28877,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.2069
+        "wouldTakeAgainPercent": 86.6667
     },
     {
         "avgDifficulty": 2.3,
@@ -30721,19 +30721,19 @@
     },
     {
         "avgDifficulty": 3,
-        "avgRating": 5,
+        "avgRating": 4.7,
         "department": "Writing",
         "firstName": "Nicholas",
         "id": "VGVhY2hlci0xOTc5NTMz",
         "isSaved": false,
         "lastName": "DeDominic",
         "legacyId": 1979533,
-        "numRatings": 2,
+        "numRatings": 48,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 100
+        "wouldTakeAgainPercent": 93.0233
     },
     {
         "avgDifficulty": 2,
@@ -30797,7 +30797,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 96.8421
+        "wouldTakeAgainPercent": 96.9072
     },
     {
         "avgDifficulty": 0,
@@ -31565,7 +31565,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.0465
+        "wouldTakeAgainPercent": 86.6667
     },
     {
         "avgDifficulty": 2.6,
@@ -32269,7 +32269,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 91.6667
+        "wouldTakeAgainPercent": 91.8919
     },
     {
         "avgDifficulty": 3.3,
@@ -32701,7 +32701,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 84.6154
+        "wouldTakeAgainPercent": 85.7143
     },
     {
         "avgDifficulty": 3,
@@ -32888,7 +32888,7 @@
         "isSaved": false,
         "lastName": "Pizzati",
         "legacyId": 1948443,
-        "numRatings": 79,
+        "numRatings": 87,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -33469,7 +33469,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 89.2857
+        "wouldTakeAgainPercent": 90
     },
     {
         "avgDifficulty": 1,
@@ -34157,7 +34157,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.0465
+        "wouldTakeAgainPercent": 86.2069
     },
     {
         "avgDifficulty": 3,
@@ -34477,7 +34477,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 55.5556
+        "wouldTakeAgainPercent": 56.5217
     },
     {
         "avgDifficulty": 3.6,
@@ -34653,7 +34653,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 38.4615
+        "wouldTakeAgainPercent": 42.8571
     },
     {
         "avgDifficulty": 3.8,
@@ -35293,7 +35293,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 53.8462
+        "wouldTakeAgainPercent": 60
     },
     {
         "avgDifficulty": 1,
@@ -37040,20 +37040,20 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 3,
-        "avgRating": 4.6,
+        "avgDifficulty": 2.9,
+        "avgRating": 4.7,
         "department": "Business",
         "firstName": "Marianne ",
         "id": "VGVhY2hlci0yMDQyOTE5",
         "isSaved": false,
         "lastName": "Szymanski",
         "legacyId": 2042919,
-        "numRatings": 34,
+        "numRatings": 40,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 88.8889
+        "wouldTakeAgainPercent": 91.6667
     },
     {
         "avgDifficulty": 3.8,
@@ -37133,7 +37133,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.1795
+        "wouldTakeAgainPercent": 87.5
     },
     {
         "avgDifficulty": 4.7,
@@ -37261,7 +37261,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 82.4324
+        "wouldTakeAgainPercent": 82.6667
     },
     {
         "avgDifficulty": 3,
@@ -37741,7 +37741,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 70
+        "wouldTakeAgainPercent": 72.7273
     },
     {
         "avgDifficulty": 4.8,
@@ -38081,14 +38081,14 @@
     },
     {
         "avgDifficulty": 2.8,
-        "avgRating": 3.7,
+        "avgRating": 4.2,
         "department": "Biological Sciences",
         "firstName": "Fengzhu",
         "id": "VGVhY2hlci0yMjA5Nzcx",
         "isSaved": false,
         "lastName": "Sun",
         "legacyId": 2209771,
-        "numRatings": 13,
+        "numRatings": 20,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -38653,7 +38653,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 88.2353
+        "wouldTakeAgainPercent": 88.8889
     },
     {
         "avgDifficulty": 2,
@@ -38893,7 +38893,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 81.4815
+        "wouldTakeAgainPercent": 82.7586
     },
     {
         "avgDifficulty": 2.4,
@@ -39213,7 +39213,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 86.5385
+        "wouldTakeAgainPercent": 86.7925
     },
     {
         "avgDifficulty": 2.7,
@@ -39248,15 +39248,15 @@
         "wouldTakeAgainPercent": 33.3333
     },
     {
-        "avgDifficulty": 2.5,
-        "avgRating": 2.5,
+        "avgDifficulty": 3.3,
+        "avgRating": 2,
         "department": "Communication",
         "firstName": "Tom",
         "id": "VGVhY2hlci0yMjg2MDcx",
         "isSaved": false,
         "lastName": "Hollihan",
         "legacyId": 2286071,
-        "numRatings": 2,
+        "numRatings": 3,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -39709,7 +39709,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 92.3077
+        "wouldTakeAgainPercent": 92.5926
     },
     {
         "avgDifficulty": 4.1,
@@ -42349,7 +42349,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.5
+        "wouldTakeAgainPercent": 87.8788
     },
     {
         "avgDifficulty": 0,
@@ -42529,14 +42529,14 @@
     },
     {
         "avgDifficulty": 3.5,
-        "avgRating": 2.7,
+        "avgRating": 2.8,
         "department": "Gender Studies",
         "firstName": "Arunima",
         "id": "VGVhY2hlci0yMTc0MTk4",
         "isSaved": false,
         "lastName": "Paul",
         "legacyId": 2174198,
-        "numRatings": 10,
+        "numRatings": 12,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -43424,7 +43424,7 @@
         "wouldTakeAgainPercent": 100
     },
     {
-        "avgDifficulty": 3.9,
+        "avgDifficulty": 4,
         "avgRating": 2.4,
         "department": "Policy Planning  Development",
         "firstName": "Jorge",
@@ -43432,7 +43432,7 @@
         "isSaved": false,
         "lastName": "De La Roca",
         "legacyId": 2185593,
-        "numRatings": 18,
+        "numRatings": 19,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -43789,7 +43789,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 18.9189
+        "wouldTakeAgainPercent": 21.0526
     },
     {
         "avgDifficulty": 4.5,
@@ -46253,7 +46253,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 73.2877
+        "wouldTakeAgainPercent": 73.4694
     },
     {
         "avgDifficulty": 1.9,
@@ -48648,7 +48648,7 @@
         "isSaved": false,
         "lastName": "Wu",
         "legacyId": 2332803,
-        "numRatings": 57,
+        "numRatings": 58,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -48925,7 +48925,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.7143
+        "wouldTakeAgainPercent": 86.2069
     },
     {
         "avgDifficulty": 3.7,
@@ -48957,7 +48957,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 90
+        "wouldTakeAgainPercent": 90.9091
     },
     {
         "avgDifficulty": 2.6,
@@ -48989,7 +48989,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 83.3333
+        "wouldTakeAgainPercent": 84.6154
     },
     {
         "avgDifficulty": 2.4,
@@ -49549,7 +49549,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 87.2093
+        "wouldTakeAgainPercent": 87.6404
     },
     {
         "avgDifficulty": 2,
@@ -49581,7 +49581,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 88.2353
+        "wouldTakeAgainPercent": 88.8889
     },
     {
         "avgDifficulty": 4,
@@ -49597,7 +49597,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 78.5714
+        "wouldTakeAgainPercent": 80
     },
     {
         "avgDifficulty": 2.5,
@@ -50349,7 +50349,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 66.6667
+        "wouldTakeAgainPercent": 70
     },
     {
         "avgDifficulty": 4,
@@ -51053,7 +51053,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 46.6667
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 3,
@@ -52013,7 +52013,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.4167
+        "wouldTakeAgainPercent": 85.7143
     },
     {
         "avgDifficulty": 0,
@@ -52157,7 +52157,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 93.75
+        "wouldTakeAgainPercent": 93.9394
     },
     {
         "avgDifficulty": 3,
@@ -52264,12 +52264,12 @@
         "isSaved": false,
         "lastName": "Schwartz",
         "legacyId": 242884,
-        "numRatings": 62,
+        "numRatings": 64,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 96
+        "wouldTakeAgainPercent": 96.1538
     },
     {
         "avgDifficulty": 2,
@@ -53101,7 +53101,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 33.3333
     },
     {
         "avgDifficulty": 2.6,
@@ -53213,7 +53213,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 91.6667
+        "wouldTakeAgainPercent": 92.3077
     },
     {
         "avgDifficulty": 3,
@@ -54717,7 +54717,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 94.4444
+        "wouldTakeAgainPercent": 94.7368
     },
     {
         "avgDifficulty": 3.7,
@@ -55229,7 +55229,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 33.3333
     },
     {
         "avgDifficulty": 3,
@@ -55997,7 +55997,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 83.3333
+        "wouldTakeAgainPercent": 85.7143
     },
     {
         "avgDifficulty": 4,
@@ -56173,7 +56173,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 74.0741
+        "wouldTakeAgainPercent": 75
     },
     {
         "avgDifficulty": 0,
@@ -57261,7 +57261,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85
+        "wouldTakeAgainPercent": 85.7143
     },
     {
         "avgDifficulty": 4,
@@ -57437,7 +57437,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.7143
+        "wouldTakeAgainPercent": 87.5
     },
     {
         "avgDifficulty": 0,
@@ -57789,7 +57789,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 73.6842
+        "wouldTakeAgainPercent": 75
     },
     {
         "avgDifficulty": 2,
@@ -57997,7 +57997,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 81.25
+        "wouldTakeAgainPercent": 82.3529
     },
     {
         "avgDifficulty": 0,
@@ -58621,7 +58621,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 33.3333
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 1.8,
@@ -60061,7 +60061,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 60
+        "wouldTakeAgainPercent": 61.2903
     },
     {
         "avgDifficulty": 3,
@@ -60301,7 +60301,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 44.4444
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 1,
@@ -60509,7 +60509,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 96.5517
+        "wouldTakeAgainPercent": 96.5986
     },
     {
         "avgDifficulty": 3,
@@ -61901,7 +61901,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 65
+        "wouldTakeAgainPercent": 68.1818
     },
     {
         "avgDifficulty": 2.7,
@@ -61965,7 +61965,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 80
+        "wouldTakeAgainPercent": 87.5
     },
     {
         "avgDifficulty": 1,
@@ -62144,15 +62144,15 @@
         "wouldTakeAgainPercent": 44.4444
     },
     {
-        "avgDifficulty": 3.2,
-        "avgRating": 4.7,
+        "avgDifficulty": 3.5,
+        "avgRating": 3.9,
         "department": "Writing",
         "firstName": "Zen",
         "id": "VGVhY2hlci0yNTIzNDIz",
         "isSaved": false,
         "lastName": "Dochterman",
         "legacyId": 2523423,
-        "numRatings": 20,
+        "numRatings": 39,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -62416,15 +62416,15 @@
         "wouldTakeAgainPercent": 100
     },
     {
-        "avgDifficulty": 2.9,
-        "avgRating": 2.1,
+        "avgDifficulty": 3.1,
+        "avgRating": 2,
         "department": "Engineering",
         "firstName": "George",
         "id": "VGVhY2hlci0yNTk3ODM5",
         "isSaved": false,
         "lastName": "Papavassilopoulos",
         "legacyId": 2597839,
-        "numRatings": 10,
+        "numRatings": 11,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -62557,7 +62557,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 50
     },
     {
         "avgDifficulty": 0,
@@ -62909,7 +62909,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 70.5882
+        "wouldTakeAgainPercent": 72.2222
     },
     {
         "avgDifficulty": 2,
@@ -63005,7 +63005,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 71.4286
+        "wouldTakeAgainPercent": 73.3333
     },
     {
         "avgDifficulty": 0,
@@ -63085,7 +63085,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 77.7778
+        "wouldTakeAgainPercent": 80
     },
     {
         "avgDifficulty": 3.7,
@@ -63165,7 +63165,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 81.6092
+        "wouldTakeAgainPercent": 81.8182
     },
     {
         "avgDifficulty": 0,
@@ -64077,7 +64077,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.7143
+        "wouldTakeAgainPercent": 86.9565
     },
     {
         "avgDifficulty": 3.3,
@@ -64413,7 +64413,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 79.1667
+        "wouldTakeAgainPercent": 80.7692
     },
     {
         "avgDifficulty": 2.7,
@@ -65328,15 +65328,31 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 4.6,
-        "avgRating": 1.5,
+        "avgDifficulty": 3.8,
+        "avgRating": 3.6,
+        "department": "Psychology",
+        "firstName": "Shirin",
+        "id": "VGVhY2hlci0yNzcwNjUw",
+        "isSaved": false,
+        "lastName": "Birjandi",
+        "legacyId": 2770650,
+        "numRatings": 10,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 3.7,
+        "avgRating": 2.9,
         "department": "Cinema",
         "firstName": "Katy",
         "id": "VGVhY2hlci0yNzcwNzc2",
         "isSaved": false,
         "lastName": "Garretson",
         "legacyId": 2770776,
-        "numRatings": 8,
+        "numRatings": 28,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -65997,7 +66013,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 66.6667
+        "wouldTakeAgainPercent": 68.4211
     },
     {
         "avgDifficulty": 0,
@@ -66237,7 +66253,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 85.7143
+        "wouldTakeAgainPercent": 87.5
     },
     {
         "avgDifficulty": 1.3,
@@ -66749,7 +66765,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 92.3077
+        "wouldTakeAgainPercent": 92.8571
     },
     {
         "avgDifficulty": 4.5,
@@ -67246,6 +67262,22 @@
             "name": "University of Southern California"
         },
         "wouldTakeAgainPercent": 50
+    },
+    {
+        "avgDifficulty": 4.3,
+        "avgRating": 2.8,
+        "department": "Physics & Astronomy",
+        "firstName": "Peter",
+        "id": "VGVhY2hlci0yNzUwNDU4",
+        "isSaved": false,
+        "lastName": "Chung",
+        "legacyId": 2750458,
+        "numRatings": 10,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 4.2,
@@ -67904,15 +67936,15 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 3.9,
-        "avgRating": 5,
+        "avgDifficulty": 3.2,
+        "avgRating": 4.5,
         "department": "Biological Sciences",
         "firstName": "Rita",
         "id": "VGVhY2hlci0yODE5MzM0",
         "isSaved": false,
         "lastName": "Barakat",
         "legacyId": 2819334,
-        "numRatings": 24,
+        "numRatings": 29,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -68448,15 +68480,15 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 4.1,
-        "avgRating": 2.8,
+        "avgDifficulty": 3.7,
+        "avgRating": 4.1,
         "department": "Design",
         "firstName": "Bruno",
         "id": "VGVhY2hlci0yODI0MjIx",
         "isSaved": false,
         "lastName": "Lemgruber",
         "legacyId": 2824221,
-        "numRatings": 9,
+        "numRatings": 13,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -69840,15 +69872,15 @@
         "wouldTakeAgainPercent": 100
     },
     {
-        "avgDifficulty": 0,
-        "avgRating": 0,
+        "avgDifficulty": 4,
+        "avgRating": 3,
         "department": "Law",
         "firstName": "Gregory",
         "id": "VGVhY2hlci0yODMyMTYx",
         "isSaved": false,
         "lastName": "Pleasants",
         "legacyId": 2832161,
-        "numRatings": 0,
+        "numRatings": 1,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -71651,7 +71683,7 @@
         "avgDifficulty": 0,
         "avgRating": 0,
         "department": "Linguistics",
-        "firstName": "YaqinG",
+        "firstName": "Yaqing",
         "id": "VGVhY2hlci0yOTA4Njg4",
         "isSaved": false,
         "lastName": "Hu",
@@ -71872,15 +71904,15 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 5,
-        "avgRating": 2,
+        "avgDifficulty": 3.7,
+        "avgRating": 2.5,
         "department": "Theatre",
         "firstName": "Laurie ",
         "id": "VGVhY2hlci0yOTAxNTI1",
         "isSaved": false,
         "lastName": "Fisher",
         "legacyId": 2901525,
-        "numRatings": 1,
+        "numRatings": 6,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -72397,7 +72429,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 2,
@@ -72462,6 +72494,38 @@
             "name": "University of Southern California"
         },
         "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Computer Science",
+        "firstName": "Daniel",
+        "id": "VGVhY2hlci0yOTc5NTY1",
+        "isSaved": false,
+        "lastName": "Seita",
+        "legacyId": 2979565,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 3.5,
+        "avgRating": 1.5,
+        "department": "Architecture",
+        "firstName": "Faiza",
+        "id": "VGVhY2hlci0yOTc5OTA5",
+        "isSaved": false,
+        "lastName": "Moatasim",
+        "legacyId": 2979909,
+        "numRatings": 2,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
     },
     {
         "avgDifficulty": 0,
@@ -72640,15 +72704,15 @@
         "wouldTakeAgainPercent": 100
     },
     {
-        "avgDifficulty": 0,
-        "avgRating": 0,
+        "avgDifficulty": 3,
+        "avgRating": 5,
         "department": "Business",
         "firstName": "Christian",
         "id": "VGVhY2hlci0yOTcyMTcz",
         "isSaved": false,
         "lastName": "Busch",
         "legacyId": 2972173,
-        "numRatings": 0,
+        "numRatings": 1,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -73202,6 +73266,518 @@
     {
         "avgDifficulty": 0,
         "avgRating": 0,
+        "department": "Chemistry",
+        "firstName": "Stephen ",
+        "id": "VGVhY2hlci0yOTg0MzM2",
+        "isSaved": false,
+        "lastName": "Bradforth",
+        "legacyId": 2984336,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Physics & Astronomy",
+        "firstName": "Nicholas ",
+        "id": "VGVhY2hlci0yOTg1MDcz",
+        "isSaved": false,
+        "lastName": "Musat",
+        "legacyId": 2985073,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Business",
+        "firstName": "Chamsi",
+        "id": "VGVhY2hlci0yOTg1Mjc3",
+        "isSaved": false,
+        "lastName": "Hssaine",
+        "legacyId": 2985277,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Architecture",
+        "firstName": "Selwyn",
+        "id": "VGVhY2hlci0yOTg1MTcw",
+        "isSaved": false,
+        "lastName": "Ting",
+        "legacyId": 2985170,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 2,
+        "avgRating": 5,
+        "department": "Journalism",
+        "firstName": "Allan",
+        "id": "VGVhY2hlci0yOTg1MTcy",
+        "isSaved": false,
+        "lastName": "Lopez",
+        "legacyId": 2985172,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Architecture",
+        "firstName": "Russell",
+        "id": "VGVhY2hlci0yOTg1MTY5",
+        "isSaved": false,
+        "lastName": "Fortmeyer",
+        "legacyId": 2985169,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Law",
+        "firstName": "Lisa",
+        "id": "VGVhY2hlci0yOTg1NTgz",
+        "isSaved": false,
+        "lastName": "Klerman",
+        "legacyId": 2985583,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 1,
+        "avgRating": 5,
+        "department": "Gender & Sexualty Studies",
+        "firstName": "Trek",
+        "id": "VGVhY2hlci0yOTg1NzQ2",
+        "isSaved": false,
+        "lastName": "Trek",
+        "legacyId": 2985746,
+        "numRatings": 5,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 2.3,
+        "avgRating": 5,
+        "department": "Business",
+        "firstName": "Ty",
+        "id": "VGVhY2hlci0yOTg1OTgy",
+        "isSaved": false,
+        "lastName": "Keough",
+        "legacyId": 2985982,
+        "numRatings": 15,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 1,
+        "avgRating": 5,
+        "department": "Spanish & Portuguese",
+        "firstName": "Miguel",
+        "id": "VGVhY2hlci0yOTg2NTU0",
+        "isSaved": false,
+        "lastName": "Pulgar",
+        "legacyId": 2986554,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Cinema",
+        "firstName": "Michael",
+        "id": "VGVhY2hlci0yOTg2ODgx",
+        "isSaved": false,
+        "lastName": "Benavente",
+        "legacyId": 2986881,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Computer Science",
+        "firstName": "Mahdi",
+        "id": "VGVhY2hlci0yOTg3MzUy",
+        "isSaved": false,
+        "lastName": "Eslamimehr",
+        "legacyId": 2987352,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Psychology",
+        "firstName": "JAMIE",
+        "id": "VGVhY2hlci0yOTg3NjEw",
+        "isSaved": false,
+        "lastName": "MILLS",
+        "legacyId": 2987610,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Cinema",
+        "firstName": "Ivy",
+        "id": "VGVhY2hlci0yOTg3NTM2",
+        "isSaved": false,
+        "lastName": "Sunderji",
+        "legacyId": 2987536,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 4,
+        "avgRating": 5,
+        "department": "Cinema",
+        "firstName": "Nicole",
+        "id": "VGVhY2hlci0yOTg3NTM4",
+        "isSaved": false,
+        "lastName": "Jefferson",
+        "legacyId": 2987538,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Classics",
+        "firstName": "Charles",
+        "id": "VGVhY2hlci0yOTg3NzEw",
+        "isSaved": false,
+        "lastName": " Russell-Schlesinger",
+        "legacyId": 2987710,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "American Studies",
+        "firstName": "Chrisshonna",
+        "id": "VGVhY2hlci0yOTg4MTk4",
+        "isSaved": false,
+        "lastName": "Nueva",
+        "legacyId": 2988198,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Law",
+        "firstName": "Paul",
+        "id": "VGVhY2hlci0yOTg4Njc1",
+        "isSaved": false,
+        "lastName": "Chandler",
+        "legacyId": 2988675,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Biological Sciences",
+        "firstName": "Charles",
+        "id": "VGVhY2hlci0yOTg5ODMx",
+        "isSaved": false,
+        "lastName": "Crawford",
+        "legacyId": 2989831,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Computer Science",
+        "firstName": "Yue",
+        "id": "VGVhY2hlci0yOTgwMDAw",
+        "isSaved": false,
+        "lastName": "Zhao",
+        "legacyId": 2980000,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 3,
+        "avgRating": 5,
+        "department": "Cinema",
+        "firstName": "Daniel",
+        "id": "VGVhY2hlci0yOTgwMjE4",
+        "isSaved": false,
+        "lastName": "Noah",
+        "legacyId": 2980218,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Humanities",
+        "firstName": "Todd",
+        "id": "VGVhY2hlci0yOTgwNDcx",
+        "isSaved": false,
+        "lastName": "Mayhew",
+        "legacyId": 2980471,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Biological Sciences",
+        "firstName": "Mahija",
+        "id": "VGVhY2hlci0yOTgwNjgx",
+        "isSaved": false,
+        "lastName": "Mogalipuvvu",
+        "legacyId": 2980681,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "French & Italian",
+        "firstName": "Panivong",
+        "id": "VGVhY2hlci0yOTgwNjYz",
+        "isSaved": false,
+        "lastName": "Norindr",
+        "legacyId": 2980663,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Cinema",
+        "firstName": "Joseph ",
+        "id": "VGVhY2hlci0yOTgwODYw",
+        "isSaved": false,
+        "lastName": "Hansford",
+        "legacyId": 2980860,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Business",
+        "firstName": "D. ",
+        "id": "VGVhY2hlci0yOTgxNTIz",
+        "isSaved": false,
+        "lastName": "Sokol",
+        "legacyId": 2981523,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Law",
+        "firstName": "Doug",
+        "id": "VGVhY2hlci0yOTgxNTYx",
+        "isSaved": false,
+        "lastName": "Smith",
+        "legacyId": 2981561,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Science",
+        "firstName": "Julia",
+        "id": "VGVhY2hlci0yOTgxNzc5",
+        "isSaved": false,
+        "lastName": "Schwartzman",
+        "legacyId": 2981779,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Thematic Option",
+        "firstName": "Sarah",
+        "id": "VGVhY2hlci0yOTgyNDc0",
+        "isSaved": false,
+        "lastName": "Frontiera",
+        "legacyId": 2982474,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Theatre",
+        "firstName": "Sergio ",
+        "id": "VGVhY2hlci0yOTgyNDMy",
+        "isSaved": false,
+        "lastName": "Ramirez",
+        "legacyId": 2982432,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 3,
+        "avgRating": 5,
+        "department": "Cinema",
+        "firstName": "Courtney",
+        "id": "VGVhY2hlci0yOTgyNzE2",
+        "isSaved": false,
+        "lastName": "White",
+        "legacyId": 2982716,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 2,
+        "avgRating": 5,
+        "department": "Classics",
+        "firstName": "Matteo",
+        "id": "VGVhY2hlci0yOTgzNTI2",
+        "isSaved": false,
+        "lastName": "Barbiero",
+        "legacyId": 2983526,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
         "department": "Economics",
         "firstName": "Italo",
         "id": "VGVhY2hlci0yOTI2MDg4",
@@ -73309,7 +73885,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 0,
@@ -73328,15 +73904,15 @@
         "wouldTakeAgainPercent": 100
     },
     {
-        "avgDifficulty": 1,
-        "avgRating": 2,
+        "avgDifficulty": 2,
+        "avgRating": 3,
         "department": "Business",
         "firstName": "Audra",
         "id": "VGVhY2hlci0yOTI3Nzk4",
         "isSaved": false,
         "lastName": "Quinn",
         "legacyId": 2927798,
-        "numRatings": 1,
+        "numRatings": 2,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -73587,11 +74163,27 @@
         "avgDifficulty": 0,
         "avgRating": 0,
         "department": "Music",
-        "firstName": "Ron ",
+        "firstName": "Ronald",
         "id": "VGVhY2hlci0yOTIzNjIw",
         "isSaved": false,
-        "lastName": "Mc",
+        "lastName": "McCurdy",
         "legacyId": 2923620,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Cinema",
+        "firstName": "Anne",
+        "id": "VGVhY2hlci0yOTkwMTAy",
+        "isSaved": false,
+        "lastName": "Hamilton",
+        "legacyId": 2990102,
         "numRatings": 0,
         "school": {
             "id": "U2Nob29sLTEzODE=",
@@ -73609,6 +74201,86 @@
         "lastName": "Bruck",
         "legacyId": 299052,
         "numRatings": 6,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Business",
+        "firstName": "Steve",
+        "id": "VGVhY2hlci0yOTkwNzA3",
+        "isSaved": false,
+        "lastName": "Schurman",
+        "legacyId": 2990707,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 1,
+        "avgRating": 4,
+        "department": "Engineering",
+        "firstName": "Herag",
+        "id": "VGVhY2hlci0yOTkxNjgy",
+        "isSaved": false,
+        "lastName": "Haleblian",
+        "legacyId": 2991682,
+        "numRatings": 1,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": 100
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "American Studies",
+        "firstName": "Lydie",
+        "id": "VGVhY2hlci0yOTkyNjUx",
+        "isSaved": false,
+        "lastName": " Moudileno",
+        "legacyId": 2992651,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Social Science",
+        "firstName": "Caroline",
+        "id": "VGVhY2hlci0yOTkyNTM2",
+        "isSaved": false,
+        "lastName": "Tamas",
+        "legacyId": 2992536,
+        "numRatings": 0,
+        "school": {
+            "id": "U2Nob29sLTEzODE=",
+            "name": "University of Southern California"
+        },
+        "wouldTakeAgainPercent": -1
+    },
+    {
+        "avgDifficulty": 0,
+        "avgRating": 0,
+        "department": "Business",
+        "firstName": "Todd",
+        "id": "VGVhY2hlci0yOTkzNDQx",
+        "isSaved": false,
+        "lastName": "Foreman",
+        "legacyId": 2993441,
+        "numRatings": 0,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -73728,20 +74400,20 @@
         "wouldTakeAgainPercent": -1
     },
     {
-        "avgDifficulty": 0,
-        "avgRating": 0,
+        "avgDifficulty": 2,
+        "avgRating": 5,
         "department": "Computer Science",
-        "firstName": "Seo jin",
+        "firstName": "Seo Jin",
         "id": "VGVhY2hlci0yOTM4OTA0",
         "isSaved": false,
         "lastName": "Park",
         "legacyId": 2938904,
-        "numRatings": 0,
+        "numRatings": 1,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 0,
@@ -74077,7 +74749,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 0,
@@ -74317,7 +74989,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 5,
@@ -74384,20 +75056,20 @@
         "wouldTakeAgainPercent": 100
     },
     {
-        "avgDifficulty": 5,
-        "avgRating": 1,
+        "avgDifficulty": 2.7,
+        "avgRating": 3.6,
         "department": "Accounting",
         "firstName": "Matthew",
         "id": "VGVhY2hlci0yOTQyNjUy",
         "isSaved": false,
         "lastName": "Pfeffer",
         "legacyId": 2942652,
-        "numRatings": 1,
+        "numRatings": 7,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 0,
@@ -74461,7 +75133,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 2,
@@ -74557,7 +75229,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 4,
@@ -74573,7 +75245,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 1,
@@ -74989,7 +75661,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": -1
+        "wouldTakeAgainPercent": 100
     },
     {
         "avgDifficulty": 2,
@@ -75158,7 +75830,7 @@
         "firstName": "Lacy",
         "id": "VGVhY2hlci0yOTUxMDcy",
         "isSaved": false,
-        "lastName": "Olson Ayala",
+        "lastName": "Olson-Ayala",
         "legacyId": 2951072,
         "numRatings": 0,
         "school": {
@@ -75965,7 +76637,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 94.7368
+        "wouldTakeAgainPercent": 95
     },
     {
         "avgDifficulty": 2.7,
@@ -76029,7 +76701,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 88.5057
+        "wouldTakeAgainPercent": 88.6364
     },
     {
         "avgDifficulty": 2.5,
@@ -76173,7 +76845,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 53.8462
+        "wouldTakeAgainPercent": 57.1429
     },
     {
         "avgDifficulty": 2,
@@ -76544,15 +77216,15 @@
         "wouldTakeAgainPercent": 75
     },
     {
-        "avgDifficulty": 3.5,
-        "avgRating": 2.5,
+        "avgDifficulty": 3.7,
+        "avgRating": 2.3,
         "department": "Communication",
         "firstName": "Naomi",
         "id": "VGVhY2hlci0zODk5NDE=",
         "isSaved": false,
         "lastName": "Warren",
         "legacyId": 389941,
-        "numRatings": 37,
+        "numRatings": 45,
         "school": {
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
@@ -76589,7 +77261,7 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 66.6667
+        "wouldTakeAgainPercent": 69.2308
     },
     {
         "avgDifficulty": 1.7,
@@ -76717,6 +77389,6 @@
             "id": "U2Nob29sLTEzODE=",
             "name": "University of Southern California"
         },
-        "wouldTakeAgainPercent": 0
+        "wouldTakeAgainPercent": 50
     }
 ]
