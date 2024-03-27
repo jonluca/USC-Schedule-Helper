@@ -179,10 +179,8 @@ function parseSchedule(data) {
     if (!id) {
       id = singleClass.USCID;
     }
-    const startTime = hoursToPSTMoment(
-      parseInt(singleClass.Start.slice(6, -2))
-    );
-    const endTime = hoursToPSTMoment(parseInt(singleClass.End.slice(6, -2)));
+    const startTime = moment(singleClass.Start);
+    const endTime = moment(singleClass.End);
     const classInfo = singleClass.Title.split(" ");
     const time = {
       day: [startTime.format("dddd")],
@@ -273,7 +271,7 @@ function parseSchedule(data) {
 
 //If the section it is currently parsing conflicts with a class in currentScheduleArr
 function addConflictOverlay(row, name) {
-  let addToCourseBin = $(row).find(".addtomycb");
+  let addToCourseBin = $(row).find(".addtomycb, .add-to-course-bin");
   if (addToCourseBin.length !== 0) {
     $(row).css("background-color", "rgba(255, 134, 47, 0.37)");
     addToCourseBin = addToCourseBin[0];
@@ -622,7 +620,7 @@ function successModal(message) {
 //This extension adds a new column, thus squeezing a lot of the elements
 //The following function renames the button from "Add to myCourseBin" to "Add" to preserve space
 function changeAddToCourseBinButton(row) {
-  let addToCourseBin = $(row).find(".addtomycb");
+  let addToCourseBin = $(row).find(".addtomycb, .add-to-course-bin");
   if (addToCourseBin.length !== 0) {
     addToCourseBin = addToCourseBin[0];
     $(addToCourseBin).attr("value", "Add");
@@ -671,7 +669,7 @@ function parseRegistrationNumbers(section) {
 //Any course that is full will get a Notify Me button, which allows users to type in their information and be notified
 // if the class opens up again
 function addNotifyMe(section) {
-  let addToCourseBinButton = $(section).find(".addtomycb");
+  let addToCourseBinButton = $(section).find(".addtomycb, .add-to-course-bin");
   if (addToCourseBinButton.length !== 0) {
     $(addToCourseBinButton[0]).after(
       '<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12 notify" type="button">'
@@ -685,7 +683,9 @@ function addNotifyMe(section) {
     $(alreadyInCourseBin).replaceWith(
       '<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12" type="button">'
     );
-    let addToCourseBinAlready = $(section).find(".addtomycb");
+    let addToCourseBinAlready = $(section).find(
+      ".addtomycb, .add-to-course-bin"
+    );
     addToCourseBinAlready = addToCourseBinAlready[0];
     $(addToCourseBinAlready).attr("value", "Notify Me");
     $(addToCourseBinAlready).removeAttr("type");
