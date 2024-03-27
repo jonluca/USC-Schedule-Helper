@@ -260,11 +260,15 @@ function parseSchedule(data) {
   });
   $(".warning").hover(
     function () {
-      $(this).attr("value", "Add Anyway");
+      // if it has the notify class, set the value to "Notify Me"
+      const text = $(this).hasClass("notify") ? "Notify Me" : "Add Anyway";
+      $(this).attr("value", text);
+      $(this).text(text);
     },
     function () {
       const original = $(this).attr("orig_name");
       $(this).attr("value", original);
+      $(this).text(original);
     }
   );
 }
@@ -274,13 +278,13 @@ function addConflictOverlay(row, name) {
   let addToCourseBin = $(row).find(".addtomycb, .add-to-course-bin");
   if (addToCourseBin.length !== 0) {
     $(row).css("background-color", "rgba(255, 134, 47, 0.37)");
+    $($(row).children()[0]).css("background-color", "rgba(255, 134, 47, 0.37)");
     addToCourseBin = addToCourseBin[0];
     $(addToCourseBin).attr("value", `Overlaps ${name}`);
+    // set text content of the button to "Overlaps with [class name]"
+    $(addToCourseBin).text(`Overlaps ${name}`);
     $(addToCourseBin).attr("orig_name", `Overlaps ${name}`);
-    $(addToCourseBin).attr(
-      "title",
-      "This class overlaps with your current schedule!"
-    );
+    $(addToCourseBin).attr("title", `This class overlaps with ${name}!`);
     $(addToCourseBin).addClass("warning");
   }
 }
@@ -346,7 +350,22 @@ function addPostRequests() {
     $(this).unbind();
     $(this).attr("type", "button");
     $(this).unbind("mouseenter mouseleave");
-    const id = form.attributes["data-ajax-url"]?.textContent.split("/")[3];
+    let id = form.attributes["data-ajax-url"]?.textContent.split("/")[3];
+    if (!id) {
+      // try and find the id from the parent
+      const parent = $(this).closest(".section_crsbin");
+      if (parent) {
+        const rows = $(parent).find(".section_row").toArray();
+        const sectionRow = rows.find((r) => r.innerText.includes("Section"));
+        if (sectionRow) {
+          // replace any non number characters
+          const section = sectionRow.innerText.replace(/\D/g, "");
+          if (section) {
+            id = section;
+          }
+        }
+      }
+    }
     if (!id) {
       console.warn("No id found for notify button, skipping.");
       return true;
@@ -621,9 +640,12 @@ function successModal(message) {
 //The following function renames the button from "Add to myCourseBin" to "Add" to preserve space
 function changeAddToCourseBinButton(row) {
   let addToCourseBin = $(row).find(".addtomycb, .add-to-course-bin");
+  // filter out any with the notify class
+  addToCourseBin = addToCourseBin.filter((i, el) => !$(el).hasClass("notify"));
   if (addToCourseBin.length !== 0) {
     addToCourseBin = addToCourseBin[0];
     $(addToCourseBin).attr("value", "Add");
+    $(addToCourseBin).text("Add");
   }
 }
 
@@ -651,7 +673,7 @@ function parseRegistrationNumbers(section) {
       ) {
         allLecturesClosed = true;
       }
-      addNotifyMe(section);
+      // addNotifyMe(section);
       if (!$(section).hasClass("blank_rating")) {
         $(section).addClass("blank_rating");
         const rows = $(section).find(".section_row").toArray();
@@ -670,6 +692,10 @@ function parseRegistrationNumbers(section) {
 // if the class opens up again
 function addNotifyMe(section) {
   let addToCourseBinButton = $(section).find(".addtomycb, .add-to-course-bin");
+  // filter out any with the notify class
+  addToCourseBinButton = addToCourseBinButton.filter(
+    (i, el) => !$(el).hasClass("notify")
+  );
   if (addToCourseBinButton.length !== 0) {
     $(addToCourseBinButton[0]).after(
       '<input name="submit" value="Notify Me" class="btn btn-default addtomycb col-xs-12 notify" type="button">'
@@ -722,6 +748,7 @@ function addRegistrationNumbers(section, enrolled, total) {
 // Parses each row for what type of class it is, and whether there are still spots
 function parseClassType(row, classType) {
   //If it's not a lab or quiz
+  addNotifyMe(row);
   if (
     classType === "Lecture" ||
     classType === "Lecture-Lab" ||
@@ -733,7 +760,6 @@ function parseClassType(row, classType) {
     classTotalSpots += totalAvailable;
     classAvailableSpots += totalAvailable - currentEnrolled;
     allLecturesClosed = false;
-    addNotifyMe(row);
   } else if (classType === "Lab") {
     classTotalSpotsLabOnly += totalAvailable;
     classAvailableSpotsLabOnly += totalAvailable - currentEnrolled;
