@@ -658,6 +658,7 @@ function parseRegistrationNumbers(section) {
     rows.toArray().find((r) => r.innerText.includes("Registered:")) ||
     $(section).find(".RegSeatCol")[0];
   let regNum;
+  addNotifyMe(section);
   //Cut out hidden text before it
   //If class has reg details
   if (regNumElem) {
@@ -673,7 +674,6 @@ function parseRegistrationNumbers(section) {
       ) {
         allLecturesClosed = true;
       }
-      // addNotifyMe(section);
       if (!$(section).hasClass("blank_rating")) {
         $(section).addClass("blank_rating");
         const rows = $(section).find(".section_row").toArray();
@@ -747,8 +747,6 @@ function addRegistrationNumbers(section, enrolled, total) {
 
 // Parses each row for what type of class it is, and whether there are still spots
 function parseClassType(row, classType) {
-  //If it's not a lab or quiz
-  addNotifyMe(row);
   if (
     classType === "Lecture" ||
     classType === "Lecture-Lab" ||
