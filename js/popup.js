@@ -1,6 +1,7 @@
 let options;
 let count = 3;
 $(() => {
+  $("#year").text(new Date().getFullYear());
   $("body").on("click", "a", function () {
     chrome.tabs.create({
       url: $(this).attr("href"),
