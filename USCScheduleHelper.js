@@ -354,7 +354,8 @@ function addPostRequests() {
     $(this).unbind();
     $(this).attr("type", "button");
     $(this).unbind("mouseenter mouseleave");
-    let id = form.attributes["data-ajax-url"]?.textContent.split("/")[3];
+    let strings = form.attributes["data-ajax-url"]?.textContent.split("/");
+    let id = strings?.[4];
     if (!id) {
       // try and find the id from the parent
       const parent = $(this).closest(".section_crsbin");
