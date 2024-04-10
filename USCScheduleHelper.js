@@ -4,6 +4,7 @@ let id;
 let textsEnabled = undefined;
 chrome.runtime.onMessage.addListener(onMessage);
 let venmoImage = chrome.runtime.getURL("images/venmo.png");
+let venmoQrImage = chrome.runtime.getURL("images/venmo-qr.jpeg");
 
 function onMessage(message, sender, sendResponse) {
   if (message.action === "optionsChanged") {
@@ -607,15 +608,19 @@ function sendPostRequest(email, courseid, fullCourseId, department, phone) {
           data.section && data.section.rand
         }>You can also copy and paste this link to auto open Venmo with the right fields.</a>`;
 
-        textNotif +=
-          (data.phone &&
-            textsEnabled &&
-            `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b style="font-size: 18px;">${
-              data.section && data.section.rand
-            }</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else. If it asks for a last 4 digits of the phone number, use 9020</strong><div id="venmo-image"><img src="${venmoImage}"/><span class="randSectionId">${
-              data.section && data.section.rand
-            }</span><br>${link}</div>`) ||
-          "";
+        if (data.isPaidAlready || true) {
+          textNotif += `<br><br>You've already paid for this section! You'll receive notifications when a spot opens up. If you think this is in error, reach out to help@jonlu.ca`;
+        } else {
+          textNotif +=
+            (data.phone &&
+              textsEnabled &&
+              `<br><br>To get text notifications, Venmo @JonLuca $1 with the following 8 numbers in the note section:<br><br><b style="font-size: 18px;">${
+                data.section && data.section.rand
+              }</b><br><br> <strong>Your venmo should look exactly like the image below, with nothing else. If it asks for a last 4 digits of the phone number, use 9020</strong><div id="venmo-image"><img src="${venmoImage}"/><img src="${venmoQrImage}"/><span class="randSectionId">${
+                data.section && data.section.rand
+              }</span><br>${link}</div>`) ||
+            "";
+        }
 
         textNotif +=
           '<br><br>If you have any questions, please reach out to <a href="mailto:jdecaro@usc.edu">jdecaro@usc.edu</a>';
