@@ -608,7 +608,7 @@ function sendPostRequest(email, courseid, fullCourseId, department, phone) {
           data.section && data.section.rand
         }>You can also copy and paste this link to auto open Venmo with the right fields.</a>`;
 
-        if (data.isPaidAlready || true) {
+        if (data.isPaidAlready) {
           textNotif += `<br><br>You've already paid for this section! You'll receive notifications when a spot opens up. If you think this is in error, reach out to help@jonlu.ca`;
         } else {
           textNotif +=
