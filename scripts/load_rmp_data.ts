@@ -136,7 +136,7 @@ fragment TeacherBookmark_teacher on Teacher {
           schoolID: schoolId,
         },
         ...(cursor ? { cursor } : {}),
-        count: 5000,
+        count: 1000,
       },
     },
     {
