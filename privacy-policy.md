@@ -1,5 +1,7 @@
 # USC Schedule Helper Privacy Policy
 
+> This archived repository mirrors the policy for reference. The canonical policy is maintained in [jonluca/USC-Class-Notifier-API](https://github.com/jonluca/USC-Class-Notifier-API/blob/master/PRIVACY.md).
+
 Last updated: August 3, 2026
 
 USC Schedule Helper is a browser extension and companion notification service operated by JonLuca DeCaro. It improves USC class-search and registration pages with ratings, schedule information, conflict indicators, and optional class-availability notifications.
